@@ -1,0 +1,85 @@
+%
+% steering file to compare CMS data to new ATLAS data
+%
+%datanamedir MyData/datanew/
+%
+% need always dataname, gridname, markerstyle, markercolor one after the other
+Gridnamedir MyGrids/top/mcfm
+%
+dataname  MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+gridname grid--TTbar_mttatlas.root
+markerstyle 20
+markercolor 1
+%mcscalex 1000
+%mcscalex 0.001 
+frameid 0
+divideid 0
+%
+%dataname MyData/datapub/top/cms2012_top_mtt_ljet.txt
+%gridname grid--TTbar_mttcms.root
+%markerstyle 24
+%markercolor 1
+%%reflinecolor 2
+%reflinestyle 2
+%%mcscalex 1000
+%scaley 1000.
+%frameid 0
+%divideid 0
+%
+%dataname MyData/datanew/atlas2012_5fb_top_pttt_ljet.txt
+%gridname grid--TTbar_ptttatlas5fb.root
+%markerstyle 20
+%markercolor 1
+%frameid 0
+%mcscalex 1000
+%%mcscalex 0.001 
+%divideid 1
+%
+%dataname MyData/datapub/top/cms2012_top_ptt_ljet.txt
+%gridname grid--TTbar_ptttcms.root
+%markerstyle 24
+%markercolor 1
+%reflinecolor 2
+%reflinestyle 2
+%%scalex 1000.
+%%mcscalex 1000
+%scaley 1000.
+%frameid 0
+%divideid 1
+%
+%dataname MyData/datanew/atlas2012_5fb_top_ytt_ljet.txt
+%gridname grid--TTbar_yttatlas.root
+%markerstyle 20
+%markercolor 1
+%reflinecolor 2
+%frameid 0
+%divideid 2
+%
+%dataname MyData/datapub/top/cms2012_top_ytt_ljet.txt
+%gridname grid--TTbar_yttcms.root
+%markerstyle 24
+%markercolor 1
+%%reflinecolor 2
+%reflinestyle 2
+%frameid 0
+%divideid 2
+%
+%dataname MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt
+%gridname grid--TTbar_ptatlas.root
+%markerstyle 20
+%markercolor 1
+%frameid 3
+%divideid 3
+%%mcscalex 0.001 
+%
+%dataname MyData/datapub/top/cms2012_top_pttop_ljet.txt
+%gridname grid--TTbar_ptcms.root
+%markerstyle 24
+%markercolor 1
+%%reflinecolor 2
+%reflinestyle 2
+%frameid 3
+%divideid 3
+%scaley 1000.
+%%mcscalex 1000
+%

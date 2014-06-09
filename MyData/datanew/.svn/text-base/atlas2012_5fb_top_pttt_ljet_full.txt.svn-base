@@ -1,0 +1,52 @@
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2013
+JETALGO ANTIKT
+JETALGR 4
+EXP ATLAS
+NAME ATLAS_2012_diffcross_pttt_full
+framelogy
+framelinx
+% default units are GeV and fb
+unitxTeV
+unitypb
+normtot
+dividedbybinwidth
+%
+label ATLAS 2013
+titlex p_{T, t, #bar{t}} [GeV]
+titley 1/#sigma d#sigma/dp_{T, t,#bar{t}} [1/TeV]
+label ATLAS 2013
+ERRORINPERCENT
+%
+corrname atlas2012_5fb_top_pttt_ljet_corr.txt
+%
+SYSTCORRELATIONMATRIX
+%                    1   2   3   4   5   6   7  8 
+1 Syst_JESBackground 1.  0.  0.  0.  0.  0.  0.  0.
+2 Syst_EtmissCellout 0.  1.  0.  0.  0.  0.  0.  0.
+3 Syst_Frag          0.  0.  1.  0.  0.  0.  0.  0. 
+4 Syst_ISFR          0.  0.  0.  1.  0.  0.  0.  0. 
+5 Syst_JER           0.  0.  0.  0.  1.  0.  0.  0. 
+6 Syst_JESetainter   0.  0.  0.  0.  0.  1.  0.  0. 
+7 Syst_MCGen         0.  0.  0.  0.  0.  0.  1.  0.
+8 Syst_EtmissPileup  0.  0.  0.  0.  0.  0.  0.  1.
+% 
+
+% http://cds.cern.ch/record/1600778/files/ATLAS-CONF-2013-099.pdf
+% 
+% xm xlow xhigh dsigma/ptt statsigma+ statsigma- systsigma+ systsigma-
+% updated to the latest, error is total
+% Table 63
+ 20.   0.    40. 13.57 3.4 3.4  11.6  11.7
+1.2 1.2 1.8 1.8 0.9 0.9 9.9 10.0 3.2 3.2 1.8 1.8 4.0 4.1 1.3 1.3
+%
+ 105.  40.  170. 3.06  1.8 1.8  13.4  13.4
+1.11.1 2.1 2.1 0.3 0.3 11.9 12.0 3.6 3.6 0.9 0.9 3.8 3.8 1.5 1.5 
+%
+ 255. 170.  340. 0.25  4.2 4.2  21.9  21.8
+2.3 2.3 2.0 2.0 6.9 6.9 17.9 17.8 6.9 6.9 1.5 1.5 7.2 7.2 1.4 1.4
+%
+ 670. 340. 1000. 0.008 7.7 7.7  20.0  20.0 32.8 32.6
+3.1 3.1 1.7 1.7 2.6 2.6 19.5 19.4 8.0 7.9 1.7 1.7 24.7 24.6 1.3 1.3
+

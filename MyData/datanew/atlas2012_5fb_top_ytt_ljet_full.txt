@@ -1,0 +1,56 @@
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2013
+JETALGO ANTIKT
+JETALGR 4
+%framexmin -3.
+%framexmax  3.
+NAME ATLAS_2012_diffcross_ytt_full
+framelogy
+framelinx
+label ATLAS 2013
+titlex y_{t, #bar{t}} 
+titley 1/#sigma d#sigma/dy_{t,#bar{t}}
+EXP ATLAS
+ERRORINPERCENT
+unitypb
+%unitxTeV
+normtot
+dividedbybinwidth
+%
+corrname atlas2012_5fb_top_ytt_ljet_corr.txt
+%
+% http://cds.cern.ch/record/1600778/files/ATLAS-CONF-2013-099.pdf
+%
+SYSTCORRELATIONMATRIX
+%                    1   2   3 
+1 Syst_Frag          1.  0.  0.  
+2 Syst_JESetainter   0.  1.  0. 
+3 Syst_MCGen         0.  0.  1.  
+
+% 
+ 
+% xm xlow xhigh dsigma/ytt statsigma+ statsigma- systsigma+ systsigma-
+% 
+-1.75 -2.5  -1.0 80.7e-3  2.2 2.2 3.1 3.0 
+1.4 1.3 1.3 1.3 2.4 2.4
+%
+-0.75 -1.0  -0.5 320.8e-3 1.2 1.2 2.7 2.7
+1.9 1.9 0.1 0.1 1.8 1.8
+%
+-0.25 -0.5   0.0 435.9e-3 1.3 1.3 1.6 1.5 
+0.8 0.8 0.8 0.8 1.1 1.1
+%
+ 0.25  0.0   0.5 423.1e-3 1.2 1.2 1.2 1.1 
+0.3 0.3 0.9 0.8 0.8 0.7
+%
+ 0.75  0.5   1.0 320.6e-3 1.2 1.2 1.1 1.1 
+1.0 1.0 0.1 0.1 0.5 0.5
+%
+ 1.75  1.0   2.5  87.3e-3 2.8 2.8 4.5 4.4 
+2.1 2.1 1.4 1.3 3.7 3.6
+
+
+
+
+

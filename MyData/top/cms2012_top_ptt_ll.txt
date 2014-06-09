@@ -1,0 +1,22 @@
+EXP CMS
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2012
+JETALGO ANTIKT
+JETALGR 5
+framelogy
+%framelogx
+label CMS 2012
+titlex #p_{T, t \bar{t}} [GeV]
+titley 1/#sigma d#sigma/d#p_{T, t \bar{t}} [pb/GeV]
+unitypb
+normtot
+ERRORINPERCENT
+%ptt T bin [GeV] 1/σ ds/dptt 
+%xm xlow xhigh  cross stat. [%] sys. [%] total [%] 
+ 10.   0.  20. 1.60e-2 2.9 2.9 24.9 24.9 
+ 40.  20.  60. 0.97e-2 2.1 2.1 10.7 10.7 
+ 90.  60. 120. 0.32e-2 2.5 2.5 13.2 13.2 
+210. 120. 300. 0.05e-2 3.7 3.7  6.9  6.9 
+%
+%

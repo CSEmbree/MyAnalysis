@@ -1,0 +1,93 @@
+Path: /HepData/1138/d7-x1-y1
+Correction factors for hadronization, underlying event and total non-perturbative effects for the absolute value of the jet rapidity in the range 0.0 to 0.4.
+Location: ?
+ABS(YRAP) : 0.0 TO 0.4
+RE : PBAR P --> JET X
+SQRTS(S) : 1960.0 GeV
+xl	xh	y	
+50.0	60.0	-14.3
+60.0	70.0	-12.9
+70.0	80.0	-11.6
+80.0	90.0	-10.6
+90.0	100.0	-9.6
+100.0	110.0	-8.8
+110.0	120.0	-8.1
+120.0	130.0	-7.5
+130.0	145.0	-6.9
+145.0	160.0	-6.2
+160.0	180.0	-5.6
+180.0	200.0	-5.0
+200.0	220.0	-4.6
+220.0	240.0	-4.3
+240.0	265.0	-4.0
+265.0	295.0	-3.8
+295.0	325.0	-3.6
+325.0	360.0	-3.5
+360.0	400.0	-3.4
+400.0	445.0	-3.3
+445.0	490.0	-3.3
+490.0	540.0	-3.3
+540.0	665.0	-3.3
+
+Path: /HepData/1138/d7-x1-y2
+Correction factors for hadronization, underlying event and total non-perturbative effects for the absolute value of the jet rapidity in the range 0.0 to 0.4.
+Location: ?
+ABS(YRAP) : 0.0 TO 0.4
+RE : PBAR P --> JET X
+SQRTS(S) : 1960.0 GeV
+xl	xh	y	
+50.0	60.0	29.9
+60.0	70.0	26.0
+70.0	80.0	22.8
+80.0	90.0	20.2
+90.0	100.0	18.0
+100.0	110.0	16.1
+110.0	120.0	14.6
+120.0	130.0	13.3
+130.0	145.0	12.0
+145.0	160.0	10.7
+160.0	180.0	9.6
+180.0	200.0	8.6
+200.0	220.0	7.8
+220.0	240.0	7.3
+240.0	265.0	6.9
+265.0	295.0	6.5
+295.0	325.0	6.3
+325.0	360.0	6.1
+360.0	400.0	6.0
+400.0	445.0	5.9
+445.0	490.0	5.8
+490.0	540.0	5.8
+540.0	665.0	5.8
+
+Path: /HepData/1138/d7-x1-y3
+Correction factors for hadronization, underlying event and total non-perturbative effects for the absolute value of the jet rapidity in the range 0.0 to 0.4.
+Location: ?
+ABS(YRAP) : 0.0 TO 0.4
+RE : PBAR P --> JET X
+SQRTS(S) : 1960.0 GeV
+xl	xh	y	
+50.0	60.0	11.3
+60.0	70.0	9.8
+70.0	80.0	8.5
+80.0	90.0	7.5
+90.0	100.0	6.6
+100.0	110.0	5.9
+110.0	120.0	5.3
+120.0	130.0	4.8
+130.0	145.0	4.3
+145.0	160.0	3.8
+160.0	180.0	3.4
+180.0	200.0	3.1
+200.0	220.0	2.9
+220.0	240.0	2.7
+240.0	265.0	2.6
+265.0	295.0	2.5
+295.0	325.0	2.4
+325.0	360.0	2.4
+360.0	400.0	2.4
+400.0	445.0	2.3
+445.0	490.0	2.3
+490.0	540.0	2.3
+540.0	665.0	2.3
+

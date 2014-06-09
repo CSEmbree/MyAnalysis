@@ -1,0 +1,37 @@
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2013
+JETALGO ANTIKT
+JETALGR 4
+framelogy
+framelinx
+EXP ATLAS
+%ERRORINPERCENT
+NAME ATLAS_2012_diffcross_pseudotoppt
+% default units are GeV and fb
+%unitxTeV
+%unitypb
+%normtot
+dividedbybinwidth
+label ATLAS Data 2013 (particle)
+%
+%%% Leptonic measurement
+titlex p_{T,particle top} [GeV]
+titley 1/#sigma d#sigma/dp_{T, particle top} [1/TeV]
+%
+TABLEPLUSMINUS
+Syst_systtot
+% 
+% xm xlow xhigh dsigma/ptt statsigma systsigma+ systsigma-
+  5   0  30 10.2094 0.449911  1.37356   1.37356
+ 45  30  60 26.6031 0.815806  3.403     3.403
+ 75  60  90 35.5633 0.97948   4.7295    4.7295
+105  90 120 36.8999 1.00256   5.04864   5.04864
+135 120 150 29.3307 0.820916  4.3971    4.3971
+165 150 180 19.2297 0.623531  3.21412   3.21412
+200 180 220 11.9679 0.416754  2.33649   2.33649
+240 220 260 6.43289 0.276421  1.47241   1.47241
+280 260 300 3.19059 0.18358   0.834471  0.834471
+325 300 350 1.58511 0.134298  0.428538  0.428538
+375 350 400 0.82096 0.0927202 0.256774  0.256774
+700 400 1000 0.0663 0.0103577 0.0229185 0.0229185

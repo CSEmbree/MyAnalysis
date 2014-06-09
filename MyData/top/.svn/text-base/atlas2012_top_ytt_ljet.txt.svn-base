@@ -1,0 +1,33 @@
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2012
+JETALGO ANTIKT
+JETALGR 4
+%framexmin -3.
+%framexmax  3.
+% default units are GeV and fb
+%unitxTeV
+unitypb
+normtot
+%
+framelogy
+framelinx
+label ATLAS 2012
+titlex y_{t, #bar{t}} 
+titley  1/#sigma d#sigma/dy_{t,#bar{t}} [pb/TeV]
+EXP ATLAS
+%in
+%http://link.springer.com/article/10.1140/epjc/s10052-012-2261-1
+% total uncertainty is given, put sigma stat to zero
+% xm xlow xhigh dsigma/ytt sigmastatp sigmah sigmaplus sigmaminus
+-1.75 -2.5  -1.0 0.072 0.0 0.0 0.008 0.008
+-0.75 -1.0  -0.5 0.34  0.0 0.0 0.020 0.020 
+-0.25 -0.5   0.0 0.42  0.0 0.0 0.02  0.02
+ 0.25  0.0   0.5 0.42  0.0 0.0 0.02  0.02
+ 0.75  0.5   1.0 0.32  0.0 0.0 0.02  0.02
+ 1.75  1.0   2.5 0.08  0.0 0.0 0.007 0.007
+
+
+
+
+

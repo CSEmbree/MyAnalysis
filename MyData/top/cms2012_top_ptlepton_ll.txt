@@ -1,0 +1,26 @@
+EXP CMS
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2012
+JETALGO ANTIKT
+JETALGR 5
+framelogy
+%framelogx
+label CMS 2012
+titlex #p_{T, l} [GeV]
+titley 1/#sigma d#sigma/d#p_{T, l} [pb/GeV]
+unitypb
+normtot
+ERRORINPERCENT
+%
+%http://arxiv.org/pdf/1211.2220v2.pdf
+%Table 5: Normalised differential tt cross section as a function of lepton observables in the dilepton 
+%channels: the transverse momentum of the leptons pT
+%pT bin [GeV] 1/σ ds/dpT
+%xm xlow xhigh  cross stat. [%] sys. [%] 
+%
+ 30.  20.  40. 1.92e-2 1.1 1.1 3.6  3.8 
+ 55.  40.  70. 1.27e-2 1.2 1.2 3.1  3.4 
+ 95.  70. 120. 0.38e-2 1.7 1.7 3.8  4.2 
+150. 120. 180. 0.07e-2 3.5 3.5 6.7  7.6 
+290. 180. 400. 0.32e-4 9.5 9.5 7.4 12.0 

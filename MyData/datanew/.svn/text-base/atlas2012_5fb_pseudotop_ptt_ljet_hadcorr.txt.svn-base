@@ -1,0 +1,27 @@
+REACTION  P P --> pseudo-top
+SQRTS  7000.0
+YEAR 2013
+JETALGO ANTIKT
+JETALGR 4
+EXP ATLAS
+ERRORINPERCENT
+% default units are GeV and fb
+%
+% hadronisation correction from pseudo-top to top parton
+% 
+% summary_SEGR_TLDR_WHJ_DR5_LDR4_tlptuttl_alpgen-common_mu.root
+% 
+% xm xlow xhigh hadcorr stat
+15     0.   30. 38.9811 
+45.    30.  60. 37.5474
+75.    60.  90. 33.4599
+105.   90. 120. 28.8775
+135.  120. 150. 26.8858
+165.  150. 180. 27.1952
+200.  180. 220. 26.730
+240.  220. 260. 24.5945
+280.  260. 300. 22.5995
+325.  300. 350. 21.974
+375.  350. 400. 22.8227
+700.  400. 1000. 25.6511
+

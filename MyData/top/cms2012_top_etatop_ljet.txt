@@ -1,0 +1,30 @@
+EXP CMS
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2012
+JETALGO ANTIKT
+JETALGR 5
+framelogy
+%framelogx
+label CMS 2012
+titlex #h_{T,top} [GeV]
+titley 1/#sigma d#sigma/d#h_{T, b} [pb/GeV]
+unitypb
+normtot
+ERRORINPERCENT
+%
+%http://arxiv.org/pdf/1211.2220v2.pdf
+%
+% yt bin 1/σ ds/dyt problem with bins in publication table
+%xm xlow xhigh  cross stat. [%] sys. [%] 
+-2.05 -2.5  -1.6 0.65e-1 5.1 5.1 10.3 10.3 
+-1.40 -1.6  -1.2 1.73e-1 2.9 2.9  5.9  5.9 
+-1.0  -1.2  -0.8 2.62e-1 2.8 2.8  4.1  4.1 
+-0.6  -0.8  -0.4 3.16e-1 2.6 2.6  3.8  3.8 
+-0.2  -0.4   0.0 3.34e-1 2.7 2.7  4.8  4.8 
+ 0.2   0.0   0.4 3.58e-1 2.5 2.5  2.6  2.6 
+ 0.6   0.4   0.8 3.27e-1 2.5 2.5  5.2  5.2 
+ 1.0   0.8.  1.2 2.56e-1 2.7 2.7  5.0  5.0 
+ 1.4   1.2   1.6 1.68e-1 3.0 3.0  5.7  5.7 
+ 2.05  1.6   2.5 0.64e-1 5.0 5.0  7.1  7.1 
+%

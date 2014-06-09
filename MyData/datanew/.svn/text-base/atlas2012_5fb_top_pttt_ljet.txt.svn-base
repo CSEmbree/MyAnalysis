@@ -1,0 +1,33 @@
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2013
+JETALGO ANTIKT
+JETALGR 4
+EXP ATLAS
+NAME ATLAS_2012_diffcross_pttt
+framelogy
+framelinx
+% default units are GeV and fb
+unitxTeV
+unitypb
+normtot
+dividedbybinwidth
+%
+label ATLAS 2014
+titlex p_{T, t, #bar{t}} [GeV]
+titley 1/#sigma d#sigma/dp_{T, t,#bar{t}} [1/TeV]
+ERRORINPERCENT
+%
+TABLEPLUSMINUS
+Syst_systtot
+% 
+% from draft2 of paper
+%  
+% xm xlow xhigh dsigma/ptt statsigma+ statsigma- systsigma+ systsigma-
+% updated to the latest, error is total
+% Table 63
+ 20.   0.    40. 14.1  1.3  6.2   6.2
+ 105.  40.  170. 3.00  1.8  7.4   7.4
+ 255. 170.  340. 0.25  4.2  16.0  16.0
+ 670. 340. 1000. 0.008 7.8  16.0  16.0
+

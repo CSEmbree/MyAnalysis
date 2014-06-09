@@ -1,0 +1,63 @@
+datanamedir data
+%Gridnamedir /home/tcarli/topdiffxsection/
+%Gridnamedir /media/Sony_32GR/mcfm/inputgrids/
+%
+% Mtt
+% need always dataname, gridname, markerstyle, markercolor one after the other
+dataname atlas2012_top_mtt_ljet.txt
+gridname grid--TTbar_mttatlas.root
+markerstyle 20
+markercolor 1
+frameid 0
+divideid 0
+%
+dataname cms2012_top_mtt_ljet.txt
+gridname grid--TTbar_mttcms.root
+markerstyle 24
+markercolor 1
+%reflinecolor 2
+reflinestyle 2
+%scalex 1.0
+scaley 1000.
+frameid 0
+divideid 0
+%
+% pt recoil
+dataname atlas2012_top_pttt_ljet.txt
+gridname grid--TTbar_ptttatlas.root
+markerstyle 20
+markercolor 1
+frameid 1
+divideid 1
+%
+dataname cms2012_top_ptt_ljet.txt
+gridname grid--TTbar_ptttcms.root
+markerstyle 24
+markercolor 1
+%reflinecolor 2
+reflinestyle 2
+%scalex 1000.
+scaley 1000.
+frameid 1
+divideid 1
+%
+%
+% rapidity of ttbar system
+%
+dataname atlas2012_top_ytt_ljet.txt
+gridname grid--TTbar_yttatlas.root
+markerstyle 20
+markercolor 1
+%reflinecolor 2
+frameid 2
+divideid 2
+%
+dataname cms2012_top_ytt_ljet.txt
+gridname grid--TTbar_yttcms.root
+markerstyle 24
+markercolor 1
+%reflinecolor 2
+reflinestyle 2
+frameid 2
+divideid 2
+%

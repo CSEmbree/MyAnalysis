@@ -1,0 +1,30 @@
+%AAD et al.,
+%ARXIV:1009.5908
+%CERN-PH-EP-2010-034
+%%
+%
+%Inclusive jet double-differential cross sections in the |rapidity| range 0.3 to 0.8, using a jet resolution R 
+%value of 0.4.  The three (sys) errors are respectively, the Absolute JES, the Unfolding and the Luminosity 
+%uncertainties.
+%Location: T 1,F 9
+%RE : P P --> JET X
+%R : 0.4
+YRAP 0.3 0.8
+SQRTS  7000.0
+YEAR 2010
+JETALGO ANTIKT
+JETALGOR 4
+EXP ATLAS
+label ATLAS 2010
+%x-axis header: PT IN GEV
+%y-axis header: D2(SIG)/DPT/DYRAP IN PB/GEV
+%
+%       x           y           dy            dy          dy          dy    
+%
+ 70.  60.0   80.0   34000.0    +0.89  -0.89    +27.0 -22.0    +4.0 -4.0    +11.0 -11.0 
+ 95.  80.0  110.0    7900.0    +1.5   -1.5     +28.0 -22.0    +3.0 -3.0    +11.0 -11.0 
+ 135. 110.0  160.0    1200.0   +3.0   -3.0     +28.0 -22.0    +2.0 -2.0    +11.0 -11.0 
+ 185. 160.0  210.0     240.0   +6.9   -6.9     +27.0 -24.0    +2.0 -2.0    +11.0 -11.0 
+ 235. 210.0  260.0      49.0   +15.0  -15.0    +31.0 -23.0    +2.0 -2.0    +11.0 -11.0 
+ 285. 260.0  310.0      15.0   +28.0  -28.0    +29.0 -27.0    +2.0 -2.0    +11.0 -11.0 
+ 355. 310.0  400.0       9.3   +27.0  -27.0    +34.0 -25.0    +2.0 -2.0    +11.0 -11.0 

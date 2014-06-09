@@ -1,0 +1,27 @@
+%
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2012
+JETALGO ANTIKT
+JETALGR 5
+EXP CMS
+framelogy
+%framelogx
+label CMS 2012
+titlex p_{T,ll} [GeV]
+titley 1/#sigma d#sigma/dp_{T, ll} [pb/GeV]
+unitypb
+normtot
+ERRORINPERCENT
+%
+%http://arxiv.org/pdf/1211.2220v2.pdf
+%pT bin [GeV] 1/σ ds/dpT 
+%xm xlow xhigh  cross stat. [%] sys. [%] 
+  5.   0.  10. 0.15e-2 9.2 9.2 11.8 11.8 
+ 15.  10.  20. 0.05e-2 4.8 4.8  6.5  6.5 
+ 30.  20.  40. 0.01e-2 2.8 2.8  4.0  4.0 
+ 50.  40.  60. 1.17e-2 2.2 2.2  3.5  3.5 
+ 80.  60. 100. 0.96e-2 1.7 1.7  3.4  3.4 
+125. 100. 150. 0.29e-2 2.8 2.8  5.2  5.2 
+275. 150. 400. 0.92e-4 7.0 7.0 10.3 10.3 
+%

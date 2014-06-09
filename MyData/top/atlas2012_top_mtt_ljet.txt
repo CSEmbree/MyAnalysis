@@ -1,0 +1,31 @@
+%http://inspirehep.net/record/1123657/ 
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2012
+JETALGO ANTIKT
+JETALGR 4
+EXP ATLAS
+framelogy
+framelogx
+% 
+% default units are GeV and fb
+unitxTeV
+unitypb
+normtot
+%
+label ATLAS 2012
+titlex m_{t, #bar{t}} [TeV]
+titley  1/#sigma d#sigma/dm_{t,#bar{t}} [pb/TeV]
+%
+%
+% ssigma-pmtt
+% given in is total error (also correlation matrix is availale)
+% http://link.springer.com/article/10.1140/epjc/s10052-012-2261-1
+% put sigmastat to zero
+%
+% xm xlow xhigh sigma sigmaplus sigmaminus
+ 350. 250. 450.  2.4   0.0 0.3  0.4
+ 500. 450. 550.  2.9   0.0 0.4  0.4
+ 625. 550. 700.  1.0   0.0 0.1  0.1
+ 825. 700. 950.  0.24  0.0 0.04 0.04
+1825. 950. 2700. 0.007 0.0 0.003 0.003

@@ -1,0 +1,39 @@
+
+%
+%debug
+%plotmarker
+%
+% example PDF together
+%pdfdata steering/mypdf_CT10.txt,steering/mypdf_NNPDF.txt
+%pdfdata steering/mypdf_CT10.txt,steering/mypdf_NNPDF23nlo.txt,steering/mypdf_HERAPDF15NLO.txt,steering/mypdf_MSTW2008nlo.txt
+%
+% single pdf:
+pdfdata steering/mypdf_CT10.txt
+%pdfdata steering/mypdf_NNPDF23nlo.txt
+%pdfdata steering/mypdf_HERAPDF15NLO.txt
+%
+renscale 2.0 0.5 2.0 0.5
+facscale 2.0 0.5 0.5 2.0
+%
+% ptop
+% need always dataname, gridname, markerstyle, markercolor one after the other
+datanamedir data
+dataname atlas2012_5fb_top_ptt_ljet_full.txt
+%dataname atlas2012_5fb_top_ptt_ljet.txt
+gridname grid--TTbar_ptatlas.root
+markerstyle 20
+markercolor 1
+frameid 0
+divideid 0
+%
+%dataname atlas2012_5fb_pseudotop_ptt_ljet.txt
+%gridname grid--TTbar_ptatlas.root
+%markerstyle 24
+%markercolor 1
+%%reflinecolor 2
+%reflinestyle 2
+%%scalex 1.0
+%scaley 1000.
+%frameid 0
+%divideid 1
+%

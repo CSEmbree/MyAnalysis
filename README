@@ -1,0 +1,67 @@
+###################################################
+#                 DEPENDANCIES                    #
+###################################################
+
+Need access to newest of the following files:
+MyBand.{cxx,h}
+MyCrossSection.{cxx,h}
+MyData.{cxx,h}
+MyEvent.{cxx,h}
+MyFrame.{cxx,h}
+MyFrameData.{cxx,h}
+MyGrids/
+MyPDF/
+MyPDF.{cxx,h}
+
+Need access to te PDF sets, currently located:
+
+  /afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/5.8.8/share/lhapdf/PDFsets
+
+Need access to sherpa21inputs, currently located:
+
+  /afs/cern.ch/user/c/cembree/public/workspace/MyAnalysis/sherpatop21inputs
+
+Also uses steering file to run, an example here:
+
+  /afs/cern.ch/user/c/cembree/public/workspace/MyAnalysis/atlas2012_top.txt
+
+Most of these dependancies are taken care of in 
+the following setup process but you must change 
+the setup based on your enevrionment.
+
+
+###################################################
+#                    SETUP                        #
+###################################################
+Perform the following:
+
+  source setup.sh
+  make
+
+To prepare the envrionment you source the setupfile
+called '$MYHOME/setuplxplus.sh'. After global envrion
+-ment is setup, then we source the local 'setup.sh'
+script and compile with 'make'.
+
+The origonal sourcing of '$MYHOME/setuplxplus.sh' is 
+done in my '.bashrc', so I only ever need to run my
+local source of 'setup.sh'
+
+
+###################################################
+#                   RUNNING                       #
+###################################################
+Executable takes 1 parameters:
+1 - steering file
+
+
+Output will show up in root, so you will need X11 
+forwarding if you are sshing in.
+
+EX: ssh -X username@lxplus.cern.ch
+
+
+EXAMPLE RUN(S):
+  ./plot atlas2012_top.txt
+
+
