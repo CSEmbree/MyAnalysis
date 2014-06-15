@@ -1,0 +1,22 @@
+%
+%%%Example MyPDFDraw file
+%% all steering must follow the folowing format
+%
+%PDFname <some_pdf_name>
+%PDFFlavor <some_flavor>
+%Q2Values <some_q2_value>
+%Nbins <some_number_of_bins>
+%Xmin <x_minimum_value>
+%Xmax <x_maximum_value>
+%
+% turning on debug
+debug
+%
+%
+PDFname HERA
+PDFFlavor someflavor
+Q2Value 1
+Nbins 2
+Xmin 3
+Xmax 4
+%
