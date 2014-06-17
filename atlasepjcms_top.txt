@@ -1,4 +1,4 @@
-datanamedir data
+datanamedir MyData/top/
 %Gridnamedir /home/tcarli/topdiffxsection/
 %Gridnamedir /media/Sony_32GR/mcfm/inputgrids/
 %

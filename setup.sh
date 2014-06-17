@@ -13,7 +13,8 @@ echo "-----> Basic setup performed during /.bashrc from script $BASIC_SETUP"
 
 #lhapdf sets
 echo "-----> Linking LHAPDF sets..."
-ln -s `lhapdf-config --pdfsets-path`  PDFsets
+#ln -s `lhapdf-config --pdfsets-path`  PDFsets
+ln -s /afs/cern.ch/work/c/cembree/public/PDFsets  PDFsets
 
 #R and B root files
 echo "-----> Linking sherpaNTuples..."

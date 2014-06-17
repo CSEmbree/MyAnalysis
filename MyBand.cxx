@@ -26,83 +26,134 @@ MyBand::MyBand()
 
 }
 
+
 void MyBand::DrawPDFBandRatio() 
 {
+ if (debug) cout <<" MyBand::DrawPDFBandRatio: gpdfband.size()= " << gpdfbandratio.size()
+		 <<", plotband="<<plotband
+		 <<", plotmarker="<<plotmarker<<endl;
 
- if (debug) cout<<" MyBand::DrawPDFBandRatio: npdf= "<<gpdfbandratio.size()<<endl;
 
+
+ // plot each pdf info onto ratio
  for (int ipdf = 0; ipdf <  gpdfbandratio.size(); ipdf++) {
-  if (debug) cout<<" MyBand::DrawPDFBandRatio: ipdf= "<<ipdf<<endl;
-  if (!gpdfbandratio.at(ipdf)) {
-   cout<<" MyBand::ComputePDFBandRange: gpdfbandratio not found ! "<<endl;
-   return;
-  }
+   if (debug) cout<<" MyBand::DrawPDFBandRatio: ipdf= "<<ipdf<<endl;
 
-  if (debug) { 
-   cout<<" MyBand::ComputePDFBandRange: gpdfbandratio["<<ipdf<<"]: "<<endl;
-   gpdfbandratio.at(ipdf)->Print("");
-  }
+   // Part 1 of 2) draw default lines in case no draw parameters like 'plotmarker' are set 
+   // ensure default ratio data is available
+   if (!gpdfdefaultratio.at(ipdf)) {
+     cout<<" MyBand::DrawPDFBandandRatio: WARNING: gpdfdefaultratio not found ! "<<endl;
+     return;
+   }
+   
+   if (debug) { 
+     cout<<" MyBand::DrawPDFBandandRatio: gpdfdefaultratio["<<ipdf<<"] Data: "<<endl;
+     gpdfdefaultratio.at(ipdf)->Print("");
+   }
+   
+   // always print a default error for each PDF
+   // colors and settings set in 'ComputePDFBandRatio(TGraphAsymmErrors *gref) 
+   gpdfdefaultratio.at(ipdf)->SetMarkerSize(0);
+   gpdfdefaultratio.at(ipdf)->Draw("P1Z,same"); //P1X - turns off error end ticks  
+   
+   
 
-  if (plotmarker) gpdfbandratio.at(ipdf)->Draw("P1 same");
-  else            gpdfbandratio.at(ipdf)->Draw("E2 same");
+   // Part 2 of 2) draw additional data lines based on extra parameters
+   // ensure sure band ratio data was provided
+   if (!gpdfbandratio.at(ipdf)) {
+     cout<<" MyBand::DrawPDFBandandRatio: WARNING: gpdfbandratio not found ! "<<endl;
+     return;
+   }
+   
+   if (debug) { 
+     cout<<" MyBand::DrawPDFBandandRatio: gpdfbandratio["<<ipdf<<"] Data: "<<endl;
+     gpdfbandratio.at(ipdf)->Print("");
+   }
 
-  if (!gpdfdefaultratio.at(ipdf)) {
-   cout<<" MyBand::ComputePDFBandRange: gpdfdefaultratio not found ! "<<endl;
-   return;
-  }
-
-  if (debug) { 
-   cout<<" MyBand::ComputePDFBandRange: gpdfdefaultratio["<<ipdf<<"]: "<<endl;
-   gpdfdefaultratio.at(ipdf)->Print("");
-  }
-
-  gpdfdefaultratio.at(ipdf)->SetMarkerSize(0);
-  gpdfdefaultratio.at(ipdf)->Draw("P1 same");
+   // draw based on user steering flags
+   // include an error band if user steering requests
+   if (plotband) gpdfbandratio.at(ipdf)->Draw("E1Z,same"); //E2-error bars w/ rectangles (E5-for borders)
+   
+   // include a plot marker if user steering requests
+   if (plotmarker) gpdfbandratio.at(ipdf)->Draw("P0Z,same"); // P0-Just a point
  }
-
+ return;
 }
+
 
 void MyBand::DrawPDFBand() 
 {
- if (debug) cout <<" MyBand::DrawPDFBand: gpdfband.size()= " << gpdfband.size()<<endl;
+ if (debug) cout <<" MyBand::DrawPDFBand: gpdfband.size()= " << gpdfband.size()
+		 <<", plotband="<<plotband
+		 <<", plotmarker="<<plotmarker<<endl;
 
+
+ // plot PDF info for overlay
  for (int ipdf = 0; ipdf <  gpdfband.size(); ipdf++) {
+   if (debug) cout<<" MyBand::DrawPDFBand: print gpdfband: ipdf= "<<ipdf<<endl;
 
-  if (debug) {
-   cout<<" MyBand::DrawPDFBand: print gpdfband: ipdf= "<<ipdf<<endl;
-   gpdfband.at(ipdf)->Print();
-  }
+   // Part 1 of 2) draw default lines in case no draw parameters like 'plotmarker' are set 
+   // ensure default ratio data is available
+   if (!gpdfdefault.at(ipdf)) {
+     cout<<" MyBand::DrawPDFBand: WARNING: gpdfdefault not found ! "<<endl;
+     return;
+   }
+   
+   if (debug) { 
+     cout<<" MyBand::DrawPDFBand: gpdfdefault["<<ipdf<<"] Data: "<<endl;
+     gpdfdefault.at(ipdf)->Print("");
+   }
 
-  if (plotband) gpdfband.at(ipdf)->Draw("E2 same");   
-  if (plotmarker) {
-   gpdfband.at(ipdf)->Draw("P0 same");   
-  }
-  if (debug) cout<<" MyBand::DrawPDFBand: gpdfdefault ipdf= "<<ipdf<<endl;
-  gpdfdefault.at(ipdf)->SetMarkerStyle(0);
-  gpdfdefault.at(ipdf)->SetMarkerSize(0.);
+   //always draw default plot info in case extra settings like 'plotband' or 'plotmarker' are not set
+   //set default color to be displayed
+   gpdfdefault.at(ipdf)->SetMarkerSize(0);
+   gpdfdefault.at(ipdf)->SetMarkerStyle(gpdfband.at(ipdf)->GetMarkerStyle()); //TEST
+   gpdfdefault.at(ipdf)->SetMarkerColor(gpdfband.at(ipdf)->GetMarkerColor()); //TEST
+   gpdfdefault.at(ipdf)->SetLineColor(gpdfband.at(ipdf)->GetLineColor()); //TEST
+   gpdfdefault.at(ipdf)->SetLineStyle(gpdfband.at(ipdf)->GetLineStyle()); //TEST
+   gpdfdefault.at(ipdf)->SetFillColor(gpdfband.at(ipdf)->GetFillColor()); //TEST
+   
+   gpdfdefault.at(ipdf)->Draw("PZ,same"); //P1
 
-  if (debug) {
-   cout<<" MyBand::DrawPDFBand: print gpdfdefault: ipdf= "<<ipdf<<endl;
-   gpdfdefault.at(ipdf)->Print();
-  }
 
-  gpdfdefault.at(ipdf)->Draw("P1,same");
 
+   // Part 2 of 2) draw additional data lines based on extra parameters from steering
+   // ensure sure band ratio data was provided
+   if (!gpdfband.at(ipdf)) {
+     cout<<" MyBand::DrawPDFBand: WARNING: gpdfband not found ! "<<endl;
+     return;
+   }
+
+   if (debug) { 
+     cout<<" MyBand::DrawPDFBand: gpdfband["<<ipdf<<"] Data: "<<endl;
+     gpdfband.at(ipdf)->Print("");
+   }
+
+   // draw extra based on settings from user steering flags
+   // include an error band if user steering requests 
+   if (plotband) gpdfband.at(ipdf)->Draw("E2Z,same"); //E2-error bars with rectangles (E5-rectangle borders)
+   
+   // include plot markers if user steering requests
+   if (plotmarker) gpdfband.at(ipdf)->Draw("PZ,same");   
  }
-
+ 
  if (debug) cout << " MyPDFBand::DrawPDFBand finished " <<endl;
+ return;
 }
+
 
 void MyBand::MovePDFPoints(){
 
  if (debug) cout<<" MyBand::MovePDFPoints: npdf= "<<gpdfband.size()<<endl;
 
+ // stagger PDF points, making them more visible
  for (int ipdf = 0; ipdf <gpdfband.size(); ipdf++) {
    if (debug) cout<<" MyBand::MovePDFPoints: ipdf= "<<ipdf<<endl;
    if (!gpdfband.at(ipdf)) {
     cout<<" MyBand::MovePDFPoints: gpdfband not found ! "<<endl;
    }
 
+   //stagger each individual point for each pdf
    for (int i=0; i<gpdfband.at(ipdf)->GetN(); i++){
     double xval, xval1, xval2, yval, yval2;
     gpdfband.at(ipdf)->GetPoint(i  , xval , yval);
@@ -112,9 +163,10 @@ void MyBand::MovePDFPoints(){
     xval2=xval+pow(-1,ipdf)*binw/gpdfband.size();
     gpdfband.at(ipdf)->SetPoint(i, xval2, yval);
    }
-   //}
  }
+ return;
 } 
+
 
 void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref) 
 {
@@ -124,9 +176,11 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
   cout <<" MyBand::ComputePDFBandRatio: gref name: " << gref->GetName()<<endl;
  }
 
+ // compute PDF band ratio for each PDF
  for (int ipdf = 0; ipdf <  gpdfband.size(); ipdf++) {
    if (!gpdfband.at(ipdf)) cout<<" MyBand::ComputePDFBandRatio: gpdfband not found ipdf= "<<ipdf<<endl;
 
+   // set ratio data visual settings for printing later
    TGraphAsymmErrors *gratio=myTGraphErrorsDivide(gpdfband.at(ipdf),gref,2);
    TString rationame=gpdfband.at(ipdf)->GetName();
    rationame+="/";
@@ -147,6 +201,7 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
     gratio->Print();
    }
 
+   // set defaul tratio visual settings for printing later
    TGraphAsymmErrors *gratiodefault=myTGraphErrorsDivide(gpdfdefault.at(ipdf),gref,0);
    TString rationamedefault=gpdfdefault.at(ipdf)->GetName();
    rationame+="/";
@@ -169,6 +224,7 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
  }
 
  if (debug) cout << " MyBand::ComputePDFBandRatio finished " <<endl;
+ return;
 }
 
 
@@ -195,11 +251,11 @@ void MyBand::ComputePDFBandRatioRange(){
  yminratio=Ymin;
  ymaxratio=Ymax;
 
- if (debug) {
-  cout<<" MyBand::ComputePDFBandRatioRange: ymin= "<<yminratio<<" ymax= "<<ymaxratio<<endl;
- }
+ if (debug) cout<<" MyBand::ComputePDFBandRatioRange: ymin= "<<yminratio<<" ymax= "<<ymaxratio<<endl;
+
  return;
 };  
+
 
 TGraphAsymmErrors* MyBand::myTGraphErrorsDivide(TGraphAsymmErrors* g1,TGraphAsymmErrors* g2, Int_t noerr) {
 // Divide two TGraphAsymmErrors: new=g1/g2
@@ -278,11 +334,13 @@ TGraphAsymmErrors* MyBand::myTGraphErrorsDivide(TGraphAsymmErrors* g1,TGraphAsym
                 Double_t el=0.;
                 Double_t eh=0.;
 
+		// 2: set errors from graph 2 to zero
                 if (noerr==2) {
                     dy2l=0.;
                     dy2h=0.;
                 }
 
+		// 3: set errors from graph 1 to zero
                 if (noerr==3) {
                     dy1l=0.;
                     dy1h=0.;

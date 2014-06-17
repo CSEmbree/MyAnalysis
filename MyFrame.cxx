@@ -105,6 +105,7 @@ void MyFrame::DrawFrame(TPad* p){
   Float_t lscaley=(m_symin-m_s0)/(m_symax-m_symin);
   m_subpad1->cd();
 
+
   TH1F *hframe1 = m_subpad1->DrawFrame(m_xmin,m_ymin,m_xmax,m_ymax);
 
   xaxis1 = hframe1->GetXaxis();

@@ -1,0 +1,2496 @@
+
+Applying ATLAS style settings...
+
+ reading steering file claire_steering_1.txt
+ MyCrossSection::ReadSteering: debug turned on  
+ MyCrossSection::ReadSteering: line= plotmarker
+ MyCrossSection::ReadSteering: line= xlegend 0.9
+ MyCrossSection::ReadSteering: xlegend= 0.900000   
+ MyCrossSection::ReadSteering: line= ylegend 0.9
+ MyCrossSection::ReadSteering: ylegend= 0.900000   
+ MyCrossSection::ReadSteering: line= %ratiotitlelabel test
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= % example PDF together
+ MyCrossSection::ReadSteering: line= %pdfdata MyPDF/CT10.txt,MyPDF/HERAPDF15NLO.txt,MyPDF/MSTW2008nlo.txt
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= pdfdata MyPDF/CT10.txt,MyPDF/NNPDF23nlo.txt,MyPDF/HERAPDF15NLO.txt,MyPDF/MSTW2008nlo.txt
+text: pdfdataname: MyPDF/CT10.txt,MyPDF/NNPDF23nlo.txt,MyPDF/HERAPDF15NLO.txt,MyPDF/MSTW2008nlo.txt
+ MyCrossSection::ParseString: Start parsing data: 'MyPDF/CT10.txt,MyPDF/NNPDF23nlo.txt,MyPDF/HERAPDF15NLO.txt,MyPDF/MSTW2008nlo.txt'; Delimeterized by: ,
+ MyCrossSection::ParseString: found: MyPDF/CT10.txt
+ MyCrossSection::ParseString: found: MyPDF/NNPDF23nlo.txt
+ MyCrossSection::ParseString: found: MyPDF/HERAPDF15NLO.txt
+ MyCrossSection::ParseString: found: MyPDF/MSTW2008nlo.txt
+ MyCrossSection::ParseString: End found 4 parts.
+ MyCrossSection::ReadSteering: found this many pdfs: 4
+ MyCrossSection::ReadSteering: pdfsteering for grid: MyPDF/CT10.txt,MyPDF/NNPDF23nlo.txt,MyPDF/HERAPDF15NLO.txt,MyPDF/MSTW2008nlo.txt'
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= % single pdf:
+ MyCrossSection::ReadSteering: line= %pdfdata MyPDF/CT10.txt
+ MyCrossSection::ReadSteering: line= %pdfdata MyPDF/NNPDF23nlo.txt
+ MyCrossSection::ReadSteering: line= %pdfdata MyPDF/MSTW2008nlo.txt
+ MyCrossSection::ReadSteering: line= %pdfdata MyPDF/HERAPDF15NLO.txt
+ MyCrossSection::ReadSteering: line= %pdfdata MyPDF/ATLASepWZNLO.txt
+ MyCrossSection::ReadSteering: line= %pdfdata MyPDF/ATLAS3jet.txt
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= % need always dataname, gridname, markerstyle, markercolor one after the other
+ MyCrossSection::ReadSteering: line= dataname MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::ReadSteering: dataname MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::ReadSteering: line= gridname MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::ReadSteering: gridname MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::ReadSteering: igrid= 0 MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::ReadSteering: line= markerstyle 20
+ MyCrossSection::ReadSteering: line= markercolor 1
+ MyCrossSection::ReadSteering: line= vardesc atlas_mtt_5fb
+ MyCrossSection::ReadSteering: vardesc atlas_mtt_5fb
+ MyCrossSection::ReadSteering: line= frameid 0 
+ MyCrossSection::ReadSteering: frameid 0 igrid= 0 frameid= 0
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= dataname MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt
+ MyCrossSection::ReadSteering: dataname MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt
+ MyCrossSection::ReadSteering: line= gridname MyGrids/top/mcfm/grid--TTbar_ptatlas.root
+ MyCrossSection::ReadSteering: gridname MyGrids/top/mcfm/grid--TTbar_ptatlas.root
+ MyCrossSection::ReadSteering: igrid= 1 MyGrids/top/mcfm/grid--TTbar_ptatlas.root
+ MyCrossSection::ReadSteering: line= markerstyle 20
+ MyCrossSection::ReadSteering: line= markercolor 1
+ MyCrossSection::ReadSteering: line= vardesc atlas_ptt_5fb
+ MyCrossSection::ReadSteering: vardesc atlas_ptt_5fb
+ MyCrossSection::ReadSteering: line= frameid 1
+ MyCrossSection::ReadSteering: frameid 1 igrid= 1 frameid= 1
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= %dataname MyData/datanew/atlas2012_5fb_top_pttt_ljet.txt
+ MyCrossSection::ReadSteering: line= %gridname MyGrids/top/mcfm/grid--TTbar_ptttatlas5fb.root
+ MyCrossSection::ReadSteering: line= %markerstyle 20
+ MyCrossSection::ReadSteering: line= %markercolor 1
+ MyCrossSection::ReadSteering: line= %vardesc atlas_pttt_5fb
+ MyCrossSection::ReadSteering: line= %frameid 2
+ MyCrossSection::ReadSteering: line= %%
+ MyCrossSection::ReadSteering: line= %%
+ MyCrossSection::ReadSteering: line= % 
+ MyCrossSection::ReadSteering: line= %dataname MyData/datanew/atlas2012_5fb_top_ytt_ljet.txt
+ MyCrossSection::ReadSteering: line= %gridname MyGrids/top/mcfm/grid--TTbar_yttatlas.root
+ MyCrossSection::ReadSteering: line= %markerstyle 20
+ MyCrossSection::ReadSteering: line= %markercolor 1
+ MyCrossSection::ReadSteering: line= %vardesc atlas_ytt_5fb
+ MyCrossSection::ReadSteering: line= %frameid 3
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= % PDFErrorBand, AlphaS, RenormalizationScale, FactorizationScale
+ MyCrossSection::ReadSteering: line= %AlphaS
+ MyCrossSection::ReadSteering: line= %PDFErrorBand
+ MyCrossSection::ReadSteering: line= %RenormalizationScale
+ MyCrossSection::ReadSteering: line= %FactorizationScale
+ MyCrossSection::ReadSteering: line= %Mtop:grids1-sqrts7000-topmass171.5-scale171.5:grids1-sqrts7000-topmass173.5-scale173.5
+ MyCrossSection::ReadSteering: line= %Ebeam:grids1-sqrts6860-topmass172.5-scale172.5:grids1-sqrts7140-topmass172.5-scale172.5
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= % How should the error band be defined? 
+ MyCrossSection::ReadSteering: line= % Choose *either* "OneSigma" or "90Percent"
+ MyCrossSection::ReadSteering: line= %OneSigma
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= 
+ MyCrossSection finished reading name= claire_steering_1.txt
+ MyCrossSection::Initialize()
+ MyCrossSection::Initialize: Number of grids to produce 2
+ MyCrossSection::Initialize: Plotmaker ON move points 
+ MyBand::MovePDFPoints: npdf= 0
+ MyCrossSection::Initialize: Data MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::Initialize: dataname= MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt datadir= .
+ MyData::ReadData read file fname= ./MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyData::ReadData: Syst uncertainties with +/- values 
+ MyData::ReadData: use unit matrix as correlation matrix 
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normalise to total cross section 
+ MyCrossSection::Initialize: Data is divided by binwidth 
+ MyCrossSection::Initialize: Number of PDF names pdfdata.size()= 4
+ MyCrossSection::Initialize: npdf= 4
+ MyCrossSection::Initialize: load pdf= MyPDF/CT10.txt
+ MyPDF: LHAPATH environment variable not set, using default: PDFsets
+appl::grid() reading grid from file ./MyGrids/top/mcfm/grid--TTbar_mttatlas.root	version version-3.0(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 671.049 ms	trim in 0.077 ms
+ MyPDF::Initialize: init PDF set called: PDFsets/CT10.LHgrid
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ CT10                                                            
+ H.-L.Lai, M.Guzzi, J. Huston, Z.Li,                             
+ P.M.Nadolsky, J.Pumplin and C.-P.Yuan.                          
+ Reference: arXiv:1007.2241                                      
+ PDF fits using the standard CTEQ PDF evolution                  
+ but using the HOPPIT alphas_s running solution.                 
+ Excluding the D0 Run-II W asymmetry data.                       
+ This set has 52 member PDFs.                                    
+     mem=0 --> central value                                     
+     mem=1-52 --> eigenvector sets                               
+ >>>>>>                   <<<<<<
+
+ MyCrossSection::Initialize: print pdf= 0 name= MyPDF/CT10.txt for grid: ./MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::Initialize: ipdf= 0 CT10
+x[0]=350, y[0]=382.866, exl[0]=100, exh[0]=100, eyl[0]=12.1914, eyh[0]=12.1914
+x[1]=500, y[1]=431.663, exl[1]=50, exh[1]=50, eyl[1]=18.4351, eyh[1]=18.4351
+x[2]=625, y[2]=164.578, exl[2]=75, exh[2]=75, eyl[2]=9.13569, eyh[2]=9.13569
+x[3]=825, y[3]=40.2955, exl[3]=125, exh[3]=125, eyl[3]=3.04196, eyh[3]=3.04196
+x[4]=1825, y[4]=1.4262, exl[4]=875, exh[4]=875, eyl[4]=0.168533, eyh[4]=0.168533
+ MyCrossSection::Initialize: npoint= 5
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normtot on 
+ MyCrossSection::Initialize: divbinwidth 
+ MyCrossSection::Initialize: fill Band gtmp
+x[0]=350, y[0]=2.42295, exl[0]=100, exh[0]=100, eyl[0]=0.0771527, eyh[0]=0.0771527
+x[1]=500, y[1]=2.73176, exl[1]=50, exh[1]=50, eyl[1]=0.116666, eyh[1]=0.116666
+x[2]=625, y[2]=1.04152, exl[2]=75, exh[2]=75, eyl[2]=0.0578147, eyh[2]=0.0578147
+x[3]=825, y[3]=0.255008, exl[3]=125, exh[3]=125, eyl[3]=0.0192508, eyh[3]=0.0192508
+x[4]=1825, y[4]=0.00902563, exl[4]=875, exh[4]=875, eyl[4]=0.00106655, eyh[4]=0.00106655
+ MyBand::SetPdfBand: gpdfband.size()= 1
+ MyCrossSection::Initialize: print default histogram ipdf= 0
+TH1.Print Name  = CT10_default_set= 0, Entries= 20027609, Total sum= 1020.83
+ fSumw[0]=0, x=5, error=0
+ fSumw[1]=382.866, x=350, error=0
+ fSumw[2]=431.663, x=500, error=0
+ fSumw[3]=164.578, x=625, error=0
+ fSumw[4]=40.2955, x=825, error=0
+ fSumw[5]=1.4262, x=1825, error=0
+ fSumw[6]=7.13566e+06, x=2945, error=2671.27
+ MyBand::SetPdfDefault:  name= CT10_default
+x[0]=350, y[0]=2.42295, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.73176, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.04152, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.255008, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00902563, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyCrossSection::Initialize: print normalised default ipdf= 0
+x[0]=350, y[0]=2.42295, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.73176, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.04152, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.255008, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00902563, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyCrossSection::Initialize: do alphas not set in MyPDF 
+ MyCrossSection::Initialize: load pdf= MyPDF/NNPDF23nlo.txt
+ MyPDF: LHAPATH environment variable not set, using default: PDFsets
+appl::grid() reading grid from file ./MyGrids/top/mcfm/grid--TTbar_mttatlas.root	version version-3.0(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 455.981 ms	trim in 0.376 ms
+ MyPDF::Initialize: init PDF set called: PDFsets/NNPDF23_nlo_as_0118.LHgrid
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ NNPDF23_nlo_as_0118.LHgrid                                      
+ Reference: arXiv:1207.1303                                      
+ Fit: NLO global fit, alphas(MZ)=0.118                           
+ NNPDF Collaboration: R.D. Ball, V. Bertone,                     
+ S. Carrazza,  C.S. Deans, L. Del Debbio,                        
+ S. Forte, A. Guffanti, N.P. Hartland,                           
+ J.I. Latorre, J. Rojo and M. Ubiali                             
+ This set has          100  member PDF                           
+ mem=0 --> average on replicas.                                  
+ Evolution: pol. interpolation on the LH grid.                   
+ >>>>>>                   <<<<<<
+
+ MyCrossSection::Initialize: print pdf= 1 name= MyPDF/NNPDF23nlo.txt for grid: ./MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::Initialize: ipdf= 1 NNPDF23nlo
+x[0]=350, y[0]=407.932, exl[0]=100, exh[0]=100, eyl[0]=9.62002, eyh[0]=9.62002
+x[1]=500, y[1]=458.341, exl[1]=50, exh[1]=50, eyl[1]=13.9863, eyh[1]=13.9863
+x[2]=625, y[2]=172.792, exl[2]=75, exh[2]=75, eyl[2]=6.67028, eyh[2]=6.67028
+x[3]=825, y[3]=41.205, exl[3]=125, exh[3]=125, eyl[3]=2.10856, eyh[3]=2.10856
+x[4]=1825, y[4]=1.35969, exl[4]=875, exh[4]=875, eyl[4]=0.10486, eyh[4]=0.10486
+ MyCrossSection::Initialize: npoint= 5
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normtot on 
+ MyCrossSection::Initialize: divbinwidth 
+ MyCrossSection::Initialize: fill Band gtmp
+x[0]=350, y[0]=2.44122, exl[0]=100, exh[0]=100, eyl[0]=0.0575699, eyh[0]=0.0575699
+x[1]=500, y[1]=2.74288, exl[1]=50, exh[1]=50, eyl[1]=0.0836994, eyh[1]=0.0836994
+x[2]=625, y[2]=1.03405, exl[2]=75, exh[2]=75, eyl[2]=0.0399175, eyh[2]=0.0399175
+x[3]=825, y[3]=0.246586, exl[3]=125, exh[3]=125, eyl[3]=0.0126184, eyh[3]=0.0126184
+x[4]=1825, y[4]=0.00813689, exl[4]=875, exh[4]=875, eyl[4]=0.000627519, eyh[4]=0.000627519
+ MyBand::SetPdfBand: gpdfband.size()= 2
+ MyCrossSection::Initialize: print default histogram ipdf= 1
+TH1.Print Name  = NNPDF23nlo_default_set= 0, Entries= 20027614, Total sum= 1081.63
+ fSumw[0]=0, x=5, error=0
+ fSumw[1]=407.932, x=350, error=0
+ fSumw[2]=458.341, x=500, error=0
+ fSumw[3]=172.792, x=625, error=0
+ fSumw[4]=41.205, x=825, error=0
+ fSumw[5]=1.35969, x=1825, error=0
+ fSumw[6]=7.13566e+06, x=2945, error=2671.27
+ MyBand::SetPdfDefault:  name= NNPDF23nlo_default
+x[0]=350, y[0]=2.44122, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.74288, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.03405, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.246586, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00813689, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyCrossSection::Initialize: print normalised default ipdf= 1
+x[0]=350, y[0]=2.44122, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.74288, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.03405, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.246586, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00813689, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyCrossSection::Initialize: do alphas not set in MyPDF 
+ MyCrossSection::Initialize: load pdf= MyPDF/HERAPDF15NLO.txt
+ MyPDF: LHAPATH environment variable not set, using default: PDFsets
+appl::grid() reading grid from file ./MyGrids/top/mcfm/grid--TTbar_mttatlas.root	version version-3.0(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 462.325 ms	trim in 0.363 ms
+ MyPDF::Initialize: init PDF set called: PDFsets/HERAPDF15NLO_EIG.LHgrid
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ HERAPDF15 fit: NLO                                              
+ This set has 21 member PDFs for experimental uncertainties      
+ The 20 error PDFs should be treated two by two as the up and    
+ down excursions down 10 eigenvectors, such that the symmetric   
+ error is calculated as the quadrature sum of:                   
+ [Sigma i=1,10 of (var i+1- var i)/2 ],                          
+ Or if asymmetric errors are desired according to Eqn 43 of      
+ Campbell, Huston and Stirling hep-ph/0611148                    
+ member 0 - central                                              
+ member 1-20 - error pdfs                                        
+ >>>>>>                   <<<<<<
+
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ HERAPDF1.5NLO variations of fit parameters h1-zeus preliminary  
+ The first 8 variations are considered as model errors and       
+ should be treated one by one, by taking the difference between  
+ the variation and the central value, and then adding in         
+ quadrature all positive (negative) differences to obtain the    
+ positive (negative) model error. Variations 9 to 12 are the     
+ maximal parmetrisation variations; the largest positive         
+ (negative) difference between the variation and the central     
+ value is taken as the positive (negative) parametrisation error 
+ and added in quadrature to the model errors to form the         
+ parametrisation envelope.                                       
+ 0 - central                                                     
+ fs=0.31,fc=0.0,mb=4.75,mc=1.40,q20=1.9,q2min=1.9,a_s(MZ)=0.1176 
+ 1 - fs=23      2 fs=38             7 - q2cut25       8 - q2cut5 
+ 5 - mc135 (Q0 1.8)      6 - mc165            3 - mb43          4
+ 9 - par1(Q0 1.5 neg glu)        10 - par2 (Q0 2.5, mc 1.6)      
+ 11 - par3(EuvDuv)        12 - par4 (EuvDubar)                   
+ >>>>>>                   <<<<<<
+
+ MyCrossSection::Initialize: print pdf= 2 name= MyPDF/HERAPDF15NLO.txt for grid: ./MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::Initialize: ipdf= 2 HERAPDF15NLO
+x[0]=350, y[0]=362.107, exl[0]=100, exh[0]=100, eyl[0]=22.668, eyh[0]=10.1958
+x[1]=500, y[1]=394.275, exl[1]=50, exh[1]=50, eyl[1]=28.6733, eyh[1]=14.1531
+x[2]=625, y[2]=144.164, exl[2]=75, exh[2]=75, eyl[2]=11.0738, eyh[2]=6.18964
+x[3]=825, y[3]=33.0486, exl[3]=125, exh[3]=125, eyl[3]=2.43291, eyh[3]=1.67485
+x[4]=1825, y[4]=1.03294, exl[4]=875, exh[4]=875, eyl[4]=0.0538264, eyh[4]=0.057922
+ MyCrossSection::Initialize: npoint= 5
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normtot on 
+ MyCrossSection::Initialize: divbinwidth 
+ MyCrossSection::Initialize: fill Band gtmp
+x[0]=350, y[0]=2.50631, exl[0]=100, exh[0]=100, eyl[0]=0.156896, eyh[0]=0.0705701
+x[1]=500, y[1]=2.72896, exl[1]=50, exh[1]=50, eyl[1]=0.198461, eyh[1]=0.0979604
+x[2]=625, y[2]=0.997829, exl[2]=75, exh[2]=75, eyl[2]=0.0766468, eyh[2]=0.0428414
+x[3]=825, y[3]=0.228745, exl[3]=125, exh[3]=125, eyl[3]=0.0168393, eyh[3]=0.0115925
+x[4]=1825, y[4]=0.00714944, exl[4]=875, exh[4]=875, eyl[4]=0.000372558, eyh[4]=0.000400905
+ MyBand::SetPdfBand: gpdfband.size()= 3
+ MyCrossSection::Initialize: print default histogram ipdf= 2
+TH1.Print Name  = HERAPDF15NLO_default_set= 0, Entries= 20027609, Total sum= 934.628
+ fSumw[0]=0, x=5, error=0
+ fSumw[1]=362.107, x=350, error=0
+ fSumw[2]=394.275, x=500, error=0
+ fSumw[3]=144.164, x=625, error=0
+ fSumw[4]=33.0486, x=825, error=0
+ fSumw[5]=1.03294, x=1825, error=0
+ fSumw[6]=7.13566e+06, x=2945, error=2671.27
+ MyBand::SetPdfDefault:  name= HERAPDF15NLO_default
+x[0]=350, y[0]=2.50631, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.72896, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=0.997829, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.228745, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00714944, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyCrossSection::Initialize: print normalised default ipdf= 2
+x[0]=350, y[0]=2.50631, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.72896, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=0.997829, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.228745, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00714944, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyCrossSection::Initialize: do alphas not set in MyPDF 
+ MyCrossSection::Initialize: load pdf= MyPDF/MSTW2008nlo.txt
+ MyPDF: LHAPATH environment variable not set, using default: PDFsets
+appl::grid() reading grid from file ./MyGrids/top/mcfm/grid--TTbar_mttatlas.root	version version-3.0(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 465.38 ms	trim in 0.358 ms
+ MyPDF::Initialize: init PDF set called: PDFsets/MSTW2008nlo68cl.LHgrid
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ MSTW 2008 NLO (68% C.L.)                                        
+ Reference:                                                      
+  A.D. Martin, W.J. Stirling, R.S. Thorne and G. Watt            
+  "Parton distributions for the LHC"                             
+  arXiv:0901.0002 [hep-ph]                                       
+  http://projects.hepforge.org/mstwpdf/                          
+ This set has 41 member PDFs.                                    
+  mem=0 --> central value                                        
+  mem=1-40 --> 20 eigenvector sets (+/- directions)              
+  See Section 6 of paper for error calculation.                  
+ >>>>>>                   <<<<<<
+
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ MSTW 2008 NLO (68% C.L.): fix alpha_S at -68% C.L. limit.       
+ Reference:                                                      
+  A.D. Martin, W.J. Stirling, R.S. Thorne and G. Watt            
+  "Uncertainties on alpha_S in global PDF analysis"              
+  arXiv:0905.3531 [hep-ph]                                       
+  http://projects.hepforge.org/mstwpdf/                          
+ This set has 41 member PDFs.                                    
+  mem=0 --> central value                                        
+  mem=1-40 --> 20 eigenvector sets (+/- directions)              
+  See paper for error calculation: alpha_S(M_Z) = 0.11867        
+ >>>>>>                   <<<<<<
+
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ MSTW 2008 NLO (68% C.L.): fix alpha_S at +68% C.L. limit.       
+ Reference:                                                      
+  A.D. Martin, W.J. Stirling, R.S. Thorne and G. Watt            
+  "Uncertainties on alpha_S in global PDF analysis"              
+  arXiv:0905.3531 [hep-ph]                                       
+  http://projects.hepforge.org/mstwpdf/                          
+ This set has 41 member PDFs.                                    
+  mem=0 --> central value                                        
+  mem=1-40 --> 20 eigenvector sets (+/- directions)              
+  See paper for error calculation: alpha_S(M_Z) = 0.12140        
+ >>>>>>                   <<<<<<
+
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ MSTW 2008 NLO (68% C.L.)                                        
+ Reference:                                                      
+  A.D. Martin, W.J. Stirling, R.S. Thorne and G. Watt            
+  "Parton distributions for the LHC"                             
+  arXiv:0901.0002 [hep-ph]                                       
+  http://projects.hepforge.org/mstwpdf/                          
+ This set has 41 member PDFs.                                    
+  mem=0 --> central value                                        
+  mem=1-40 --> 20 eigenvector sets (+/- directions)              
+  See Section 6 of paper for error calculation.                  
+ >>>>>>                   <<<<<<
+
+ MyCrossSection::Initialize: print pdf= 3 name= MyPDF/MSTW2008nlo.txt for grid: ./MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::Initialize: ipdf= 3 MSTW2008nlo
+x[0]=350, y[0]=407.907, exl[0]=100, exh[0]=100, eyl[0]=6.38619, eyh[0]=5.17355
+x[1]=500, y[1]=459.942, exl[1]=50, exh[1]=50, eyl[1]=9.61119, eyh[1]=7.65464
+x[2]=625, y[2]=174.976, exl[2]=75, exh[2]=75, eyl[2]=4.58058, eyh[2]=3.70139
+x[3]=825, y[3]=42.5356, exl[3]=125, exh[3]=125, eyl[3]=1.42722, eyh[3]=1.20435
+x[4]=1825, y[4]=1.46877, exl[4]=875, exh[4]=875, eyl[4]=0.0698677, eyh[4]=0.0630758
+ MyCrossSection::Initialize: npoint= 5
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normtot on 
+ MyCrossSection::Initialize: divbinwidth 
+ MyCrossSection::Initialize: fill Band gtmp
+x[0]=350, y[0]=2.42638, exl[0]=100, exh[0]=100, eyl[0]=0.0379875, eyh[0]=0.0307742
+x[1]=500, y[1]=2.73591, exl[1]=50, exh[1]=50, eyl[1]=0.057171, eyh[1]=0.0455327
+x[2]=625, y[2]=1.04082, exl[2]=75, exh[2]=75, eyl[2]=0.027247, eyh[2]=0.0220173
+x[3]=825, y[3]=0.253018, exl[3]=125, exh[3]=125, eyl[3]=0.00848962, eyh[3]=0.0071639
+x[4]=1825, y[4]=0.00873678, exl[4]=875, exh[4]=875, eyl[4]=0.0004156, eyh[4]=0.000375198
+ MyBand::SetPdfBand: gpdfband.size()= 4
+ MyCrossSection::Initialize: print default histogram ipdf= 3
+TH1.Print Name  = MSTW2008nlo_default_set= 0, Entries= 20027609, Total sum= 1086.83
+ fSumw[0]=0, x=5, error=0
+ fSumw[1]=407.907, x=350, error=0
+ fSumw[2]=459.942, x=500, error=0
+ fSumw[3]=174.976, x=625, error=0
+ fSumw[4]=42.5356, x=825, error=0
+ fSumw[5]=1.46877, x=1825, error=0
+ fSumw[6]=7.13566e+06, x=2945, error=2671.27
+ MyBand::SetPdfDefault:  name= MSTW2008nlo_default
+x[0]=350, y[0]=2.42638, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.73591, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.04082, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.253018, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00873678, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyCrossSection::Initialize: print normalised default ipdf= 3
+x[0]=350, y[0]=2.42638, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.73591, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.04082, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.253018, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00873678, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyCrossSection::Initialize: DoAlphaS 
+ MyCrossSection::Initialize number of ren scale= 0
+ MyCrossSection::Initialize number of fac scale= 0
+ MyCrossSection::Initialize: get correlation matrix igrid= 0
+ MyCrossSection::Initialize: mcorr done 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+
+ MyCrossSection::Initialize: printed 
+ MyCrossSection::Initialize: npdf= 4
+ MyCrossSection::Initialize: before CalcChi2 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+
+ MyCrossSection::CalcChi2:         
+ MyCrossSection::CalcChi2: theory uncertainty matrix done 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |   0.005953           0           0           0           0 
+   1 |          0     0.01361           0           0           0 
+   2 |          0           0    0.003343           0           0 
+   3 |          0           0           0   0.0003706           0 
+   4 |          0           0           0           0   1.138e-06 
+
+ MyCrossSection::CalcChi2: At Start, dump contents of data cov matrix: 
+ 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+
+
+
+ MyCrossSection::CalcChi2: After adding theory, dump contents of cov matrix: 
+ 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9941          -0          -0          -0          -0 
+   1 |          0      0.9866          -0          -0          -0 
+   2 |          0           0      0.9967          -0          -0 
+   3 |          0           0           0      0.9996          -0 
+   4 |          0           0           0           0           1 
+
+
+
+ MyCrossSection::CalcChi2: After inversion, dump contents of cov matrix: 
+
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9941          -0          -0          -0          -0 
+   1 |          0      0.9866          -0          -0          -0 
+   2 |          0           0      0.9967          -0          -0 
+   3 |          0           0           0      0.9996          -0 
+   4 |          0           0           0           0           1 
+
+
+ MyCrossSection::CalcChi2: After first multiplication matrix is: 
+
+
+5x1 matrix is as follows
+
+     |      0    |
+------------------
+   0 |    0.09648 
+   1 |    0.02786 
+   2 |   -0.03141 
+   3 |     -0.025 
+   4 |  -0.001926 
+
+ MyCrossSection::CalcChi2: End chi2 = 0.0117696
+ MyCrossSection::Initialize: igrid= 0 ipdf= 0 chi2= 0.0117696
+ MyCrossSection::CalcChi2:         
+ MyCrossSection::CalcChi2: theory uncertainty matrix done 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |   0.003314           0           0           0           0 
+   1 |          0    0.007006           0           0           0 
+   2 |          0           0    0.001593           0           0 
+   3 |          0           0           0   0.0001592           0 
+   4 |          0           0           0           0   3.938e-07 
+
+ MyCrossSection::CalcChi2: At Start, dump contents of data cov matrix: 
+ 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+
+
+
+ MyCrossSection::CalcChi2: After adding theory, dump contents of cov matrix: 
+ 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9967          -0          -0          -0          -0 
+   1 |          0       0.993          -0          -0          -0 
+   2 |          0           0      0.9984          -0          -0 
+   3 |          0           0           0      0.9998          -0 
+   4 |          0           0           0           0           1 
+
+
+
+ MyCrossSection::CalcChi2: After inversion, dump contents of cov matrix: 
+
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9967          -0          -0          -0          -0 
+   1 |          0       0.993          -0          -0          -0 
+   2 |          0           0      0.9984          -0          -0 
+   3 |          0           0           0      0.9998          -0 
+   4 |          0           0           0           0           1 
+
+
+ MyCrossSection::CalcChi2: After first multiplication matrix is: 
+
+
+5x1 matrix is as follows
+
+     |      0    |
+------------------
+   0 |    0.07852 
+   1 |      0.017 
+   2 |   -0.02402 
+   3 |   -0.01658 
+   4 |  -0.001037 
+
+ MyCrossSection::CalcChi2: End chi2 = 0.0073303
+ MyCrossSection::Initialize: igrid= 0 ipdf= 1 chi2= 0.0073303
+ MyCrossSection::CalcChi2:         
+ MyCrossSection::CalcChi2: theory uncertainty matrix done 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |    0.01294           0           0           0           0 
+   1 |          0     0.02197           0           0           0 
+   2 |          0           0    0.003569           0           0 
+   3 |          0           0           0   0.0002021           0 
+   4 |          0           0           0           0   1.496e-07 
+
+ MyCrossSection::CalcChi2: At Start, dump contents of data cov matrix: 
+ 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+
+
+
+ MyCrossSection::CalcChi2: After adding theory, dump contents of cov matrix: 
+ 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9872          -0          -0          -0          -0 
+   1 |          0      0.9785          -0          -0          -0 
+   2 |          0           0      0.9964          -0          -0 
+   3 |          0           0           0      0.9998          -0 
+   4 |          0           0           0           0           1 
+
+
+
+ MyCrossSection::CalcChi2: After inversion, dump contents of cov matrix: 
+
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9872          -0          -0          -0          -0 
+   1 |          0      0.9785          -0          -0          -0 
+   2 |          0           0      0.9964          -0          -0 
+   3 |          0           0           0      0.9998          -0 
+   4 |          0           0           0           0           1 
+
+
+ MyCrossSection::CalcChi2: After first multiplication matrix is: 
+
+
+5x1 matrix is as follows
+
+     |      0    |
+------------------
+   0 |    0.01351 
+   1 |    0.03037 
+   2 |    0.01213 
+   3 |   0.001255 
+   4 | -4.944e-05 
+
+ MyCrossSection::CalcChi2: End chi2 = 0.00127673
+ MyCrossSection::Initialize: igrid= 0 ipdf= 2 chi2= 0.00127673
+ MyCrossSection::CalcChi2:         
+ MyCrossSection::CalcChi2: theory uncertainty matrix done 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |   0.001182           0           0           0           0 
+   1 |          0    0.002637           0           0           0 
+   2 |          0           0   0.0006067           0           0 
+   3 |          0           0           0   6.126e-05           0 
+   4 |          0           0           0           0   1.563e-07 
+
+ MyCrossSection::CalcChi2: At Start, dump contents of data cov matrix: 
+ 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+
+
+
+ MyCrossSection::CalcChi2: After adding theory, dump contents of cov matrix: 
+ 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9988          -0          -0          -0          -0 
+   1 |          0      0.9974          -0          -0          -0 
+   2 |          0           0      0.9994          -0          -0 
+   3 |          0           0           0      0.9999          -0 
+   4 |          0           0           0           0           1 
+
+
+
+ MyCrossSection::CalcChi2: After inversion, dump contents of cov matrix: 
+
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9988          -0          -0          -0          -0 
+   1 |          0      0.9974          -0          -0          -0 
+   2 |          0           0      0.9994          -0          -0 
+   3 |          0           0           0      0.9999          -0 
+   4 |          0           0           0           0           1 
+
+
+ MyCrossSection::CalcChi2: After first multiplication matrix is: 
+
+
+5x1 matrix is as follows
+
+     |      0    |
+------------------
+   0 |    0.09351 
+   1 |    0.02403 
+   2 |    -0.0308 
+   3 |   -0.02302 
+   4 |  -0.001637 
+
+ MyCrossSection::CalcChi2: End chi2 = 0.0108144
+ MyCrossSection::Initialize: igrid= 0 ipdf= 3 chi2= 0.0108144
+ MyCrossSection::Initialize: finished chi2 calculation 
+ MyBand::ComputePDFBandRatio: gpdfband.size()= 4
+ MyBand::ComputePDFBandRatio: gref name: MyData/datanew/atlas2012_5fb_top_mtt_ljet
+**myTGraphErrorsDivide:: 0 0 dy1=0.031842 0.031842 dy2=0.032280 0.032280 sqrt= 0.045343 0.045343 
+dx1h=100.000000  dx1l=100.000000  el=0.030616  eh=0.030616 
+**myTGraphErrorsDivide:: 1 1 dy1=0.042707 0.042707 dy2=0.030083 0.030083 sqrt= 0.052239 0.052239 
+dx1h=50.000000  dx1l=50.000000  el=0.042270  eh=0.042270 
+**myTGraphErrorsDivide:: 2 2 dy1=0.055510 0.055510 dy2=0.044944 0.044944 sqrt= 0.071424 0.071424 
+dx1h=75.000000  dx1l=75.000000  el=0.057242  eh=0.057242 
+**myTGraphErrorsDivide:: 3 3 dy1=0.075491 0.075491 dy2=0.068542 0.068542 sqrt= 0.101965 0.101965 
+dx1h=125.000000  dx1l=125.000000  el=0.083699  eh=0.083699 
+**myTGraphErrorsDivide:: 4 4 dy1=0.118169 0.118169 dy2=0.094810 0.094810 sqrt= 0.151503 0.151503 
+dx1h=875.000000  dx1l=875.000000  el=0.150219  eh=0.150219 
+ MyBand::ComputePDFBandRatio: rationame= CT10_pdfband/MyData/datanew/atlas2012_5fb_top_mtt_ljet
+ MyBand::ComputePDFBandRatio: gratio: 
+x[0]=350, y[0]=0.961487, exl[0]=100, exh[0]=100, eyl[0]=0.0306161, eyh[0]=0.0306161
+x[1]=500, y[1]=0.989767, exl[1]=50, exh[1]=50, eyl[1]=0.0422702, eyh[1]=0.0422702
+x[2]=625, y[2]=1.03121, exl[2]=75, exh[2]=75, eyl[2]=0.0572423, eyh[2]=0.0572423
+x[3]=825, y[3]=1.10873, exl[3]=125, exh[3]=125, eyl[3]=0.0836993, eyh[3]=0.0836993
+x[4]=1825, y[4]=1.27122, exl[4]=875, exh[4]=875, eyl[4]=0.150219, eyh[4]=0.150219
+**myTGraphErrorsDivide:: 0 0 dy1=0.000000 0.000000 dy2=0.032280 0.032280 sqrt= 0.032280 0.032280 
+dx1h=100.000000  dx1l=100.000000  el=0.031037  eh=0.031037 
+**myTGraphErrorsDivide:: 1 1 dy1=0.000000 0.000000 dy2=0.030083 0.030083 sqrt= 0.030083 0.030083 
+dx1h=50.000000  dx1l=50.000000  el=0.029775  eh=0.029775 
+**myTGraphErrorsDivide:: 2 2 dy1=0.000000 0.000000 dy2=0.044944 0.044944 sqrt= 0.044944 0.044944 
+dx1h=75.000000  dx1l=75.000000  el=0.046347  eh=0.046347 
+**myTGraphErrorsDivide:: 3 3 dy1=0.000000 0.000000 dy2=0.068542 0.068542 sqrt= 0.068542 0.068542 
+dx1h=125.000000  dx1l=125.000000  el=0.075994  eh=0.075994 
+**myTGraphErrorsDivide:: 4 4 dy1=0.000000 0.000000 dy2=0.094810 0.094810 sqrt= 0.094810 0.094810 
+dx1h=875.000000  dx1l=875.000000  el=0.120524  eh=0.120524 
+ MyBand::ComputePDFBandRatio: rationamedefault= CT10_default
+ MyBand::ComputePDFBandRatio: gratiodefault: 
+x[0]=350, y[0]=0.961487, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=0.989767, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.03121, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=1.10873, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=1.27122, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+**myTGraphErrorsDivide:: 0 0 dy1=0.023582 0.023582 dy2=0.032280 0.032280 sqrt= 0.039977 0.039977 
+dx1h=100.000000  dx1l=100.000000  el=0.022845  eh=0.022845 
+**myTGraphErrorsDivide:: 1 1 dy1=0.030515 0.030515 dy2=0.030083 0.030083 sqrt= 0.042851 0.042851 
+dx1h=50.000000  dx1l=50.000000  el=0.030326  eh=0.030326 
+**myTGraphErrorsDivide:: 2 2 dy1=0.038603 0.038603 dy2=0.044944 0.044944 sqrt= 0.059247 0.059247 
+dx1h=75.000000  dx1l=75.000000  el=0.039522  eh=0.039522 
+**myTGraphErrorsDivide:: 3 3 dy1=0.051173 0.051173 dy2=0.068542 0.068542 sqrt= 0.085537 0.085537 
+dx1h=125.000000  dx1l=125.000000  el=0.054863  eh=0.054863 
+**myTGraphErrorsDivide:: 4 4 dy1=0.077120 0.077120 dy2=0.094810 0.094810 sqrt= 0.122215 0.122215 
+dx1h=875.000000  dx1l=875.000000  el=0.088383  eh=0.088383 
+ MyBand::ComputePDFBandRatio: rationame= NNPDF23nlo_pdfband/MyData/datanew/atlas2012_5fb_top_mtt_ljet
+ MyBand::ComputePDFBandRatio: gratio: 
+x[0]=350, y[0]=0.968739, exl[0]=100, exh[0]=100, eyl[0]=0.0228452, eyh[0]=0.0228452
+x[1]=500, y[1]=0.993799, exl[1]=50, exh[1]=50, eyl[1]=0.0303259, eyh[1]=0.0303259
+x[2]=625, y[2]=1.02382, exl[2]=75, exh[2]=75, eyl[2]=0.0395223, eyh[2]=0.0395223
+x[3]=825, y[3]=1.07211, exl[3]=125, exh[3]=125, eyl[3]=0.0548628, eyh[3]=0.0548628
+x[4]=1825, y[4]=1.14604, exl[4]=875, exh[4]=875, eyl[4]=0.088383, eyh[4]=0.088383
+**myTGraphErrorsDivide:: 0 0 dy1=0.000000 0.000000 dy2=0.032280 0.032280 sqrt= 0.032280 0.032280 
+dx1h=100.000000  dx1l=100.000000  el=0.031271  eh=0.031271 
+**myTGraphErrorsDivide:: 1 1 dy1=0.000000 0.000000 dy2=0.030083 0.030083 sqrt= 0.030083 0.030083 
+dx1h=50.000000  dx1l=50.000000  el=0.029897  eh=0.029897 
+**myTGraphErrorsDivide:: 2 2 dy1=0.000000 0.000000 dy2=0.044944 0.044944 sqrt= 0.044944 0.044944 
+dx1h=75.000000  dx1l=75.000000  el=0.046015  eh=0.046015 
+**myTGraphErrorsDivide:: 3 3 dy1=0.000000 0.000000 dy2=0.068542 0.068542 sqrt= 0.068542 0.068542 
+dx1h=125.000000  dx1l=125.000000  el=0.073485  eh=0.073485 
+**myTGraphErrorsDivide:: 4 4 dy1=0.000000 0.000000 dy2=0.094810 0.094810 sqrt= 0.094810 0.094810 
+dx1h=875.000000  dx1l=875.000000  el=0.108657  eh=0.108657 
+ MyBand::ComputePDFBandRatio: rationamedefault= NNPDF23nlo_default
+ MyBand::ComputePDFBandRatio: gratiodefault: 
+x[0]=350, y[0]=0.968739, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=0.993799, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.02382, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=1.07211, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=1.14604, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+**myTGraphErrorsDivide:: 0 0 dy1=0.062600 0.028157 dy2=0.032280 0.032280 sqrt= 0.070433 0.042835 
+dx1h=100.000000  dx1l=100.000000  el=0.062260  eh=0.028004 
+**myTGraphErrorsDivide:: 1 1 dy1=0.072724 0.035897 dy2=0.030083 0.030083 sqrt= 0.078701 0.046835 
+dx1h=50.000000  dx1l=50.000000  el=0.071906  eh=0.035493 
+**myTGraphErrorsDivide:: 2 2 dy1=0.076814 0.042935 dy2=0.044944 0.044944 sqrt= 0.088996 0.062156 
+dx1h=75.000000  dx1l=75.000000  el=0.075888  eh=0.042417 
+**myTGraphErrorsDivide:: 3 3 dy1=0.073616 0.050678 dy2=0.068542 0.068542 sqrt= 0.100585 0.085243 
+dx1h=125.000000  dx1l=125.000000  el=0.073214  eh=0.050402 
+**myTGraphErrorsDivide:: 4 4 dy1=0.052110 0.056075 dy2=0.094810 0.094810 sqrt= 0.108187 0.110152 
+dx1h=875.000000  dx1l=875.000000  el=0.052473  eh=0.056466 
+ MyBand::ComputePDFBandRatio: rationame= HERAPDF15NLO_pdfband/MyData/datanew/atlas2012_5fb_top_mtt_ljet
+ MyBand::ComputePDFBandRatio: gratio: 
+x[0]=350, y[0]=0.994569, exl[0]=100, exh[0]=100, eyl[0]=0.0622602, eyh[0]=0.028004
+x[1]=500, y[1]=0.988755, exl[1]=50, exh[1]=50, eyl[1]=0.0719063, eyh[1]=0.0354929
+x[2]=625, y[2]=0.987949, exl[2]=75, exh[2]=75, eyl[2]=0.0758879, eyh[2]=0.0424172
+x[3]=825, y[3]=0.994544, exl[3]=125, exh[3]=125, eyl[3]=0.0732144, eyh[3]=0.050402
+x[4]=1825, y[4]=1.00696, exl[4]=875, exh[4]=875, eyl[4]=0.0524729, eyh[4]=0.0564655
+**myTGraphErrorsDivide:: 0 0 dy1=0.000000 0.000000 dy2=0.032280 0.032280 sqrt= 0.032280 0.032280 
+dx1h=100.000000  dx1l=100.000000  el=0.032105  eh=0.032105 
+**myTGraphErrorsDivide:: 1 1 dy1=0.000000 0.000000 dy2=0.030083 0.030083 sqrt= 0.030083 0.030083 
+dx1h=50.000000  dx1l=50.000000  el=0.029745  eh=0.029745 
+**myTGraphErrorsDivide:: 2 2 dy1=0.000000 0.000000 dy2=0.044944 0.044944 sqrt= 0.044944 0.044944 
+dx1h=75.000000  dx1l=75.000000  el=0.044403  eh=0.044403 
+**myTGraphErrorsDivide:: 3 3 dy1=0.000000 0.000000 dy2=0.068542 0.068542 sqrt= 0.068542 0.068542 
+dx1h=125.000000  dx1l=125.000000  el=0.068168  eh=0.068168 
+**myTGraphErrorsDivide:: 4 4 dy1=0.000000 0.000000 dy2=0.094810 0.094810 sqrt= 0.094810 0.094810 
+dx1h=875.000000  dx1l=875.000000  el=0.095471  eh=0.095471 
+ MyBand::ComputePDFBandRatio: rationamedefault= HERAPDF15NLO_default
+ MyBand::ComputePDFBandRatio: gratiodefault: 
+x[0]=350, y[0]=0.994569, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=0.988755, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=0.987949, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.994544, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=1.00696, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+**myTGraphErrorsDivide:: 0 0 dy1=0.015656 0.012683 dy2=0.032280 0.032280 sqrt= 0.035876 0.034682 
+dx1h=100.000000  dx1l=100.000000  el=0.015074  eh=0.012212 
+**myTGraphErrorsDivide:: 1 1 dy1=0.020897 0.016643 dy2=0.030083 0.030083 sqrt= 0.036629 0.034380 
+dx1h=50.000000  dx1l=50.000000  el=0.020714  eh=0.016497 
+**myTGraphErrorsDivide:: 2 2 dy1=0.026178 0.021154 dy2=0.044944 0.044944 sqrt= 0.052013 0.049674 
+dx1h=75.000000  dx1l=75.000000  el=0.026977  eh=0.021799 
+**myTGraphErrorsDivide:: 3 3 dy1=0.033553 0.028314 dy2=0.068542 0.068542 sqrt= 0.076314 0.074160 
+dx1h=125.000000  dx1l=125.000000  el=0.036911  eh=0.031147 
+**myTGraphErrorsDivide:: 4 4 dy1=0.047569 0.042945 dy2=0.094810 0.094810 sqrt= 0.106075 0.104083 
+dx1h=875.000000  dx1l=875.000000  el=0.058535  eh=0.052845 
+ MyBand::ComputePDFBandRatio: rationame= MSTW2008nlo_pdfband/MyData/datanew/atlas2012_5fb_top_mtt_ljet
+ MyBand::ComputePDFBandRatio: gratio: 
+x[0]=350, y[0]=0.962851, exl[0]=100, exh[0]=100, eyl[0]=0.0150744, eyh[0]=0.012212
+x[1]=500, y[1]=0.991272, exl[1]=50, exh[1]=50, eyl[1]=0.0207141, eyh[1]=0.0164973
+x[2]=625, y[2]=1.03052, exl[2]=75, exh[2]=75, eyl[2]=0.0269772, eyh[2]=0.0217993
+x[3]=825, y[3]=1.10008, exl[3]=125, exh[3]=125, eyl[3]=0.0369114, eyh[3]=0.0311474
+x[4]=1825, y[4]=1.23053, exl[4]=875, exh[4]=875, eyl[4]=0.0585352, eyh[4]=0.0528448
+**myTGraphErrorsDivide:: 0 0 dy1=0.000000 0.000000 dy2=0.032280 0.032280 sqrt= 0.032280 0.032280 
+dx1h=100.000000  dx1l=100.000000  el=0.031081  eh=0.031081 
+**myTGraphErrorsDivide:: 1 1 dy1=0.000000 0.000000 dy2=0.030083 0.030083 sqrt= 0.030083 0.030083 
+dx1h=50.000000  dx1l=50.000000  el=0.029821  eh=0.029821 
+**myTGraphErrorsDivide:: 2 2 dy1=0.000000 0.000000 dy2=0.044944 0.044944 sqrt= 0.044944 0.044944 
+dx1h=75.000000  dx1l=75.000000  el=0.046316  eh=0.046316 
+**myTGraphErrorsDivide:: 3 3 dy1=0.000000 0.000000 dy2=0.068542 0.068542 sqrt= 0.068542 0.068542 
+dx1h=125.000000  dx1l=125.000000  el=0.075401  eh=0.075401 
+**myTGraphErrorsDivide:: 4 4 dy1=0.000000 0.000000 dy2=0.094810 0.094810 sqrt= 0.094810 0.094810 
+dx1h=875.000000  dx1l=875.000000  el=0.116667  eh=0.116667 
+ MyBand::ComputePDFBandRatio: rationamedefault= MSTW2008nlo_default
+ MyBand::ComputePDFBandRatio: gratiodefault: 
+x[0]=350, y[0]=0.962851, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=0.991272, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.03052, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=1.10008, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=1.23053, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyBand::ComputePDFBandRatio finished 
+ MyCrossSection::Initialize: Plotmaker ON move points 
+ MyBand::MovePDFPoints: npdf= 0
+ MyCrossSection::Initialize: Data MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt
+ MyCrossSection::Initialize: dataname= MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt datadir= .
+ MyData::ReadData read file fname= ./MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt
+ MyData::ReadData: Syst uncertainties with +/- values 
+ MyData::ReadData: use unit matrix as correlation matrix 
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normalise to total cross section 
+ MyCrossSection::Initialize: Data is divided by binwidth 
+ MyCrossSection::Initialize: Number of PDF names pdfdata.size()= 4
+ MyCrossSection::Initialize: npdf= 4
+ MyCrossSection::Initialize: load pdf= MyPDF/CT10.txt
+ MyPDF: LHAPATH environment variable not set, using default: PDFsets
+appl::grid() reading grid from file ./MyGrids/top/mcfm/grid--TTbar_ptatlas.root	version version-3.0(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 709.882 ms	trim in 0.632 ms
+ MyPDF::Initialize: init PDF set called: PDFsets/CT10.LHgrid
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ CT10                                                            
+ H.-L.Lai, M.Guzzi, J. Huston, Z.Li,                             
+ P.M.Nadolsky, J.Pumplin and C.-P.Yuan.                          
+ Reference: arXiv:1007.2241                                      
+ PDF fits using the standard CTEQ PDF evolution                  
+ but using the HOPPIT alphas_s running solution.                 
+ Excluding the D0 Run-II W asymmetry data.                       
+ This set has 52 member PDFs.                                    
+     mem=0 --> central value                                     
+     mem=1-52 --> eigenvector sets                               
+ >>>>>>                   <<<<<<
+
+ MyCrossSection::Initialize: print pdf= 0 name= MyPDF/CT10.txt for grid: ./MyGrids/top/mcfm/grid--TTbar_ptatlas.root
+ MyCrossSection::Initialize: ipdf= 0 CT10
+x[0]=25, y[0]=538.864, exl[0]=25, exh[0]=25, eyl[0]=18.578, eyh[0]=18.578
+x[1]=75, y[1]=1042.34, exl[1]=25, exh[1]=25, eyl[1]=38.6546, eyh[1]=38.6546
+x[2]=125, y[2]=808.689, exl[2]=25, exh[2]=25, eyl[2]=34.118, eyh[2]=34.118
+x[3]=175, y[3]=407.671, exl[3]=25, exh[3]=25, eyl[3]=19.9165, eyh[3]=19.9165
+x[4]=225, y[4]=193.193, exl[4]=25, exh[4]=25, eyl[4]=11.1489, eyh[4]=11.1489
+x[5]=300, y[5]=58.1299, exl[5]=50, exh[5]=50, eyl[5]=3.90251, eyh[5]=3.90251
+x[6]=575, y[6]=3.6538, exl[6]=225, exh[6]=225, eyl[6]=0.327463, eyh[6]=0.327463
+ MyCrossSection::Initialize: npoint= 7
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normtot on 
+ MyCrossSection::Initialize: divbinwidth 
+ MyCrossSection::Initialize: fill Band gtmp
+x[0]=25, y[0]=3.3669, exl[0]=25, exh[0]=25, eyl[0]=0.116078, eyh[0]=0.116078
+x[1]=75, y[1]=6.51267, exl[1]=25, exh[1]=25, eyl[1]=0.241519, eyh[1]=0.241519
+x[2]=125, y[2]=5.05281, exl[2]=25, exh[2]=25, eyl[2]=0.213174, eyh[2]=0.213174
+x[3]=175, y[3]=2.54719, exl[3]=25, exh[3]=25, eyl[3]=0.124441, eyh[3]=0.124441
+x[4]=225, y[4]=1.2071, exl[4]=25, exh[4]=25, eyl[4]=0.0696602, eyh[4]=0.0696602
+x[5]=300, y[5]=0.363205, exl[5]=50, exh[5]=50, eyl[5]=0.0243835, eyh[5]=0.0243835
+x[6]=575, y[6]=0.0228295, exl[6]=225, exh[6]=225, eyl[6]=0.00204604, eyh[6]=0.00204604
+ MyBand::SetPdfBand: gpdfband.size()= 1
+ MyCrossSection::Initialize: print default histogram ipdf= 0
+TH1.Print Name  = CT10_default_set= 0, Entries= 20027613, Total sum= 3052.54
+ fSumw[0]=0, x=-57.1429, error=0
+ fSumw[1]=538.864, x=25, error=0
+ fSumw[2]=1042.34, x=75, error=0
+ fSumw[3]=808.689, x=125, error=0
+ fSumw[4]=407.671, x=175, error=0
+ fSumw[5]=193.193, x=225, error=0
+ fSumw[6]=58.1299, x=300, error=0
+ fSumw[7]=3.6538, x=575, error=0
+ fSumw[8]=1.07924e+08, x=857.143, error=10388.7
+ MyBand::SetPdfDefault:  name= CT10_default
+x[0]=25, y[0]=3.3669, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.51267, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.05281, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.54719, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.2071, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.363205, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0228295, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyCrossSection::Initialize: print normalised default ipdf= 0
+x[0]=25, y[0]=3.3669, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.51267, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.05281, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.54719, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.2071, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.363205, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0228295, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyCrossSection::Initialize: do alphas not set in MyPDF 
+ MyCrossSection::Initialize: load pdf= MyPDF/NNPDF23nlo.txt
+ MyPDF: LHAPATH environment variable not set, using default: PDFsets
+appl::grid() reading grid from file ./MyGrids/top/mcfm/grid--TTbar_ptatlas.root	version version-3.0(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 654.152 ms	trim in 0.575 ms
+ MyPDF::Initialize: init PDF set called: PDFsets/NNPDF23_nlo_as_0118.LHgrid
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ NNPDF23_nlo_as_0118.LHgrid                                      
+ Reference: arXiv:1207.1303                                      
+ Fit: NLO global fit, alphas(MZ)=0.118                           
+ NNPDF Collaboration: R.D. Ball, V. Bertone,                     
+ S. Carrazza,  C.S. Deans, L. Del Debbio,                        
+ S. Forte, A. Guffanti, N.P. Hartland,                           
+ J.I. Latorre, J. Rojo and M. Ubiali                             
+ This set has          100  member PDF                           
+ mem=0 --> average on replicas.                                  
+ Evolution: pol. interpolation on the LH grid.                   
+ >>>>>>                   <<<<<<
+
+ MyCrossSection::Initialize: print pdf= 1 name= MyPDF/NNPDF23nlo.txt for grid: ./MyGrids/top/mcfm/grid--TTbar_ptatlas.root
+ MyCrossSection::Initialize: ipdf= 1 NNPDF23nlo
+x[0]=25, y[0]=574.035, exl[0]=25, exh[0]=25, eyl[0]=14.6078, eyh[0]=14.6078
+x[1]=75, y[1]=1108.54, exl[1]=25, exh[1]=25, eyl[1]=29.9755, eyh[1]=29.9755
+x[2]=125, y[2]=857.704, exl[2]=25, exh[2]=25, eyl[2]=25.847, eyh[2]=25.847
+x[3]=175, y[3]=428.644, exl[3]=25, exh[3]=25, eyl[3]=14.6257, eyh[3]=14.6257
+x[4]=225, y[4]=200.582, exl[4]=25, exh[4]=25, eyl[4]=7.84619, eyh[4]=7.84619
+x[5]=300, y[5]=59.3789, exl[5]=50, exh[5]=50, eyl[5]=2.62774, eyh[5]=2.62774
+x[6]=575, y[6]=3.56479, exl[6]=225, exh[6]=225, eyl[6]=0.200788, eyh[6]=0.200788
+ MyCrossSection::Initialize: npoint= 7
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normtot on 
+ MyCrossSection::Initialize: divbinwidth 
+ MyCrossSection::Initialize: fill Band gtmp
+x[0]=25, y[0]=3.39165, exl[0]=25, exh[0]=25, eyl[0]=0.0863095, eyh[0]=0.0863095
+x[1]=75, y[1]=6.54972, exl[1]=25, exh[1]=25, eyl[1]=0.177108, eyh[1]=0.177108
+x[2]=125, y[2]=5.06769, exl[2]=25, exh[2]=25, eyl[2]=0.152715, eyh[2]=0.152715
+x[3]=175, y[3]=2.53261, exl[3]=25, exh[3]=25, eyl[3]=0.086415, eyh[3]=0.086415
+x[4]=225, y[4]=1.18513, exl[4]=25, exh[4]=25, eyl[4]=0.0463587, eyh[4]=0.0463587
+x[5]=300, y[5]=0.350836, exl[5]=50, exh[5]=50, eyl[5]=0.0155259, eyh[5]=0.0155259
+x[6]=575, y[6]=0.0210623, exl[6]=225, exh[6]=225, eyl[6]=0.00118634, eyh[6]=0.00118634
+ MyBand::SetPdfBand: gpdfband.size()= 2
+ MyCrossSection::Initialize: print default histogram ipdf= 1
+TH1.Print Name  = NNPDF23nlo_default_set= 0, Entries= 20027620, Total sum= 3232.45
+ fSumw[0]=0, x=-57.1429, error=0
+ fSumw[1]=574.035, x=25, error=0
+ fSumw[2]=1108.54, x=75, error=0
+ fSumw[3]=857.704, x=125, error=0
+ fSumw[4]=428.644, x=175, error=0
+ fSumw[5]=200.582, x=225, error=0
+ fSumw[6]=59.3789, x=300, error=0
+ fSumw[7]=3.56479, x=575, error=0
+ fSumw[8]=1.07924e+08, x=857.143, error=10388.7
+ MyBand::SetPdfDefault:  name= NNPDF23nlo_default
+x[0]=25, y[0]=3.39165, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.54972, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.06769, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.53261, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.18513, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.350836, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0210623, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyCrossSection::Initialize: print normalised default ipdf= 1
+x[0]=25, y[0]=3.39165, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.54972, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.06769, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.53261, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.18513, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.350836, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0210623, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyCrossSection::Initialize: do alphas not set in MyPDF 
+ MyCrossSection::Initialize: load pdf= MyPDF/HERAPDF15NLO.txt
+ MyPDF: LHAPATH environment variable not set, using default: PDFsets
+appl::grid() reading grid from file ./MyGrids/top/mcfm/grid--TTbar_ptatlas.root	version version-3.0(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 672.956 ms	trim in 0.614 ms
+ MyPDF::Initialize: init PDF set called: PDFsets/HERAPDF15NLO_EIG.LHgrid
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ HERAPDF15 fit: NLO                                              
+ This set has 21 member PDFs for experimental uncertainties      
+ The 20 error PDFs should be treated two by two as the up and    
+ down excursions down 10 eigenvectors, such that the symmetric   
+ error is calculated as the quadrature sum of:                   
+ [Sigma i=1,10 of (var i+1- var i)/2 ],                          
+ Or if asymmetric errors are desired according to Eqn 43 of      
+ Campbell, Huston and Stirling hep-ph/0611148                    
+ member 0 - central                                              
+ member 1-20 - error pdfs                                        
+ >>>>>>                   <<<<<<
+
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ HERAPDF1.5NLO variations of fit parameters h1-zeus preliminary  
+ The first 8 variations are considered as model errors and       
+ should be treated one by one, by taking the difference between  
+ the variation and the central value, and then adding in         
+ quadrature all positive (negative) differences to obtain the    
+ positive (negative) model error. Variations 9 to 12 are the     
+ maximal parmetrisation variations; the largest positive         
+ (negative) difference between the variation and the central     
+ value is taken as the positive (negative) parametrisation error 
+ and added in quadrature to the model errors to form the         
+ parametrisation envelope.                                       
+ 0 - central                                                     
+ fs=0.31,fc=0.0,mb=4.75,mc=1.40,q20=1.9,q2min=1.9,a_s(MZ)=0.1176 
+ 1 - fs=23      2 fs=38             7 - q2cut25       8 - q2cut5 
+ 5 - mc135 (Q0 1.8)      6 - mc165            3 - mb43          4
+ 9 - par1(Q0 1.5 neg glu)        10 - par2 (Q0 2.5, mc 1.6)      
+ 11 - par3(EuvDuv)        12 - par4 (EuvDubar)                   
+ >>>>>>                   <<<<<<
+
+ MyCrossSection::Initialize: print pdf= 2 name= MyPDF/HERAPDF15NLO.txt for grid: ./MyGrids/top/mcfm/grid--TTbar_ptatlas.root
+ MyCrossSection::Initialize: ipdf= 2 HERAPDF15NLO
+x[0]=25, y[0]=504.039, exl[0]=25, exh[0]=25, eyl[0]=34.5964, eyh[0]=15.7891
+x[1]=75, y[1]=967.686, exl[1]=25, exh[1]=25, eyl[1]=67.3939, eyh[1]=31.5105
+x[2]=125, y[2]=739.093, exl[2]=25, exh[2]=25, eyl[2]=52.8523, eyh[2]=26.0801
+x[3]=175, y[3]=364.967, exl[3]=25, exh[3]=25, eyl[3]=24.9886, eyh[3]=13.5242
+x[4]=225, y[4]=168.799, exl[4]=25, exh[4]=25, eyl[4]=10.5151, eyh[4]=6.5063
+x[5]=300, y[5]=49.6201, exl[5]=50, exh[5]=50, eyl[5]=2.38481, eyh[5]=1.87694
+x[6]=575, y[6]=3.00534, exl[6]=225, exh[6]=225, eyl[6]=0.120969, eyh[6]=0.105569
+ MyCrossSection::Initialize: npoint= 7
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normtot on 
+ MyCrossSection::Initialize: divbinwidth 
+ MyCrossSection::Initialize: fill Band gtmp
+x[0]=25, y[0]=3.44428, exl[0]=25, exh[0]=25, eyl[0]=0.23641, eyh[0]=0.107893
+x[1]=75, y[1]=6.61255, exl[1]=25, exh[1]=25, eyl[1]=0.460527, eyh[1]=0.215322
+x[2]=125, y[2]=5.05049, exl[2]=25, exh[2]=25, eyl[2]=0.361159, eyh[2]=0.178215
+x[3]=175, y[3]=2.49395, exl[3]=25, exh[3]=25, eyl[3]=0.170756, eyh[3]=0.0924155
+x[4]=225, y[4]=1.15347, exl[4]=25, exh[4]=25, eyl[4]=0.0718535, eyh[4]=0.0444599
+x[5]=300, y[5]=0.339072, exl[5]=50, exh[5]=50, eyl[5]=0.0162963, eyh[5]=0.0128258
+x[6]=575, y[6]=0.0205366, exl[6]=225, exh[6]=225, eyl[6]=0.000826624, eyh[6]=0.000721392
+ MyBand::SetPdfBand: gpdfband.size()= 3
+ MyCrossSection::Initialize: print default histogram ipdf= 2
+TH1.Print Name  = HERAPDF15NLO_default_set= 0, Entries= 20027613, Total sum= 2797.21
+ fSumw[0]=0, x=-57.1429, error=0
+ fSumw[1]=504.039, x=25, error=0
+ fSumw[2]=967.686, x=75, error=0
+ fSumw[3]=739.093, x=125, error=0
+ fSumw[4]=364.967, x=175, error=0
+ fSumw[5]=168.799, x=225, error=0
+ fSumw[6]=49.6201, x=300, error=0
+ fSumw[7]=3.00534, x=575, error=0
+ fSumw[8]=1.07924e+08, x=857.143, error=10388.7
+ MyBand::SetPdfDefault:  name= HERAPDF15NLO_default
+x[0]=25, y[0]=3.44428, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.61255, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.05049, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.49395, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.15347, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.339072, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0205366, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyCrossSection::Initialize: print normalised default ipdf= 2
+x[0]=25, y[0]=3.44428, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.61255, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.05049, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.49395, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.15347, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.339072, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0205366, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyCrossSection::Initialize: do alphas not set in MyPDF 
+ MyCrossSection::Initialize: load pdf= MyPDF/MSTW2008nlo.txt
+ MyPDF: LHAPATH environment variable not set, using default: PDFsets
+appl::grid() reading grid from file ./MyGrids/top/mcfm/grid--TTbar_ptatlas.root	version version-3.0(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 663.739 ms	trim in 0.552 ms
+ MyPDF::Initialize: init PDF set called: PDFsets/MSTW2008nlo68cl.LHgrid
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ MSTW 2008 NLO (68% C.L.)                                        
+ Reference:                                                      
+  A.D. Martin, W.J. Stirling, R.S. Thorne and G. Watt            
+  "Parton distributions for the LHC"                             
+  arXiv:0901.0002 [hep-ph]                                       
+  http://projects.hepforge.org/mstwpdf/                          
+ This set has 41 member PDFs.                                    
+  mem=0 --> central value                                        
+  mem=1-40 --> 20 eigenvector sets (+/- directions)              
+  See Section 6 of paper for error calculation.                  
+ >>>>>>                   <<<<<<
+
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ MSTW 2008 NLO (68% C.L.): fix alpha_S at -68% C.L. limit.       
+ Reference:                                                      
+  A.D. Martin, W.J. Stirling, R.S. Thorne and G. Watt            
+  "Uncertainties on alpha_S in global PDF analysis"              
+  arXiv:0905.3531 [hep-ph]                                       
+  http://projects.hepforge.org/mstwpdf/                          
+ This set has 41 member PDFs.                                    
+  mem=0 --> central value                                        
+  mem=1-40 --> 20 eigenvector sets (+/- directions)              
+  See paper for error calculation: alpha_S(M_Z) = 0.11867        
+ >>>>>>                   <<<<<<
+
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ MSTW 2008 NLO (68% C.L.): fix alpha_S at +68% C.L. limit.       
+ Reference:                                                      
+  A.D. Martin, W.J. Stirling, R.S. Thorne and G. Watt            
+  "Uncertainties on alpha_S in global PDF analysis"              
+  arXiv:0905.3531 [hep-ph]                                       
+  http://projects.hepforge.org/mstwpdf/                          
+ This set has 41 member PDFs.                                    
+  mem=0 --> central value                                        
+  mem=1-40 --> 20 eigenvector sets (+/- directions)              
+  See paper for error calculation: alpha_S(M_Z) = 0.12140        
+ >>>>>>                   <<<<<<
+
+ *************************************
+ *       LHAPDF Version 5.8.8        *
+ *   Configured for the following:   *
+ *             All PDFs              *
+ *          LOW MEMORY option        *
+ *    Maximum  3 concurrent set(s)   *
+ *************************************
+
+ >>>>>> PDF description: <<<<<<
+ MSTW 2008 NLO (68% C.L.)                                        
+ Reference:                                                      
+  A.D. Martin, W.J. Stirling, R.S. Thorne and G. Watt            
+  "Parton distributions for the LHC"                             
+  arXiv:0901.0002 [hep-ph]                                       
+  http://projects.hepforge.org/mstwpdf/                          
+ This set has 41 member PDFs.                                    
+  mem=0 --> central value                                        
+  mem=1-40 --> 20 eigenvector sets (+/- directions)              
+  See Section 6 of paper for error calculation.                  
+ >>>>>>                   <<<<<<
+
+ MyCrossSection::Initialize: print pdf= 3 name= MyPDF/MSTW2008nlo.txt for grid: ./MyGrids/top/mcfm/grid--TTbar_ptatlas.root
+ MyCrossSection::Initialize: ipdf= 3 MSTW2008nlo
+x[0]=25, y[0]=574.29, exl[0]=25, exh[0]=25, eyl[0]=9.92889, eyh[0]=7.97713
+x[1]=75, y[1]=1110.04, exl[1]=25, exh[1]=25, eyl[1]=20.4304, eyh[1]=16.3318
+x[2]=125, y[2]=861.422, exl[2]=25, exh[2]=25, eyl[2]=17.748, eyh[2]=14.1357
+x[3]=175, y[3]=433.287, exl[3]=25, exh[3]=25, eyl[3]=9.97547, eyh[3]=8.03158
+x[4]=225, y[4]=204.662, exl[4]=25, exh[4]=25, eyl[4]=5.27215, eyh[4]=4.35735
+x[5]=300, y[5]=61.3135, exl[5]=50, exh[5]=50, eyl[5]=1.74015, eyh[5]=1.49956
+x[6]=575, y[6]=3.78694, exl[6]=225, exh[6]=225, eyl[6]=0.129828, eyh[6]=0.120781
+ MyCrossSection::Initialize: npoint= 7
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normtot on 
+ MyCrossSection::Initialize: divbinwidth 
+ MyCrossSection::Initialize: fill Band gtmp
+x[0]=25, y[0]=3.37283, exl[0]=25, exh[0]=25, eyl[0]=0.0583128, eyh[0]=0.04685
+x[1]=75, y[1]=6.51933, exl[1]=25, exh[1]=25, eyl[1]=0.119989, eyh[1]=0.0959172
+x[2]=125, y[2]=5.05917, exl[2]=25, exh[2]=25, eyl[2]=0.104235, eyh[2]=0.0830196
+x[3]=175, y[3]=2.54471, exl[3]=25, exh[3]=25, eyl[3]=0.0585864, eyh[3]=0.0471698
+x[4]=225, y[4]=1.20199, exl[4]=25, exh[4]=25, eyl[4]=0.0309636, eyh[4]=0.0255909
+x[5]=300, y[5]=0.360097, exl[5]=50, exh[5]=50, eyl[5]=0.01022, eyh[5]=0.00880696
+x[6]=575, y[6]=0.0222409, exl[6]=225, exh[6]=225, eyl[6]=0.000762488, eyh[6]=0.000709349
+ MyBand::SetPdfBand: gpdfband.size()= 4
+ MyCrossSection::Initialize: print default histogram ipdf= 3
+TH1.Print Name  = MSTW2008nlo_default_set= 0, Entries= 20027613, Total sum= 3248.8
+ fSumw[0]=0, x=-57.1429, error=0
+ fSumw[1]=574.29, x=25, error=0
+ fSumw[2]=1110.04, x=75, error=0
+ fSumw[3]=861.422, x=125, error=0
+ fSumw[4]=433.287, x=175, error=0
+ fSumw[5]=204.662, x=225, error=0
+ fSumw[6]=61.3135, x=300, error=0
+ fSumw[7]=3.78694, x=575, error=0
+ fSumw[8]=1.07924e+08, x=857.143, error=10388.7
+ MyBand::SetPdfDefault:  name= MSTW2008nlo_default
+x[0]=25, y[0]=3.37283, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.51933, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.05917, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.54471, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.20199, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.360097, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0222409, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyCrossSection::Initialize: print normalised default ipdf= 3
+x[0]=25, y[0]=3.37283, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.51933, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.05917, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.54471, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.20199, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.360097, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0222409, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyCrossSection::Initialize: DoAlphaS 
+ MyCrossSection::Initialize number of ren scale= 0
+ MyCrossSection::Initialize number of fac scale= 0
+ MyCrossSection::Initialize: get correlation matrix igrid= 1
+ MyCrossSection::Initialize: mcorr done 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |          0           0 
+   1 |          0           0 
+   2 |          0           0 
+   3 |          0           0 
+   4 |          0           0 
+   5 |          1           0 
+   6 |          0           1 
+
+ MyCrossSection::Initialize: printed 
+ MyCrossSection::Initialize: npdf= 4
+ MyCrossSection::Initialize: before CalcChi2 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |          0           0 
+   1 |          0           0 
+   2 |          0           0 
+   3 |          0           0 
+   4 |          0           0 
+   5 |          1           0 
+   6 |          0           1 
+
+ MyCrossSection::CalcChi2:         
+ MyCrossSection::CalcChi2: theory uncertainty matrix done 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |    0.01347           0           0           0           0 
+   1 |          0     0.05833           0           0           0 
+   2 |          0           0     0.04544           0           0 
+   3 |          0           0           0     0.01549           0 
+   4 |          0           0           0           0    0.004853 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |          0           0 
+   1 |          0           0 
+   2 |          0           0 
+   3 |          0           0 
+   4 |          0           0 
+   5 |  0.0005946           0 
+   6 |          0   4.186e-06 
+
+ MyCrossSection::CalcChi2: At Start, dump contents of data cov matrix: 
+ 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |          0           0 
+   1 |          0           0 
+   2 |          0           0 
+   3 |          0           0 
+   4 |          0           0 
+   5 |          1           0 
+   6 |          0           1 
+
+
+
+ MyCrossSection::CalcChi2: After adding theory, dump contents of cov matrix: 
+ 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9867          -0          -0          -0          -0 
+   1 |          0      0.9449          -0          -0          -0 
+   2 |          0           0      0.9565          -0          -0 
+   3 |          0           0           0      0.9848          -0 
+   4 |          0           0           0           0      0.9952 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |         -0          -0 
+   1 |         -0          -0 
+   2 |         -0          -0 
+   3 |         -0          -0 
+   4 |         -0          -0 
+   5 |     0.9994          -0 
+   6 |          0           1 
+
+
+
+ MyCrossSection::CalcChi2: After inversion, dump contents of cov matrix: 
+
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9867          -0          -0          -0          -0 
+   1 |          0      0.9449          -0          -0          -0 
+   2 |          0           0      0.9565          -0          -0 
+   3 |          0           0           0      0.9848          -0 
+   4 |          0           0           0           0      0.9952 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |         -0          -0 
+   1 |         -0          -0 
+   2 |         -0          -0 
+   3 |         -0          -0 
+   4 |         -0          -0 
+   5 |     0.9994          -0 
+   6 |          0           1 
+
+
+ MyCrossSection::CalcChi2: After first multiplication matrix is: 
+
+
+7x1 matrix is as follows
+
+     |      0    |
+------------------
+   0 |    0.03266 
+   1 |      0.177 
+   2 |     0.2364 
+   3 |    0.05201 
+   4 |   -0.08668 
+   5 |   -0.04318 
+   6 |  -0.004829 
+
+ MyCrossSection::CalcChi2: End chi2 = 0.104871
+ MyCrossSection::Initialize: igrid= 1 ipdf= 0 chi2= 0.104871
+ MyCrossSection::CalcChi2:         
+ MyCrossSection::CalcChi2: theory uncertainty matrix done 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |   0.007449           0           0           0           0 
+   1 |          0     0.03137           0           0           0 
+   2 |          0           0     0.02332           0           0 
+   3 |          0           0           0    0.007468           0 
+   4 |          0           0           0           0    0.002149 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |          0           0 
+   1 |          0           0 
+   2 |          0           0 
+   3 |          0           0 
+   4 |          0           0 
+   5 |  0.0002411           0 
+   6 |          0   1.407e-06 
+
+ MyCrossSection::CalcChi2: At Start, dump contents of data cov matrix: 
+ 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |          0           0 
+   1 |          0           0 
+   2 |          0           0 
+   3 |          0           0 
+   4 |          0           0 
+   5 |          1           0 
+   6 |          0           1 
+
+
+
+ MyCrossSection::CalcChi2: After adding theory, dump contents of cov matrix: 
+ 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9926          -0          -0          -0          -0 
+   1 |          0      0.9696          -0          -0          -0 
+   2 |          0           0      0.9772          -0          -0 
+   3 |          0           0           0      0.9926          -0 
+   4 |          0           0           0           0      0.9979 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |         -0          -0 
+   1 |         -0          -0 
+   2 |         -0          -0 
+   3 |         -0          -0 
+   4 |         -0          -0 
+   5 |     0.9998          -0 
+   6 |          0           1 
+
+
+
+ MyCrossSection::CalcChi2: After inversion, dump contents of cov matrix: 
+
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9926          -0          -0          -0          -0 
+   1 |          0      0.9696          -0          -0          -0 
+   2 |          0           0      0.9772          -0          -0 
+   3 |          0           0           0      0.9926          -0 
+   4 |          0           0           0           0      0.9979 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |         -0          -0 
+   1 |         -0          -0 
+   2 |         -0          -0 
+   3 |         -0          -0 
+   4 |         -0          -0 
+   5 |     0.9998          -0 
+   6 |          0           1 
+
+
+ MyCrossSection::CalcChi2: After first multiplication matrix is: 
+
+
+7x1 matrix is as follows
+
+     |      0    |
+------------------
+   0 |   0.008293 
+   1 |     0.1457 
+   2 |      0.227 
+   3 |    0.06689 
+   4 |   -0.06499 
+   5 |   -0.03083 
+   6 |  -0.003062 
+
+ MyCrossSection::CalcChi2: End chi2 = 0.0844056
+ MyCrossSection::Initialize: igrid= 1 ipdf= 1 chi2= 0.0844056
+ MyCrossSection::CalcChi2:         
+ MyCrossSection::CalcChi2: theory uncertainty matrix done 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |    0.02964           0           0           0           0 
+   1 |          0      0.1142           0           0           0 
+   2 |          0           0     0.07273           0           0 
+   3 |          0           0           0     0.01731           0 
+   4 |          0           0           0           0    0.003382 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |          0           0 
+   1 |          0           0 
+   2 |          0           0 
+   3 |          0           0 
+   4 |          0           0 
+   5 |   0.000212           0 
+   6 |          0   5.991e-07 
+
+ MyCrossSection::CalcChi2: At Start, dump contents of data cov matrix: 
+ 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |          0           0 
+   1 |          0           0 
+   2 |          0           0 
+   3 |          0           0 
+   4 |          0           0 
+   5 |          1           0 
+   6 |          0           1 
+
+
+
+ MyCrossSection::CalcChi2: After adding theory, dump contents of cov matrix: 
+ 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9712          -0          -0          -0          -0 
+   1 |          0      0.8975          -0          -0          -0 
+   2 |          0           0      0.9322          -0          -0 
+   3 |          0           0           0       0.983          -0 
+   4 |          0           0           0           0      0.9966 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |         -0          -0 
+   1 |         -0          -0 
+   2 |         -0          -0 
+   3 |         -0          -0 
+   4 |         -0          -0 
+   5 |     0.9998          -0 
+   6 |          0           1 
+
+
+
+ MyCrossSection::CalcChi2: After inversion, dump contents of cov matrix: 
+
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9712          -0          -0          -0          -0 
+   1 |          0      0.8975          -0          -0          -0 
+   2 |          0           0      0.9322          -0          -0 
+   3 |          0           0           0       0.983          -0 
+   4 |          0           0           0           0      0.9966 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |         -0          -0 
+   1 |         -0          -0 
+   2 |         -0          -0 
+   3 |         -0          -0 
+   4 |         -0          -0 
+   5 |     0.9998          -0 
+   6 |          0           1 
+
+
+ MyCrossSection::CalcChi2: After first multiplication matrix is: 
+
+
+7x1 matrix is as follows
+
+     |      0    |
+------------------
+   0 |     -0.043 
+   1 |    0.07849 
+   2 |     0.2326 
+   3 |     0.1042 
+   4 |   -0.03335 
+   5 |   -0.01907 
+   6 |  -0.002537 
+
+ MyCrossSection::CalcChi2: End chi2 = 0.079342
+ MyCrossSection::Initialize: igrid= 1 ipdf= 2 chi2= 0.079342
+ MyCrossSection::CalcChi2:         
+ MyCrossSection::CalcChi2: theory uncertainty matrix done 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |   0.002765           0           0           0           0 
+   1 |          0     0.01165           0           0           0 
+   2 |          0           0    0.008766           0           0 
+   3 |          0           0           0    0.002796           0 
+   4 |          0           0           0           0   0.0007996 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |          0           0 
+   1 |          0           0 
+   2 |          0           0 
+   3 |          0           0 
+   4 |          0           0 
+   5 |  9.051e-05           0 
+   6 |          0   5.416e-07 
+
+ MyCrossSection::CalcChi2: At Start, dump contents of data cov matrix: 
+ 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |          0           0 
+   1 |          0           0 
+   2 |          0           0 
+   3 |          0           0 
+   4 |          0           0 
+   5 |          1           0 
+   6 |          0           1 
+
+
+
+ MyCrossSection::CalcChi2: After adding theory, dump contents of cov matrix: 
+ 
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9972          -0          -0          -0          -0 
+   1 |          0      0.9885          -0          -0          -0 
+   2 |          0           0      0.9913          -0          -0 
+   3 |          0           0           0      0.9972          -0 
+   4 |          0           0           0           0      0.9992 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |         -0          -0 
+   1 |         -0          -0 
+   2 |         -0          -0 
+   3 |         -0          -0 
+   4 |         -0          -0 
+   5 |     0.9999          -0 
+   6 |          0           1 
+
+
+
+ MyCrossSection::CalcChi2: After inversion, dump contents of cov matrix: 
+
+
+7x7 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |     0.9972          -0          -0          -0          -0 
+   1 |          0      0.9885          -0          -0          -0 
+   2 |          0           0      0.9913          -0          -0 
+   3 |          0           0           0      0.9972          -0 
+   4 |          0           0           0           0      0.9992 
+   5 |          0           0           0           0           0 
+   6 |          0           0           0           0           0 
+
+
+     |      5    |      6    |
+----------------------------------------------------------------------
+   0 |         -0          -0 
+   1 |         -0          -0 
+   2 |         -0          -0 
+   3 |         -0          -0 
+   4 |         -0          -0 
+   5 |     0.9999          -0 
+   6 |          0           1 
+
+
+ MyCrossSection::CalcChi2: After first multiplication matrix is: 
+
+
+7x1 matrix is as follows
+
+     |      0    |
+------------------
+   0 |     0.0271 
+   1 |     0.1786 
+   2 |     0.2387 
+   3 |    0.05513 
+   4 |   -0.08192 
+   5 |   -0.04009 
+   6 |  -0.004241 
+
+ MyCrossSection::CalcChi2: End chi2 = 0.101887
+ MyCrossSection::Initialize: igrid= 1 ipdf= 3 chi2= 0.101887
+ MyCrossSection::Initialize: finished chi2 calculation 
+ MyBand::ComputePDFBandRatio: gpdfband.size()= 4
+ MyBand::ComputePDFBandRatio: gref name: MyData/datanew/atlas2012_5fb_top_ptt_ljet
+**myTGraphErrorsDivide:: 0 0 dy1=0.034476 0.034476 dy2=0.057245 0.057245 sqrt= 0.066825 0.066825 
+dx1h=25.000000  dx1l=25.000000  el=0.034141  eh=0.034141 
+**myTGraphErrorsDivide:: 1 1 dy1=0.037085 0.037085 dy2=0.021471 0.021471 sqrt= 0.042852 0.042852 
+dx1h=25.000000  dx1l=25.000000  el=0.036048  eh=0.036048 
+**myTGraphErrorsDivide:: 2 2 dy1=0.042189 0.042189 dy2=0.030529 0.030529 sqrt= 0.052076 0.052076 
+dx1h=25.000000  dx1l=25.000000  el=0.040222  eh=0.040222 
+**myTGraphErrorsDivide:: 3 3 dy1=0.048854 0.048854 dy2=0.051624 0.051624 sqrt= 0.071076 0.071076 
+dx1h=25.000000  dx1l=25.000000  el=0.047862  eh=0.047862 
+**myTGraphErrorsDivide:: 4 4 dy1=0.057709 0.057709 dy2=0.053666 0.053666 sqrt= 0.078805 0.078805 
+dx1h=25.000000  dx1l=25.000000  el=0.062197  eh=0.062197 
+**myTGraphErrorsDivide:: 5 5 dy1=0.067134 0.067134 dy2=0.064661 0.064661 sqrt= 0.093210 0.093210 
+dx1h=50.000000  dx1l=50.000000  el=0.076198  eh=0.076198 
+**myTGraphErrorsDivide:: 6 6 dy1=0.089623 0.089623 dy2=0.126270 0.126270 sqrt= 0.154843 0.154843 
+dx1h=225.000000  dx1l=225.000000  el=0.113669  eh=0.113669 
+ MyBand::ComputePDFBandRatio: rationame= CT10_pdfband/MyData/datanew/atlas2012_5fb_top_ptt_ljet
+ MyBand::ComputePDFBandRatio: gratio: 
+x[0]=25, y[0]=0.990266, exl[0]=25, exh[0]=25, eyl[0]=0.0341407, eyh[0]=0.0341407
+x[1]=75, y[1]=0.972041, exl[1]=25, exh[1]=25, eyl[1]=0.0360477, eyh[1]=0.0360477
+x[2]=125, y[2]=0.95336, exl[2]=25, exh[2]=25, eyl[2]=0.0402216, eyh[2]=0.0402216
+x[3]=175, y[3]=0.979687, exl[3]=25, exh[3]=25, eyl[3]=0.0478619, eyh[3]=0.0478619
+x[4]=225, y[4]=1.07777, exl[4]=25, exh[4]=25, eyl[4]=0.0621966, eyh[4]=0.0621966
+x[5]=300, y[5]=1.13501, exl[5]=50, exh[5]=50, eyl[5]=0.0761984, eyh[5]=0.0761984
+x[6]=575, y[6]=1.2683, exl[6]=225, exh[6]=225, eyl[6]=0.113669, eyh[6]=0.113669
+**myTGraphErrorsDivide:: 0 0 dy1=0.000000 0.000000 dy2=0.057245 0.057245 sqrt= 0.057245 0.057245 
+dx1h=25.000000  dx1l=25.000000  el=0.056688  eh=0.056688 
+**myTGraphErrorsDivide:: 1 1 dy1=0.000000 0.000000 dy2=0.021471 0.021471 sqrt= 0.021471 0.021471 
+dx1h=25.000000  dx1l=25.000000  el=0.020871  eh=0.020871 
+**myTGraphErrorsDivide:: 2 2 dy1=0.000000 0.000000 dy2=0.030529 0.030529 sqrt= 0.030529 0.030529 
+dx1h=25.000000  dx1l=25.000000  el=0.029105  eh=0.029105 
+**myTGraphErrorsDivide:: 3 3 dy1=0.000000 0.000000 dy2=0.051624 0.051624 sqrt= 0.051624 0.051624 
+dx1h=25.000000  dx1l=25.000000  el=0.050575  eh=0.050575 
+**myTGraphErrorsDivide:: 4 4 dy1=0.000000 0.000000 dy2=0.053666 0.053666 sqrt= 0.053666 0.053666 
+dx1h=25.000000  dx1l=25.000000  el=0.057839  eh=0.057839 
+**myTGraphErrorsDivide:: 5 5 dy1=0.000000 0.000000 dy2=0.064661 0.064661 sqrt= 0.064661 0.064661 
+dx1h=50.000000  dx1l=50.000000  el=0.073391  eh=0.073391 
+**myTGraphErrorsDivide:: 6 6 dy1=0.000000 0.000000 dy2=0.126270 0.126270 sqrt= 0.126270 0.126270 
+dx1h=225.000000  dx1l=225.000000  el=0.160148  eh=0.160148 
+ MyBand::ComputePDFBandRatio: rationamedefault= CT10_default
+ MyBand::ComputePDFBandRatio: gratiodefault: 
+x[0]=25, y[0]=0.990266, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=0.972041, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=0.95336, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=0.979687, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.07777, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=1.13501, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=1.2683, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+**myTGraphErrorsDivide:: 0 0 dy1=0.025448 0.025448 dy2=0.057245 0.057245 sqrt= 0.062647 0.062647 
+dx1h=25.000000  dx1l=25.000000  el=0.025385  eh=0.025385 
+**myTGraphErrorsDivide:: 1 1 dy1=0.027041 0.027041 dy2=0.021471 0.021471 sqrt= 0.034528 0.034528 
+dx1h=25.000000  dx1l=25.000000  el=0.026434  eh=0.026434 
+**myTGraphErrorsDivide:: 2 2 dy1=0.030135 0.030135 dy2=0.030529 0.030529 sqrt= 0.042897 0.042897 
+dx1h=25.000000  dx1l=25.000000  el=0.028814  eh=0.028814 
+**myTGraphErrorsDivide:: 3 3 dy1=0.034121 0.034121 dy2=0.051624 0.051624 sqrt= 0.061881 0.061881 
+dx1h=25.000000  dx1l=25.000000  el=0.033237  eh=0.033237 
+**myTGraphErrorsDivide:: 4 4 dy1=0.039117 0.039117 dy2=0.053666 0.053666 sqrt= 0.066409 0.066409 
+dx1h=25.000000  dx1l=25.000000  el=0.041392  eh=0.041392 
+**myTGraphErrorsDivide:: 5 5 dy1=0.044254 0.044254 dy2=0.064661 0.064661 sqrt= 0.078354 0.078354 
+dx1h=50.000000  dx1l=50.000000  el=0.048518  eh=0.048518 
+**myTGraphErrorsDivide:: 6 6 dy1=0.056325 0.056325 dy2=0.126270 0.126270 sqrt= 0.138263 0.138263 
+dx1h=225.000000  dx1l=225.000000  el=0.065908  eh=0.065908 
+ MyBand::ComputePDFBandRatio: rationame= NNPDF23nlo_pdfband/MyData/datanew/atlas2012_5fb_top_ptt_ljet
+ MyBand::ComputePDFBandRatio: gratio: 
+x[0]=25, y[0]=0.997543, exl[0]=25, exh[0]=25, eyl[0]=0.0253851, eyh[0]=0.0253851
+x[1]=75, y[1]=0.97757, exl[1]=25, exh[1]=25, eyl[1]=0.026434, eyh[1]=0.026434
+x[2]=125, y[2]=0.956168, exl[2]=25, exh[2]=25, eyl[2]=0.0288142, eyh[2]=0.0288142
+x[3]=175, y[3]=0.974082, exl[3]=25, exh[3]=25, eyl[3]=0.0332365, eyh[3]=0.0332365
+x[4]=225, y[4]=1.05815, exl[4]=25, exh[4]=25, eyl[4]=0.0413917, eyh[4]=0.0413917
+x[5]=300, y[5]=1.09636, exl[5]=50, exh[5]=50, eyl[5]=0.0485183, eyh[5]=0.0485183
+x[6]=575, y[6]=1.17013, exl[6]=225, exh[6]=225, eyl[6]=0.0659078, eyh[6]=0.0659078
+**myTGraphErrorsDivide:: 0 0 dy1=0.000000 0.000000 dy2=0.057245 0.057245 sqrt= 0.057245 0.057245 
+dx1h=25.000000  dx1l=25.000000  el=0.057104  eh=0.057104 
+**myTGraphErrorsDivide:: 1 1 dy1=0.000000 0.000000 dy2=0.021471 0.021471 sqrt= 0.021471 0.021471 
+dx1h=25.000000  dx1l=25.000000  el=0.020989  eh=0.020989 
+**myTGraphErrorsDivide:: 2 2 dy1=0.000000 0.000000 dy2=0.030529 0.030529 sqrt= 0.030529 0.030529 
+dx1h=25.000000  dx1l=25.000000  el=0.029191  eh=0.029191 
+**myTGraphErrorsDivide:: 3 3 dy1=0.000000 0.000000 dy2=0.051624 0.051624 sqrt= 0.051624 0.051624 
+dx1h=25.000000  dx1l=25.000000  el=0.050286  eh=0.050286 
+**myTGraphErrorsDivide:: 4 4 dy1=0.000000 0.000000 dy2=0.053666 0.053666 sqrt= 0.053666 0.053666 
+dx1h=25.000000  dx1l=25.000000  el=0.056786  eh=0.056786 
+**myTGraphErrorsDivide:: 5 5 dy1=0.000000 0.000000 dy2=0.064661 0.064661 sqrt= 0.064661 0.064661 
+dx1h=50.000000  dx1l=50.000000  el=0.070892  eh=0.070892 
+**myTGraphErrorsDivide:: 6 6 dy1=0.000000 0.000000 dy2=0.126270 0.126270 sqrt= 0.126270 0.126270 
+dx1h=225.000000  dx1l=225.000000  el=0.147752  eh=0.147752 
+ MyBand::ComputePDFBandRatio: rationamedefault= NNPDF23nlo_default
+ MyBand::ComputePDFBandRatio: gratiodefault: 
+x[0]=25, y[0]=0.997543, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=0.97757, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=0.956168, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=0.974082, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.05815, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=1.09636, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=1.17013, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+**myTGraphErrorsDivide:: 0 0 dy1=0.068638 0.031325 dy2=0.057245 0.057245 sqrt= 0.089377 0.065255 
+dx1h=25.000000  dx1l=25.000000  el=0.069532  eh=0.031733 
+**myTGraphErrorsDivide:: 1 1 dy1=0.069644 0.032563 dy2=0.021471 0.021471 sqrt= 0.072879 0.039004 
+dx1h=25.000000  dx1l=25.000000  el=0.068735  eh=0.032138 
+**myTGraphErrorsDivide:: 2 2 dy1=0.071510 0.035287 dy2=0.030529 0.030529 sqrt= 0.077754 0.046660 
+dx1h=25.000000  dx1l=25.000000  el=0.068143  eh=0.033625 
+**myTGraphErrorsDivide:: 3 3 dy1=0.068468 0.037056 dy2=0.051624 0.051624 sqrt= 0.085749 0.063546 
+dx1h=25.000000  dx1l=25.000000  el=0.065675  eh=0.035544 
+**myTGraphErrorsDivide:: 4 4 dy1=0.062294 0.038545 dy2=0.053666 0.053666 sqrt= 0.082222 0.066073 
+dx1h=25.000000  dx1l=25.000000  el=0.064155  eh=0.039696 
+**myTGraphErrorsDivide:: 5 5 dy1=0.048061 0.037826 dy2=0.064661 0.064661 sqrt= 0.080566 0.074912 
+dx1h=50.000000  dx1l=50.000000  el=0.050926  eh=0.040081 
+**myTGraphErrorsDivide:: 6 6 dy1=0.040251 0.035127 dy2=0.126270 0.126270 sqrt= 0.132530 0.131065 
+dx1h=225.000000  dx1l=225.000000  el=0.045924  eh=0.040077 
+ MyBand::ComputePDFBandRatio: rationame= HERAPDF15NLO_pdfband/MyData/datanew/atlas2012_5fb_top_ptt_ljet
+ MyBand::ComputePDFBandRatio: gratio: 
+x[0]=25, y[0]=1.01302, exl[0]=25, exh[0]=25, eyl[0]=0.0695323, eyh[0]=0.0317331
+x[1]=75, y[1]=0.986948, exl[1]=25, exh[1]=25, eyl[1]=0.0687354, eyh[1]=0.0321377
+x[2]=125, y[2]=0.952923, exl[2]=25, exh[2]=25, eyl[2]=0.0681432, eyh[2]=0.0336255
+x[3]=175, y[3]=0.959213, exl[3]=25, exh[3]=25, eyl[3]=0.0656755, eyh[3]=0.0355444
+x[4]=225, y[4]=1.02988, exl[4]=25, exh[4]=25, eyl[4]=0.0641549, eyh[4]=0.0396964
+x[5]=300, y[5]=1.0596, exl[5]=50, exh[5]=50, eyl[5]=0.0509258, eyh[5]=0.0400807
+x[6]=575, y[6]=1.14092, exl[6]=225, exh[6]=225, eyl[6]=0.0459235, eyh[6]=0.0400773
+**myTGraphErrorsDivide:: 0 0 dy1=0.000000 0.000000 dy2=0.057245 0.057245 sqrt= 0.057245 0.057245 
+dx1h=25.000000  dx1l=25.000000  el=0.057991  eh=0.057991 
+**myTGraphErrorsDivide:: 1 1 dy1=0.000000 0.000000 dy2=0.021471 0.021471 sqrt= 0.021471 0.021471 
+dx1h=25.000000  dx1l=25.000000  el=0.021191  eh=0.021191 
+**myTGraphErrorsDivide:: 2 2 dy1=0.000000 0.000000 dy2=0.030529 0.030529 sqrt= 0.030529 0.030529 
+dx1h=25.000000  dx1l=25.000000  el=0.029091  eh=0.029091 
+**myTGraphErrorsDivide:: 3 3 dy1=0.000000 0.000000 dy2=0.051624 0.051624 sqrt= 0.051624 0.051624 
+dx1h=25.000000  dx1l=25.000000  el=0.049518  eh=0.049518 
+**myTGraphErrorsDivide:: 4 4 dy1=0.000000 0.000000 dy2=0.053666 0.053666 sqrt= 0.053666 0.053666 
+dx1h=25.000000  dx1l=25.000000  el=0.055269  eh=0.055269 
+**myTGraphErrorsDivide:: 5 5 dy1=0.000000 0.000000 dy2=0.064661 0.064661 sqrt= 0.064661 0.064661 
+dx1h=50.000000  dx1l=50.000000  el=0.068514  eh=0.068514 
+**myTGraphErrorsDivide:: 6 6 dy1=0.000000 0.000000 dy2=0.126270 0.126270 sqrt= 0.126270 0.126270 
+dx1h=225.000000  dx1l=225.000000  el=0.144064  eh=0.144064 
+ MyBand::ComputePDFBandRatio: rationamedefault= HERAPDF15NLO_default
+ MyBand::ComputePDFBandRatio: gratiodefault: 
+x[0]=25, y[0]=1.01302, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=0.986948, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=0.952923, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=0.959213, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.02988, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=1.0596, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=1.14092, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+**myTGraphErrorsDivide:: 0 0 dy1=0.017289 0.013890 dy2=0.057245 0.057245 sqrt= 0.059799 0.058906 
+dx1h=25.000000  dx1l=25.000000  el=0.017151  eh=0.013779 
+**myTGraphErrorsDivide:: 1 1 dy1=0.018405 0.014713 dy2=0.021471 0.021471 sqrt= 0.028280 0.026028 
+dx1h=25.000000  dx1l=25.000000  el=0.017909  eh=0.014316 
+**myTGraphErrorsDivide:: 2 2 dy1=0.020603 0.016410 dy2=0.030529 0.030529 sqrt= 0.036831 0.034659 
+dx1h=25.000000  dx1l=25.000000  el=0.019667  eh=0.015664 
+**myTGraphErrorsDivide:: 3 3 dy1=0.023023 0.018536 dy2=0.051624 0.051624 sqrt= 0.056525 0.054851 
+dx1h=25.000000  dx1l=25.000000  el=0.022533  eh=0.018142 
+**myTGraphErrorsDivide:: 4 4 dy1=0.025760 0.021290 dy2=0.053666 0.053666 sqrt= 0.059528 0.057735 
+dx1h=25.000000  dx1l=25.000000  el=0.027646  eh=0.022849 
+**myTGraphErrorsDivide:: 5 5 dy1=0.028381 0.024457 dy2=0.064661 0.064661 sqrt= 0.070615 0.069131 
+dx1h=50.000000  dx1l=50.000000  el=0.031937  eh=0.027522 
+**myTGraphErrorsDivide:: 6 6 dy1=0.034283 0.031894 dy2=0.126270 0.126270 sqrt= 0.130841 0.130235 
+dx1h=225.000000  dx1l=225.000000  el=0.042360  eh=0.039408 
+ MyBand::ComputePDFBandRatio: rationame= MSTW2008nlo_pdfband/MyData/datanew/atlas2012_5fb_top_ptt_ljet
+ MyBand::ComputePDFBandRatio: gratio: 
+x[0]=25, y[0]=0.992008, exl[0]=25, exh[0]=25, eyl[0]=0.0171508, eyh[0]=0.0137794
+x[1]=75, y[1]=0.973035, exl[1]=25, exh[1]=25, eyl[1]=0.0179087, eyh[1]=0.014316
+x[2]=125, y[2]=0.95456, exl[2]=25, exh[2]=25, eyl[2]=0.019667, eyh[2]=0.0156641
+x[3]=175, y[3]=0.978735, exl[3]=25, exh[3]=25, eyl[3]=0.0225332, eyh[3]=0.0181422
+x[4]=225, y[4]=1.0732, exl[4]=25, exh[4]=25, eyl[4]=0.0276461, eyh[4]=0.022849
+x[5]=300, y[5]=1.1253, exl[5]=50, exh[5]=50, eyl[5]=0.0319374, eyh[5]=0.0275217
+x[6]=575, y[6]=1.2356, exl[6]=225, exh[6]=225, eyl[6]=0.0423605, eyh[6]=0.0394083
+**myTGraphErrorsDivide:: 0 0 dy1=0.000000 0.000000 dy2=0.057245 0.057245 sqrt= 0.057245 0.057245 
+dx1h=25.000000  dx1l=25.000000  el=0.056788  eh=0.056788 
+**myTGraphErrorsDivide:: 1 1 dy1=0.000000 0.000000 dy2=0.021471 0.021471 sqrt= 0.021471 0.021471 
+dx1h=25.000000  dx1l=25.000000  el=0.020892  eh=0.020892 
+**myTGraphErrorsDivide:: 2 2 dy1=0.000000 0.000000 dy2=0.030529 0.030529 sqrt= 0.030529 0.030529 
+dx1h=25.000000  dx1l=25.000000  el=0.029141  eh=0.029141 
+**myTGraphErrorsDivide:: 3 3 dy1=0.000000 0.000000 dy2=0.051624 0.051624 sqrt= 0.051624 0.051624 
+dx1h=25.000000  dx1l=25.000000  el=0.050526  eh=0.050526 
+**myTGraphErrorsDivide:: 4 4 dy1=0.000000 0.000000 dy2=0.053666 0.053666 sqrt= 0.053666 0.053666 
+dx1h=25.000000  dx1l=25.000000  el=0.057594  eh=0.057594 
+**myTGraphErrorsDivide:: 5 5 dy1=0.000000 0.000000 dy2=0.064661 0.064661 sqrt= 0.064661 0.064661 
+dx1h=50.000000  dx1l=50.000000  el=0.072763  eh=0.072763 
+**myTGraphErrorsDivide:: 6 6 dy1=0.000000 0.000000 dy2=0.126270 0.126270 sqrt= 0.126270 0.126270 
+dx1h=225.000000  dx1l=225.000000  el=0.156019  eh=0.156019 
+ MyBand::ComputePDFBandRatio: rationamedefault= MSTW2008nlo_default
+ MyBand::ComputePDFBandRatio: gratiodefault: 
+x[0]=25, y[0]=0.992008, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=0.973035, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=0.95456, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=0.978735, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.0732, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=1.1253, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=1.2356, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyBand::ComputePDFBandRatio finished 
+ MyCrossSection::Initialize: end of igrid loop
+ MyCrossSection::GetFrameNumber: frameid.size()= 2
+ MyCrossSection::GetFrameNumber: iframe= 0 found= 0
+ MyCrossSection::GetFrameNumber: iframe= 1 found= 0
+ MyCrossSection::GetFrameNumber: Number of frames= 2
+ MyCrossSection::Initialize: igrid= 0 iframe= 0 jframe= 0
+ MyCrossSection::Initialize: igrid= 0 push back this grid
+ MyCrossSection::Initialize: igrid= 1 iframe= 0 jframe= 1
+ MyCrossSection::Initialize: iframe= 0 push back this grid vector size= 1
+ MyCrossSection::Initialize: vigrid vector size= 1
+ MyCrossSection::Initialize: vigrid[0]=0
+ MyCrossSection::Initialize: print gridinframe.size()= 1
+ MyCrossSection::Initialize: gridinframe[0][0]= 0
+ MyCrossSection::Initialize: iframe= 0
+ MyCrossSection::Initialize: gridinframe[0].size()= 1
+ MyCrossSection::Initialize: gridinframe[0][0]= 0
+ MyCrossSection::Initialize: igrid= 0 iframe= 0 push ATLAS_2012_diffcross_mtt
+ MyCrossSection::Initialize: datascalex= 1.5 scaley= 2
+ MyCrossSection::Initialize: iframe= 0 xmin= 166.667 xmax= 4050 ymin= 0.00355 ymax= 5.52
+ MyCrossSection::GetFrameNumber: frameid.size()= 2
+ MyCrossSection::GetFrameNumber: iframe= 0 found= 0
+ MyCrossSection::GetFrameNumber: iframe= 1 found= 0
+ MyCrossSection::GetFrameNumber: Number of frames= 2
+ MyCrossSection::Initialize: igrid= 0 iframe= 1 jframe= 0
+ MyCrossSection::Initialize: igrid= 1 iframe= 1 jframe= 1
+ MyCrossSection::Initialize: igrid= 1 push back this grid
+ MyCrossSection::Initialize: iframe= 1 push back this grid vector size= 1
+ MyCrossSection::Initialize: vigrid vector size= 1
+ MyCrossSection::Initialize: vigrid[0]=1
+ MyCrossSection::Initialize: print gridinframe.size()= 2
+ MyCrossSection::Initialize: gridinframe[0][0]= 0
+ MyCrossSection::Initialize: gridinframe[1][0]= 1
+ MyCrossSection::Initialize: iframe= 1
+ MyCrossSection::Initialize: gridinframe[1].size()= 1
+ MyCrossSection::Initialize: gridinframe[1][0]= 1
+ MyCrossSection::Initialize: igrid= 1 iframe= 1 push ATLAS_2012_diffcross_ptt
+ MyCrossSection::Initialize: datascalex= 1.2 scaley= 2
+ MyCrossSection::Initialize: iframe= 1 xmin= 0 xmax= 960 ymin= 0.009 ymax= 13.4
+ MyCrossSection::GetFrameNumber: frameid.size()= 2
+ MyCrossSection::GetFrameNumber: iframe= 0 found= 0
+ MyCrossSection::GetFrameNumber: iframe= 1 found= 0
+ MyCrossSection::GetFrameNumber: Number of frames= 2
+ MyCrossSection::Initialize: finished  
+ MyCrossSection::Print: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    steering:          claire_steering_1.txt
+         subprocesssteername:                               
+                pdf_function:                               
+                Dir of grids:                              .
+                 Dir of data:                              .
+                Num of grids:                              2
+
+            INFO FOR GRID NUM:                             0
+             dataname.size():                              2
+             gridname.size():                              2
+                        grid: MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+                        data: MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+                       style:                             20
+                        color:                             1
+                      frameid:                             0
+                     divideid:                            -1
+
+            INFO FOR GRID NUM:                             1
+             dataname.size():                              2
+             gridname.size():                              2
+                        grid: MyGrids/top/mcfm/grid--TTbar_ptatlas.root
+                        data: MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt
+                       style:                             20
+                        color:                             1
+                      frameid:                             1
+                     divideid:                            -1
+ MyCrossSection::Print: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ MyCrossSection::Print: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    steering:          claire_steering_1.txt
+         subprocesssteername:                               
+                pdf_function:                               
+                Dir of grids:                              .
+                 Dir of data:                              .
+                Num of grids:                              2
+
+            INFO FOR GRID NUM:                             0
+             dataname.size():                              2
+             gridname.size():                              2
+                        grid: MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+                        data: MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+                       style:                             20
+                        color:                             1
+                      frameid:                             0
+                     divideid:                            -1
+
+            INFO FOR GRID NUM:                             1
+             dataname.size():                              2
+             gridname.size():                              2
+                        grid: MyGrids/top/mcfm/grid--TTbar_ptatlas.root
+                        data: MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt
+                       style:                             20
+                        color:                             1
+                      frameid:                             1
+                     divideid:                            -1
+ MyCrossSection::Print: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ MyCrossSection::GetFrameNumber: frameid.size()= 2
+ MyCrossSection::GetFrameNumber: iframe= 0 found= 0
+ MyCrossSection::GetFrameNumber: iframe= 1 found= 0
+ MyCrossSection::GetFrameNumber: Number of frames= 2
+plot: Number of frames= 2
+plot: DrawinFrame for 0
+ MyCrossSection::DrawInFrame: gridinframe[0].size()= 1
+ MyCrossSection::DrawInFrame: i= 0 igrid= 0 iframe= 0
+ MyCrossSection::DrawInFrame: plotting igrid= 0 in iframe= 0
+ MyCrossSection::DrawInFrame: frame= 0 xmin= 166.667 xmax= 4050 ymin= 0.00355 ymax= 5.52
+ MyCrossSection::DrawinFrame: number of grids= 1 for frame= 0
+ MyCrossSection::DrawinFrame: label= CT10
+ MyCrossSection::DrawinFrame: label= NNPDF23nlo
+ MyCrossSection::DrawinFrame: label= HERAPDF15NLO
+ MyCrossSection::DrawinFrame: label= MSTW2008nlo
+ MyCrossSection::DrawinFrame: xlegend= 0.9 ylegend= 0.9
+ MyCrossSection::DrawinFrame: namesize=13, npdf=4, x1=0.64, x2=0.9, y1=0.46, y2=0.9
+ MyCrossSection::DrawinFrame: for i= 0 igrid= 0
+ MyCrossSection::DrawinFrame: draw band igrid= 0
+ MyBand::DrawPDFBand: gpdfband.size()= 4, plotband=1, plotmarker=1
+ MyBand::DrawPDFBand: print gpdfband: ipdf= 0
+ MyBand::DrawPDFBand: gpdfdefault[0] Data: 
+x[0]=350, y[0]=2.42295, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.73176, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.04152, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.255008, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00902563, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyBand::DrawPDFBand: gpdfband[0] Data: 
+x[0]=350, y[0]=2.42295, exl[0]=100, exh[0]=100, eyl[0]=0.0771527, eyh[0]=0.0771527
+x[1]=500, y[1]=2.73176, exl[1]=50, exh[1]=50, eyl[1]=0.116666, eyh[1]=0.116666
+x[2]=625, y[2]=1.04152, exl[2]=75, exh[2]=75, eyl[2]=0.0578147, eyh[2]=0.0578147
+x[3]=825, y[3]=0.255008, exl[3]=125, exh[3]=125, eyl[3]=0.0192508, eyh[3]=0.0192508
+x[4]=1825, y[4]=0.00902563, exl[4]=875, exh[4]=875, eyl[4]=0.00106655, eyh[4]=0.00106655
+ MyBand::DrawPDFBand: print gpdfband: ipdf= 1
+ MyBand::DrawPDFBand: gpdfdefault[1] Data: 
+x[0]=350, y[0]=2.44122, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.74288, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.03405, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.246586, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00813689, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyBand::DrawPDFBand: gpdfband[1] Data: 
+x[0]=350, y[0]=2.44122, exl[0]=100, exh[0]=100, eyl[0]=0.0575699, eyh[0]=0.0575699
+x[1]=500, y[1]=2.74288, exl[1]=50, exh[1]=50, eyl[1]=0.0836994, eyh[1]=0.0836994
+x[2]=625, y[2]=1.03405, exl[2]=75, exh[2]=75, eyl[2]=0.0399175, eyh[2]=0.0399175
+x[3]=825, y[3]=0.246586, exl[3]=125, exh[3]=125, eyl[3]=0.0126184, eyh[3]=0.0126184
+x[4]=1825, y[4]=0.00813689, exl[4]=875, exh[4]=875, eyl[4]=0.000627519, eyh[4]=0.000627519
+ MyBand::DrawPDFBand: print gpdfband: ipdf= 2
+ MyBand::DrawPDFBand: gpdfdefault[2] Data: 
+x[0]=350, y[0]=2.50631, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.72896, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=0.997829, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.228745, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00714944, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyBand::DrawPDFBand: gpdfband[2] Data: 
+x[0]=350, y[0]=2.50631, exl[0]=100, exh[0]=100, eyl[0]=0.156896, eyh[0]=0.0705701
+x[1]=500, y[1]=2.72896, exl[1]=50, exh[1]=50, eyl[1]=0.198461, eyh[1]=0.0979604
+x[2]=625, y[2]=0.997829, exl[2]=75, exh[2]=75, eyl[2]=0.0766468, eyh[2]=0.0428414
+x[3]=825, y[3]=0.228745, exl[3]=125, exh[3]=125, eyl[3]=0.0168393, eyh[3]=0.0115925
+x[4]=1825, y[4]=0.00714944, exl[4]=875, exh[4]=875, eyl[4]=0.000372558, eyh[4]=0.000400905
+ MyBand::DrawPDFBand: print gpdfband: ipdf= 3
+ MyBand::DrawPDFBand: gpdfdefault[3] Data: 
+x[0]=350, y[0]=2.42638, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=2.73591, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.04082, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.253018, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=0.00873678, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyBand::DrawPDFBand: gpdfband[3] Data: 
+x[0]=350, y[0]=2.42638, exl[0]=100, exh[0]=100, eyl[0]=0.0379875, eyh[0]=0.0307742
+x[1]=500, y[1]=2.73591, exl[1]=50, exh[1]=50, eyl[1]=0.057171, eyh[1]=0.0455327
+x[2]=625, y[2]=1.04082, exl[2]=75, exh[2]=75, eyl[2]=0.027247, eyh[2]=0.0220173
+x[3]=825, y[3]=0.253018, exl[3]=125, exh[3]=125, eyl[3]=0.00848962, eyh[3]=0.0071639
+x[4]=1825, y[4]=0.00873678, exl[4]=875, exh[4]=875, eyl[4]=0.0004156, eyh[4]=0.000375198
+ MyPDFBand::DrawPDFBand finished 
+ MyCrossSection::DrawinFrame: mydata[0]  found 
+ MyCrossSection::DoubleDataSetName:  dataname[0]= MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::DoubleDataSetName:  dataname[1]= MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt
+ MyCrossSection::DrawinFrame: plot data MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::DrawinFrame: mylabel= ATLAS 2014
+ MyCrossSection::DrawinFrame: npdf= 4
+ MyCrossSection::DrawinFrame: vpdfchi2.size()= 2
+ MyCrossSection::DrawinFrame: vpdfchi2.at(0).size()= 4
+ MyCrossSection::DrawinFrame: pdfname= CT10
+ MyCrossSection::DrawinFrame: pdfname= NNPDF23nlo
+ MyCrossSection::DrawinFrame: pdfname= HERAPDF15NLO
+ MyCrossSection::DrawinFrame: pdfname= MSTW2008nlo
+ MyCrossSection::DrawinFrame: npdf= 4
+ MyCrossSection::DrawinFrame: gridinframe[0][0] = 0 Draw reference for igrid= 0
+ MyBand::ComputePDFBandRatioRange:number of pdfs= 4
+ MyBand::ComputePDFBandRatioRange: ymin= 0.912061 ymax= 1.42143
+ MyCrossSection::DrawinFrame: 4 PDF's listed!
+ MyCrossSection::DrawinFrame: Ymin= 0.912061 Ymax= 1.42143
+ MyCrossSection::DrawinFrame: Ymin= 0.912061 Ymax= 1.42143
+ MyCrossSection::DrawinFrame: Ymin= 0.912061 Ymax= 1.42143
+ MyCrossSection::DrawinFrame: at i='0' of gridinframe[0].size='1', igrid='0'
+ MyCrossSection::DrawinFrame: Drawing ratiodata for '0'
+ MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= 0
+ MyBand::DrawPDFBandRatio: gpdfband.size()= 4, plotband=1, plotmarker=1
+ MyBand::DrawPDFBandRatio: ipdf= 0
+ MyBand::DrawPDFBandandRatio: gpdfdefaultratio[0] Data: 
+x[0]=350, y[0]=0.961487, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=0.989767, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.03121, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=1.10873, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=1.27122, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyBand::DrawPDFBandandRatio: gpdfbandratio[0] Data: 
+x[0]=350, y[0]=0.961487, exl[0]=100, exh[0]=100, eyl[0]=0.0306161, eyh[0]=0.0306161
+x[1]=500, y[1]=0.989767, exl[1]=50, exh[1]=50, eyl[1]=0.0422702, eyh[1]=0.0422702
+x[2]=625, y[2]=1.03121, exl[2]=75, exh[2]=75, eyl[2]=0.0572423, eyh[2]=0.0572423
+x[3]=825, y[3]=1.10873, exl[3]=125, exh[3]=125, eyl[3]=0.0836993, eyh[3]=0.0836993
+x[4]=1825, y[4]=1.27122, exl[4]=875, exh[4]=875, eyl[4]=0.150219, eyh[4]=0.150219
+ MyBand::DrawPDFBandRatio: ipdf= 1
+ MyBand::DrawPDFBandandRatio: gpdfdefaultratio[1] Data: 
+x[0]=350, y[0]=0.968739, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=0.993799, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.02382, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=1.07211, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=1.14604, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyBand::DrawPDFBandandRatio: gpdfbandratio[1] Data: 
+x[0]=350, y[0]=0.968739, exl[0]=100, exh[0]=100, eyl[0]=0.0228452, eyh[0]=0.0228452
+x[1]=500, y[1]=0.993799, exl[1]=50, exh[1]=50, eyl[1]=0.0303259, eyh[1]=0.0303259
+x[2]=625, y[2]=1.02382, exl[2]=75, exh[2]=75, eyl[2]=0.0395223, eyh[2]=0.0395223
+x[3]=825, y[3]=1.07211, exl[3]=125, exh[3]=125, eyl[3]=0.0548628, eyh[3]=0.0548628
+x[4]=1825, y[4]=1.14604, exl[4]=875, exh[4]=875, eyl[4]=0.088383, eyh[4]=0.088383
+ MyBand::DrawPDFBandRatio: ipdf= 2
+ MyBand::DrawPDFBandandRatio: gpdfdefaultratio[2] Data: 
+x[0]=350, y[0]=0.994569, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=0.988755, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=0.987949, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=0.994544, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=1.00696, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyBand::DrawPDFBandandRatio: gpdfbandratio[2] Data: 
+x[0]=350, y[0]=0.994569, exl[0]=100, exh[0]=100, eyl[0]=0.0622602, eyh[0]=0.028004
+x[1]=500, y[1]=0.988755, exl[1]=50, exh[1]=50, eyl[1]=0.0719063, eyh[1]=0.0354929
+x[2]=625, y[2]=0.987949, exl[2]=75, exh[2]=75, eyl[2]=0.0758879, eyh[2]=0.0424172
+x[3]=825, y[3]=0.994544, exl[3]=125, exh[3]=125, eyl[3]=0.0732144, eyh[3]=0.050402
+x[4]=1825, y[4]=1.00696, exl[4]=875, exh[4]=875, eyl[4]=0.0524729, eyh[4]=0.0564655
+ MyBand::DrawPDFBandRatio: ipdf= 3
+ MyBand::DrawPDFBandandRatio: gpdfdefaultratio[3] Data: 
+x[0]=350, y[0]=0.962851, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=0.991272, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.03052, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=1.10008, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=1.23053, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyBand::DrawPDFBandandRatio: gpdfbandratio[3] Data: 
+x[0]=350, y[0]=0.962851, exl[0]=100, exh[0]=100, eyl[0]=0.0150744, eyh[0]=0.012212
+x[1]=500, y[1]=0.991272, exl[1]=50, exh[1]=50, eyl[1]=0.0207141, eyh[1]=0.0164973
+x[2]=625, y[2]=1.03052, exl[2]=75, exh[2]=75, eyl[2]=0.0269772, eyh[2]=0.0217993
+x[3]=825, y[3]=1.10008, exl[3]=125, exh[3]=125, eyl[3]=0.0369114, eyh[3]=0.0311474
+x[4]=1825, y[4]=1.23053, exl[4]=875, exh[4]=875, eyl[4]=0.0585352, eyh[4]=0.0528448
+ MyCrossSection::DrawInFrame: End of DrawInFrame
+plot: After DrawinFrame for iframe= 0
+plot: DrawinFrame for 1
+ MyCrossSection::DrawInFrame: gridinframe[1].size()= 1
+ MyCrossSection::DrawInFrame: i= 0 igrid= 1 iframe= 1
+ MyCrossSection::DrawInFrame: plotting igrid= 1 in iframe= 1
+ MyCrossSection::DrawInFrame: frame= 1 xmin= 0 xmax= 960 ymin= 0.009 ymax= 13.4
+ MyCrossSection::DrawinFrame: number of grids= 1 for frame= 1
+ MyCrossSection::DrawinFrame: label= CT10
+ MyCrossSection::DrawinFrame: label= NNPDF23nlo
+ MyCrossSection::DrawinFrame: label= HERAPDF15NLO
+ MyCrossSection::DrawinFrame: label= MSTW2008nlo
+ MyCrossSection::DrawinFrame: xlegend= 0.9 ylegend= 0.9
+ MyCrossSection::DrawinFrame: namesize=13, npdf=4, x1=0.64, x2=0.9, y1=0.46, y2=0.9
+ MyCrossSection::DrawinFrame: for i= 0 igrid= 1
+ MyCrossSection::DrawinFrame: draw band igrid= 1
+ MyBand::DrawPDFBand: gpdfband.size()= 4, plotband=1, plotmarker=1
+ MyBand::DrawPDFBand: print gpdfband: ipdf= 0
+ MyBand::DrawPDFBand: gpdfdefault[0] Data: 
+x[0]=25, y[0]=3.3669, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.51267, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.05281, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.54719, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.2071, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.363205, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0228295, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyBand::DrawPDFBand: gpdfband[0] Data: 
+x[0]=25, y[0]=3.3669, exl[0]=25, exh[0]=25, eyl[0]=0.116078, eyh[0]=0.116078
+x[1]=75, y[1]=6.51267, exl[1]=25, exh[1]=25, eyl[1]=0.241519, eyh[1]=0.241519
+x[2]=125, y[2]=5.05281, exl[2]=25, exh[2]=25, eyl[2]=0.213174, eyh[2]=0.213174
+x[3]=175, y[3]=2.54719, exl[3]=25, exh[3]=25, eyl[3]=0.124441, eyh[3]=0.124441
+x[4]=225, y[4]=1.2071, exl[4]=25, exh[4]=25, eyl[4]=0.0696602, eyh[4]=0.0696602
+x[5]=300, y[5]=0.363205, exl[5]=50, exh[5]=50, eyl[5]=0.0243835, eyh[5]=0.0243835
+x[6]=575, y[6]=0.0228295, exl[6]=225, exh[6]=225, eyl[6]=0.00204604, eyh[6]=0.00204604
+ MyBand::DrawPDFBand: print gpdfband: ipdf= 1
+ MyBand::DrawPDFBand: gpdfdefault[1] Data: 
+x[0]=25, y[0]=3.39165, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.54972, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.06769, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.53261, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.18513, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.350836, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0210623, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyBand::DrawPDFBand: gpdfband[1] Data: 
+x[0]=25, y[0]=3.39165, exl[0]=25, exh[0]=25, eyl[0]=0.0863095, eyh[0]=0.0863095
+x[1]=75, y[1]=6.54972, exl[1]=25, exh[1]=25, eyl[1]=0.177108, eyh[1]=0.177108
+x[2]=125, y[2]=5.06769, exl[2]=25, exh[2]=25, eyl[2]=0.152715, eyh[2]=0.152715
+x[3]=175, y[3]=2.53261, exl[3]=25, exh[3]=25, eyl[3]=0.086415, eyh[3]=0.086415
+x[4]=225, y[4]=1.18513, exl[4]=25, exh[4]=25, eyl[4]=0.0463587, eyh[4]=0.0463587
+x[5]=300, y[5]=0.350836, exl[5]=50, exh[5]=50, eyl[5]=0.0155259, eyh[5]=0.0155259
+x[6]=575, y[6]=0.0210623, exl[6]=225, exh[6]=225, eyl[6]=0.00118634, eyh[6]=0.00118634
+ MyBand::DrawPDFBand: print gpdfband: ipdf= 2
+ MyBand::DrawPDFBand: gpdfdefault[2] Data: 
+x[0]=25, y[0]=3.44428, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.61255, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.05049, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.49395, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.15347, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.339072, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0205366, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyBand::DrawPDFBand: gpdfband[2] Data: 
+x[0]=25, y[0]=3.44428, exl[0]=25, exh[0]=25, eyl[0]=0.23641, eyh[0]=0.107893
+x[1]=75, y[1]=6.61255, exl[1]=25, exh[1]=25, eyl[1]=0.460527, eyh[1]=0.215322
+x[2]=125, y[2]=5.05049, exl[2]=25, exh[2]=25, eyl[2]=0.361159, eyh[2]=0.178215
+x[3]=175, y[3]=2.49395, exl[3]=25, exh[3]=25, eyl[3]=0.170756, eyh[3]=0.0924155
+x[4]=225, y[4]=1.15347, exl[4]=25, exh[4]=25, eyl[4]=0.0718535, eyh[4]=0.0444599
+x[5]=300, y[5]=0.339072, exl[5]=50, exh[5]=50, eyl[5]=0.0162963, eyh[5]=0.0128258
+x[6]=575, y[6]=0.0205366, exl[6]=225, exh[6]=225, eyl[6]=0.000826624, eyh[6]=0.000721392
+ MyBand::DrawPDFBand: print gpdfband: ipdf= 3
+ MyBand::DrawPDFBand: gpdfdefault[3] Data: 
+x[0]=25, y[0]=3.37283, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=6.51933, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=5.05917, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=2.54471, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.20199, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=0.360097, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=0.0222409, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyBand::DrawPDFBand: gpdfband[3] Data: 
+x[0]=25, y[0]=3.37283, exl[0]=25, exh[0]=25, eyl[0]=0.0583128, eyh[0]=0.04685
+x[1]=75, y[1]=6.51933, exl[1]=25, exh[1]=25, eyl[1]=0.119989, eyh[1]=0.0959172
+x[2]=125, y[2]=5.05917, exl[2]=25, exh[2]=25, eyl[2]=0.104235, eyh[2]=0.0830196
+x[3]=175, y[3]=2.54471, exl[3]=25, exh[3]=25, eyl[3]=0.0585864, eyh[3]=0.0471698
+x[4]=225, y[4]=1.20199, exl[4]=25, exh[4]=25, eyl[4]=0.0309636, eyh[4]=0.0255909
+x[5]=300, y[5]=0.360097, exl[5]=50, exh[5]=50, eyl[5]=0.01022, eyh[5]=0.00880696
+x[6]=575, y[6]=0.0222409, exl[6]=225, exh[6]=225, eyl[6]=0.000762488, eyh[6]=0.000709349
+ MyPDFBand::DrawPDFBand finished 
+ MyCrossSection::DrawinFrame: mydata[1]  found 
+ MyCrossSection::DrawinFrame: plot data MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt
+ MyCrossSection::DrawinFrame: mylabel= ATLAS 2014
+ MyCrossSection::DrawinFrame: npdf= 4
+ MyCrossSection::DrawinFrame: vpdfchi2.size()= 2
+ MyCrossSection::DrawinFrame: vpdfchi2.at(1).size()= 4
+ MyCrossSection::DrawinFrame: pdfname= CT10
+ MyCrossSection::DrawinFrame: pdfname= NNPDF23nlo
+ MyCrossSection::DrawinFrame: pdfname= HERAPDF15NLO
+ MyCrossSection::DrawinFrame: pdfname= MSTW2008nlo
+ MyCrossSection::DrawinFrame: npdf= 4
+ MyCrossSection::DrawinFrame: gridinframe[1][0] = 1 Draw reference for igrid= 1
+ MyBand::ComputePDFBandRatioRange:number of pdfs= 4
+ MyBand::ComputePDFBandRatioRange: ymin= 0.88478 ymax= 1.38197
+ MyCrossSection::DrawinFrame: 4 PDF's listed!
+ MyCrossSection::DrawinFrame: Ymin= 0.88478 Ymax= 1.38197
+ MyCrossSection::DrawinFrame: Ymin= 0.88478 Ymax= 1.38197
+ MyCrossSection::DrawinFrame: Ymin= 0.88478 Ymax= 1.38197
+ MyCrossSection::DrawinFrame: at i='0' of gridinframe[1].size='1', igrid='1'
+ MyCrossSection::DrawinFrame: Drawing ratiodata for '1'
+ MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= 1
+ MyBand::DrawPDFBandRatio: gpdfband.size()= 4, plotband=1, plotmarker=1
+ MyBand::DrawPDFBandRatio: ipdf= 0
+ MyBand::DrawPDFBandandRatio: gpdfdefaultratio[0] Data: 
+x[0]=25, y[0]=0.990266, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=0.972041, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=0.95336, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=0.979687, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.07777, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=1.13501, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=1.2683, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyBand::DrawPDFBandandRatio: gpdfbandratio[0] Data: 
+x[0]=25, y[0]=0.990266, exl[0]=25, exh[0]=25, eyl[0]=0.0341407, eyh[0]=0.0341407
+x[1]=75, y[1]=0.972041, exl[1]=25, exh[1]=25, eyl[1]=0.0360477, eyh[1]=0.0360477
+x[2]=125, y[2]=0.95336, exl[2]=25, exh[2]=25, eyl[2]=0.0402216, eyh[2]=0.0402216
+x[3]=175, y[3]=0.979687, exl[3]=25, exh[3]=25, eyl[3]=0.0478619, eyh[3]=0.0478619
+x[4]=225, y[4]=1.07777, exl[4]=25, exh[4]=25, eyl[4]=0.0621966, eyh[4]=0.0621966
+x[5]=300, y[5]=1.13501, exl[5]=50, exh[5]=50, eyl[5]=0.0761984, eyh[5]=0.0761984
+x[6]=575, y[6]=1.2683, exl[6]=225, exh[6]=225, eyl[6]=0.113669, eyh[6]=0.113669
+ MyBand::DrawPDFBandRatio: ipdf= 1
+ MyBand::DrawPDFBandandRatio: gpdfdefaultratio[1] Data: 
+x[0]=25, y[0]=0.997543, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=0.97757, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=0.956168, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=0.974082, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.05815, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=1.09636, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=1.17013, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyBand::DrawPDFBandandRatio: gpdfbandratio[1] Data: 
+x[0]=25, y[0]=0.997543, exl[0]=25, exh[0]=25, eyl[0]=0.0253851, eyh[0]=0.0253851
+x[1]=75, y[1]=0.97757, exl[1]=25, exh[1]=25, eyl[1]=0.026434, eyh[1]=0.026434
+x[2]=125, y[2]=0.956168, exl[2]=25, exh[2]=25, eyl[2]=0.0288142, eyh[2]=0.0288142
+x[3]=175, y[3]=0.974082, exl[3]=25, exh[3]=25, eyl[3]=0.0332365, eyh[3]=0.0332365
+x[4]=225, y[4]=1.05815, exl[4]=25, exh[4]=25, eyl[4]=0.0413917, eyh[4]=0.0413917
+x[5]=300, y[5]=1.09636, exl[5]=50, exh[5]=50, eyl[5]=0.0485183, eyh[5]=0.0485183
+x[6]=575, y[6]=1.17013, exl[6]=225, exh[6]=225, eyl[6]=0.0659078, eyh[6]=0.0659078
+ MyBand::DrawPDFBandRatio: ipdf= 2
+ MyBand::DrawPDFBandandRatio: gpdfdefaultratio[2] Data: 
+x[0]=25, y[0]=1.01302, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=0.986948, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=0.952923, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=0.959213, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.02988, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=1.0596, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=1.14092, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyBand::DrawPDFBandandRatio: gpdfbandratio[2] Data: 
+x[0]=25, y[0]=1.01302, exl[0]=25, exh[0]=25, eyl[0]=0.0695323, eyh[0]=0.0317331
+x[1]=75, y[1]=0.986948, exl[1]=25, exh[1]=25, eyl[1]=0.0687354, eyh[1]=0.0321377
+x[2]=125, y[2]=0.952923, exl[2]=25, exh[2]=25, eyl[2]=0.0681432, eyh[2]=0.0336255
+x[3]=175, y[3]=0.959213, exl[3]=25, exh[3]=25, eyl[3]=0.0656755, eyh[3]=0.0355444
+x[4]=225, y[4]=1.02988, exl[4]=25, exh[4]=25, eyl[4]=0.0641549, eyh[4]=0.0396964
+x[5]=300, y[5]=1.0596, exl[5]=50, exh[5]=50, eyl[5]=0.0509258, eyh[5]=0.0400807
+x[6]=575, y[6]=1.14092, exl[6]=225, exh[6]=225, eyl[6]=0.0459235, eyh[6]=0.0400773
+ MyBand::DrawPDFBandRatio: ipdf= 3
+ MyBand::DrawPDFBandandRatio: gpdfdefaultratio[3] Data: 
+x[0]=25, y[0]=0.992008, exl[0]=25, exh[0]=25, eyl[0]=0, eyh[0]=0
+x[1]=75, y[1]=0.973035, exl[1]=25, exh[1]=25, eyl[1]=0, eyh[1]=0
+x[2]=125, y[2]=0.95456, exl[2]=25, exh[2]=25, eyl[2]=0, eyh[2]=0
+x[3]=175, y[3]=0.978735, exl[3]=25, exh[3]=25, eyl[3]=0, eyh[3]=0
+x[4]=225, y[4]=1.0732, exl[4]=25, exh[4]=25, eyl[4]=0, eyh[4]=0
+x[5]=300, y[5]=1.1253, exl[5]=50, exh[5]=50, eyl[5]=0, eyh[5]=0
+x[6]=575, y[6]=1.2356, exl[6]=225, exh[6]=225, eyl[6]=0, eyh[6]=0
+ MyBand::DrawPDFBandandRatio: gpdfbandratio[3] Data: 
+x[0]=25, y[0]=0.992008, exl[0]=25, exh[0]=25, eyl[0]=0.0171508, eyh[0]=0.0137794
+x[1]=75, y[1]=0.973035, exl[1]=25, exh[1]=25, eyl[1]=0.0179087, eyh[1]=0.014316
+x[2]=125, y[2]=0.95456, exl[2]=25, exh[2]=25, eyl[2]=0.019667, eyh[2]=0.0156641
+x[3]=175, y[3]=0.978735, exl[3]=25, exh[3]=25, eyl[3]=0.0225332, eyh[3]=0.0181422
+x[4]=225, y[4]=1.0732, exl[4]=25, exh[4]=25, eyl[4]=0.0276461, eyh[4]=0.022849
+x[5]=300, y[5]=1.1253, exl[5]=50, exh[5]=50, eyl[5]=0.0319374, eyh[5]=0.0275217
+x[6]=575, y[6]=1.2356, exl[6]=225, exh[6]=225, eyl[6]=0.0423605, eyh[6]=0.0394083
+ MyCrossSection::DrawInFrame: End of DrawInFrame
+plot: After DrawinFrame for iframe= 1

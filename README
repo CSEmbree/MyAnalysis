@@ -54,14 +54,19 @@ local source of 'setup.sh'
 Executable takes 1 parameters:
 1 - steering file
 
+A steering file should emulate what can be found 
+in the example steering file called 
+'STEERING_EXAMPLE.txt', found at:
 
-Output will show up in root, so you will need X11 
-forwarding if you are sshing in.
+  /afs/cern.ch/user/c/cembree/public/workspace/MyAnalysis/STEERING_EXAMPLE.txt
 
-EX: ssh -X username@lxplus.cern.ch
+Output will show  in root, so you will need X11 
+forwarding if you are sshing in, which looks
+something life:
 
+  ssh -X username@lxplus.cern.ch
 
 EXAMPLE RUN(S):
   ./plot atlas2012_top.txt
-
+  ./plot STEERING_EXAMPLE.txt
 

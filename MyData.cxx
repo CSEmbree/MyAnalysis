@@ -505,6 +505,7 @@ void MyData::ReadData(string fname, string dir, double myscale){
      if (minx>xl) minx=xl;
      if (maxx<xh) maxx=xh;
 
+
      float x= (xh+xl)/2.;
      float b= (xh-xl)/2.;
 

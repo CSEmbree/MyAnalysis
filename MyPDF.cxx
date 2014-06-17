@@ -298,13 +298,22 @@ void MyPDF::Initialize()
    if (TString(PDFtype).Contains("HERA") || TString(PDFtype).Contains("ATLAS") ){ 
     if (!includeEIG&&!includeQUAD&&!includeMAX) cout<<" MyPDF::Initialize: no error band included !! "<<endl;
     if (debug) cout<<" MyPDF::Initialize: initPDFSet "<<PDFname.c_str()<<" pdferri= "<<pdferri<<endl;
-    if (defaultpdfidvar<0) cout<<" MyPDF::Initialize: something is wrong pdferri= "<<pdferri<<endl;
+    if (defaultpdfidvar<0) cout<<" MyPDF::Initialize: No default PDF id found in steering. Check steering for missing 'defaultpdfidvar'. pdferri= "<<pdferri<<endl;
     if (pdferri <= lasteig ) {
      LHAPDF::initPDF(pdferri);
     } else if( pdferri == lasteig+1 ) { 
+      
+      //account for PDF set "ATLAS.txt" and "ATLAS3jet" with no error bands?
+      if (debug) std::cout<<" MyPDF::Initialize: A 'PDFnamevar' was "
+			  <<(PDFnamevar.empty()? "":"NOT")
+			  <<" found."<<std::endl;
 
-      TString pdfname=TString(pdfSetPath)+"/"+PDFnamevar+".LHgrid";
-      LHAPDF::initPDFSet(pdfname.Data(), defaultpdfidvar);
+      //Band-aid for accounting for no error bands - This needs to be handled better
+      if(PDFnamevar.empty() == false) {
+	TString pdfname=TString(pdfSetPath)+"/"+PDFnamevar+".LHgrid";
+	LHAPDF::initPDFSet(pdfname.Data(), defaultpdfidvar);
+      }
+      
     } else if ( pdferri > lasteig+1 ) {
      if (debug) cout<<" MyPDF::Initialize: initPDF set= "<<pdferri-lasteig<<endl;
      LHAPDF::initPDF(pdferri - lasteig);
