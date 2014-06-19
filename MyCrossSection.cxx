@@ -35,7 +35,9 @@ MyCrossSection::MyCrossSection(char name[100])
 
   plotchi2=false;
   plotmarker=false;
-  plotband=true;
+  plotband=false;
+  ploterrorticks=false;
+  staggerpdfpoints=false;
 
   pdf_function="";
   subprocesssteername="";
@@ -95,13 +97,18 @@ void MyCrossSection::Initialize() {
   for (int  igrid = 0; igrid < gridname.size(); igrid++) {
 
     MyBand *mybandtmp= new MyBand();
-    if (plotband)   mybandtmp->SetPlotBand();
+    if (ploterrorticks) mybandtmp->SetErrorTicks(); 
+    if (plotband) mybandtmp->SetPlotBand();
     if (plotmarker) {
       mybandtmp->SetPlotMarker();
       if (debug) cout<<" MyCrossSection::Initialize: Plotmaker ON move points "<<endl;
       mybandtmp->MovePDFPoints();
     }
+    if (staggerpdfpoints) mybandtmp->SetStaggerPDFPoints();
+
+
     myband.push_back(mybandtmp);
+
 
     if (debug) cout<<" MyCrossSection::Initialize: Data "<<this->GetDataName(igrid)<<endl;
     if (this->GetDataOk(igrid)) {
@@ -563,7 +570,15 @@ void MyCrossSection::ReadSteering(char fname[100]){
 	ratiotitlelabel=name;
       } else if (strstr(line,"plotmarker")!=0) {
 	plotmarker=true;
-	plotband=false;
+	//plotband=false;
+      } else if (strstr(line,"plotband")!=0) {
+	plotband=true;
+      } else if (strstr(line,"ploterrorticks")!=0) {
+	ploterrorticks=true;
+	//cout<<"TEST: ploterrorticks found!"<<endl;
+      } else if (strstr(line,"staggerpdfpoints")!=0) {
+	staggerpdfpoints=true;
+	//cout<<"TEST: staggerpdfpoints found!"<<endl;
       } else if (strstr(line,"plotchi2")!=0) {
 	plotchi2=true;
       } else if (strstr(line,"ntupname")!=0) {

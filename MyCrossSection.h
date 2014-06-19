@@ -24,9 +24,11 @@ class MyCrossSection {
   string glabel;
 
   bool plotchi2;
-  bool plotmarker;
-  bool plotband;
-           
+  bool plotmarker;       // flag for plotting marker points on PDF data
+  bool plotband;         // flag for plotting error bars on PDF data
+  bool ploterrorticks;   // small perpendicular lines at end of error bars
+  bool staggerpdfpoints; // shift pdf points horizontally for readability
+
   //string ntupdirinput;
   //string ntupdiroutput;
 

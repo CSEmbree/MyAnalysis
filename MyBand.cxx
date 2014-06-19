@@ -13,8 +13,10 @@ MyBand::MyBand()
  // constructor to make Band
  //
  debug=true;
- plotband=true;
+ plotband=false;
  plotmarker=false;
+ ploterrorticks=false;
+ staggerpdfpoints=false;
 
  gpdfbandratio.clear();
  gpdfband.clear(); 
@@ -23,7 +25,6 @@ MyBand::MyBand()
 
   yminratio=0.;
   ymaxratio=0.;
-
 }
 
 
@@ -34,12 +35,21 @@ void MyBand::DrawPDFBandRatio()
 		 <<", plotmarker="<<plotmarker<<endl;
 
 
+ // stagger horizontal position of pdf points for readability
+ if (staggerpdfpoints)  {
+   cout<<"STAGGERING!"<<endl;
+   MovePDFPoints();
+ } else{
+   cout<<"NOT STAGGERING"<<endl;
+ }
+ 
 
  // plot each pdf info onto ratio
  for (int ipdf = 0; ipdf <  gpdfbandratio.size(); ipdf++) {
    if (debug) cout<<" MyBand::DrawPDFBandRatio: ipdf= "<<ipdf<<endl;
 
-   // Part 1 of 2) draw default lines in case no draw parameters like 'plotmarker' are set 
+   
+   //Part 1 of 2) draw default lines in case no draw parameters like 'plotmarker' are set 
    // ensure default ratio data is available
    if (!gpdfdefaultratio.at(ipdf)) {
      cout<<" MyBand::DrawPDFBandandRatio: WARNING: gpdfdefaultratio not found ! "<<endl;
@@ -54,11 +64,15 @@ void MyBand::DrawPDFBandRatio()
    // always print a default error for each PDF
    // colors and settings set in 'ComputePDFBandRatio(TGraphAsymmErrors *gref) 
    gpdfdefaultratio.at(ipdf)->SetMarkerSize(0);
-   gpdfdefaultratio.at(ipdf)->Draw("P1Z,same"); //P1X - turns off error end ticks  
    
-   
+   // allow small perpednicular lines at end of error bar to be on or off on default
+   if (ploterrorticks) gpdfdefaultratio.at(ipdf)->Draw("P,same");
+   else                gpdfdefaultratio.at(ipdf)->Draw("PZ,same");
+ 
 
-   // Part 2 of 2) draw additional data lines based on extra parameters
+
+
+   //Part 2 of 2) draw additional data lines based on steering parameters
    // ensure sure band ratio data was provided
    if (!gpdfbandratio.at(ipdf)) {
      cout<<" MyBand::DrawPDFBandandRatio: WARNING: gpdfbandratio not found ! "<<endl;
@@ -70,78 +84,85 @@ void MyBand::DrawPDFBandRatio()
      gpdfbandratio.at(ipdf)->Print("");
    }
 
-   // draw based on user steering flags
-   // include an error band if user steering requests
-   if (plotband) gpdfbandratio.at(ipdf)->Draw("E1Z,same"); //E2-error bars w/ rectangles (E5-for borders)
-   
-   // include a plot marker if user steering requests
-   if (plotmarker) gpdfbandratio.at(ipdf)->Draw("P0Z,same"); // P0-Just a point
+   // plot data based on style's requested in steering
+   TString bandratiostyle = GetBandRatioStyle(); // determine style
+   gpdfbandratio.at(ipdf)->Draw(bandratiostyle); // plot based on style
  }
+
  return;
 }
 
 
 void MyBand::DrawPDFBand() 
 {
- if (debug) cout <<" MyBand::DrawPDFBand: gpdfband.size()= " << gpdfband.size()
-		 <<", plotband="<<plotband
-		 <<", plotmarker="<<plotmarker<<endl;
+  if (debug) cout <<" MyBand::DrawPDFBand: gpdfband.size()= " << gpdfband.size()
+		  <<", plotband="<<plotband
+		  <<", plotmarker="<<plotmarker<<endl;
+  
 
-
- // plot PDF info for overlay
- for (int ipdf = 0; ipdf <  gpdfband.size(); ipdf++) {
-   if (debug) cout<<" MyBand::DrawPDFBand: print gpdfband: ipdf= "<<ipdf<<endl;
-
-   // Part 1 of 2) draw default lines in case no draw parameters like 'plotmarker' are set 
-   // ensure default ratio data is available
-   if (!gpdfdefault.at(ipdf)) {
-     cout<<" MyBand::DrawPDFBand: WARNING: gpdfdefault not found ! "<<endl;
-     return;
-   }
-   
-   if (debug) { 
-     cout<<" MyBand::DrawPDFBand: gpdfdefault["<<ipdf<<"] Data: "<<endl;
-     gpdfdefault.at(ipdf)->Print("");
-   }
-
-   //always draw default plot info in case extra settings like 'plotband' or 'plotmarker' are not set
-   //set default color to be displayed
-   gpdfdefault.at(ipdf)->SetMarkerSize(0);
-   gpdfdefault.at(ipdf)->SetMarkerStyle(gpdfband.at(ipdf)->GetMarkerStyle()); //TEST
-   gpdfdefault.at(ipdf)->SetMarkerColor(gpdfband.at(ipdf)->GetMarkerColor()); //TEST
-   gpdfdefault.at(ipdf)->SetLineColor(gpdfband.at(ipdf)->GetLineColor()); //TEST
-   gpdfdefault.at(ipdf)->SetLineStyle(gpdfband.at(ipdf)->GetLineStyle()); //TEST
-   gpdfdefault.at(ipdf)->SetFillColor(gpdfband.at(ipdf)->GetFillColor()); //TEST
-   
-   gpdfdefault.at(ipdf)->Draw("PZ,same"); //P1
-
-
-
-   // Part 2 of 2) draw additional data lines based on extra parameters from steering
-   // ensure sure band ratio data was provided
-   if (!gpdfband.at(ipdf)) {
-     cout<<" MyBand::DrawPDFBand: WARNING: gpdfband not found ! "<<endl;
-     return;
-   }
-
-   if (debug) { 
-     cout<<" MyBand::DrawPDFBand: gpdfband["<<ipdf<<"] Data: "<<endl;
-     gpdfband.at(ipdf)->Print("");
-   }
-
-   // draw extra based on settings from user steering flags
-   // include an error band if user steering requests 
-   if (plotband) gpdfband.at(ipdf)->Draw("E2Z,same"); //E2-error bars with rectangles (E5-rectangle borders)
-   
-   // include plot markers if user steering requests
-   if (plotmarker) gpdfband.at(ipdf)->Draw("PZ,same");   
+   // optionally stagger horizontal position of pdf points for readability
+  if (staggerpdfpoints) {
+    cout<<"STAGGERING!2"<<endl;
+    MovePDFPoints();
+  }else{
+   cout<<"NOT STAGGERING"<<endl;
  }
- 
- if (debug) cout << " MyPDFBand::DrawPDFBand finished " <<endl;
- return;
+
+  
+  // plot PDF info for overlay
+  for (int ipdf = 0; ipdf <  gpdfband.size(); ipdf++) {
+    if (debug) cout<<" MyBand::DrawPDFBand: print gpdfband: ipdf= "<<ipdf<<endl;
+    
+    //Part 1 of 2) draw default lines in case no draw parameters like 'plotmarker' are set 
+    // ensure default ratio data is available
+    if (!gpdfdefault.at(ipdf)) {
+      cout<<" MyBand::DrawPDFBand: WARNING: gpdfdefault not found ! "<<endl;
+      return;
+    }
+    
+    if (debug) { 
+      cout<<" MyBand::DrawPDFBand: gpdfdefault["<<ipdf<<"] Data: "<<endl;
+      gpdfdefault.at(ipdf)->Print("");
+    }
+    
+    // always draw default plot info in case optional steering settings are not set
+    // set default color to be displayed
+    gpdfdefault.at(ipdf)->SetMarkerSize(0);
+    gpdfdefault.at(ipdf)->SetMarkerStyle(gpdfband.at(ipdf)->GetMarkerStyle());
+    gpdfdefault.at(ipdf)->SetMarkerColor(gpdfband.at(ipdf)->GetMarkerColor());
+    gpdfdefault.at(ipdf)->SetLineColor(gpdfband.at(ipdf)->GetLineColor());
+    gpdfdefault.at(ipdf)->SetLineStyle(gpdfband.at(ipdf)->GetLineStyle());
+    gpdfdefault.at(ipdf)->SetFillColor(gpdfband.at(ipdf)->GetFillColor());
+    
+    // allow small perpendicular lines at end of error bar to be on or off on default
+    if (ploterrorticks) gpdfdefault.at(ipdf)->Draw("P,same");
+    else                gpdfdefault.at(ipdf)->Draw("PZ,same");
+    
+    
+
+    // Part 2 of 2) draw additional data lines based on extra parameters from steering
+    // ensure sure band ratio data was provided
+    if (!gpdfband.at(ipdf)) {
+      cout<<" MyBand::DrawPDFBand: WARNING: gpdfband not found ! "<<endl;
+      return;
+    }
+    
+    if (debug) { 
+      cout<<" MyBand::DrawPDFBand: gpdfband["<<ipdf<<"] Data: "<<endl;
+      gpdfband.at(ipdf)->Print("");
+    }
+    
+    // plot data based on style's requested in steering
+    TString bandstyle = GetBandStyle(); // determine style
+    gpdfband.at(ipdf)->Draw(bandstyle); // plot based on style
+  }
+  
+  if (debug) cout << " MyPDFBand::DrawPDFBand finished " <<endl;
+  return;
 }
 
 
+// Shift horizontal position of PDF data points for readability
 void MyBand::MovePDFPoints(){
 
  if (debug) cout<<" MyBand::MovePDFPoints: npdf= "<<gpdfband.size()<<endl;
@@ -153,7 +174,7 @@ void MyBand::MovePDFPoints(){
     cout<<" MyBand::MovePDFPoints: gpdfband not found ! "<<endl;
    }
 
-   //stagger each individual point for each pdf
+   // stagger each individual point for each pdf on overlay
    for (int i=0; i<gpdfband.at(ipdf)->GetN(); i++){
     double xval, xval1, xval2, yval, yval2;
     gpdfband.at(ipdf)->GetPoint(i  , xval , yval);
@@ -163,9 +184,56 @@ void MyBand::MovePDFPoints(){
     xval2=xval+pow(-1,ipdf)*binw/gpdfband.size();
     gpdfband.at(ipdf)->SetPoint(i, xval2, yval);
    }
+
+   // stagger each individual point for each pdf on ratio
+   for (int i=0; i<gpdfbandratio.at(ipdf)->GetN(); i++){
+    double xval, xval1, xval2, yval, yval2;
+    gpdfbandratio.at(ipdf)->GetPoint(i  , xval , yval);
+    gpdfbandratio.at(ipdf)->GetPoint(i+1, xval1, yval2);
+
+    double binw=15.;
+    xval2=xval+pow(-1,ipdf)*binw/gpdfband.size();
+    gpdfbandratio.at(ipdf)->SetPoint(i, xval2, yval);
+   }
  }
+
+ if (debug) cout<<" MyBand::MovePDFPoints: Finished moving points."<<endl;
  return;
 } 
+
+
+TString MyBand::GetBandStyle() {
+    
+   if (debug) cout<<" MyBand::GetBandStyle: Creating band style." <<endl;
+   
+   TString bandstyle = "";
+    if ( plotmarker == true )      bandstyle+="P";
+    if ( ploterrorticks == false ) bandstyle+="Z";
+    if ( plotband == true )        bandstyle+="E2";    
+    bandstyle+=",same";
+    
+
+    if (debug) cout<<" MyBand::GetBandStyle: Band style is '"<<bandstyle<<"'." <<endl;
+
+    return bandstyle;
+}
+
+
+TString MyBand::GetBandRatioStyle() {
+    
+   if (debug) cout<<" MyBand::GetBandRatioStyle: Creating band style." <<endl;
+   
+   TString bandstyle = "";
+    if ( plotmarker == true )      bandstyle+="P";
+    if ( ploterrorticks == false ) bandstyle+="Z";
+    if ( plotband == true )        bandstyle+="E1";    
+    bandstyle+=",same";
+    
+
+    if (debug) cout<<" MyBand::GetBandRatioStyle: Band style is '"<<bandstyle<<"'." <<endl;
+
+    return bandstyle;
+}
 
 
 void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref) 
