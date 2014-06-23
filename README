@@ -1,3 +1,7 @@
+INTRO: Read through this document to understand what is
+needed to generate plots
+
+
 ###################################################
 #                 DEPENDANCIES                    #
 ###################################################
@@ -17,7 +21,7 @@ Need access to te PDF sets, currently located:
 
   /afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/5.8.8/share/lhapdf/PDFsets
 
-Need access to sherpa21inputs, currently located:
+Need access to SHERPA output, currently called sherpa21inputs and located:
 
   /afs/cern.ch/user/c/cembree/public/workspace/MyAnalysis/sherpatop21inputs
 
@@ -45,13 +49,19 @@ script and compile with 'make'.
 
 The origonal sourcing of '$MYHOME/setuplxplus.sh' is 
 done in my '.bashrc', so I only ever need to run my
-local source of 'setup.sh'
+local source of 'setup.sh'.
+
+You can find an example STEERING file in this 
+directory called 'STEERING_OUTLINE.txt' as well as
+examples in: 
+STEERING_EXAMPLE1.txt
+STEERING_EXAMPLE2.txt 
 
 
 ###################################################
 #                   RUNNING                       #
 ###################################################
-Executable takes 1 parameters:
+Executable 'plot' takes 1 parameter:
 1 - steering file
 
 A steering file should emulate what can be found 
@@ -60,13 +70,30 @@ in the example steering file called
 
   /afs/cern.ch/user/c/cembree/public/workspace/MyAnalysis/STEERING_EXAMPLE.txt
 
-Output will show  in root, so you will need X11 
-forwarding if you are sshing in, which looks
-something life:
+An outline for a generic steering file including
+all optional options is called 'STEERING_OUTLINE.txt'
+and can be found at:
+
+  /afs/cern.ch/user/c/cembree/public/workspace/MyAnalysis/STEERING_OUTLINE.txt
+
+
+Output from running will show  in root, so you will 
+need X11 forwarding if you are sshing in, which looks
+something like:
 
   ssh -X username@lxplus.cern.ch
 
+
+###################################################
+#                EXAMPLE RUNS                     #
+###################################################
 EXAMPLE RUN(S):
+
+EXPLAIN THIS RUN:
+
   ./plot atlas2012_top.txt
+
+EXPLAIN THIS RUN:
+
   ./plot STEERING_EXAMPLE.txt
 
