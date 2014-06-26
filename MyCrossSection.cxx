@@ -1266,7 +1266,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
     if (npdf<1) {
       href=this->GetNormalisedReference(igrid);
       if (!href) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
-      href->Draw("same,hist");
+      href->Draw("same,hist"); //no PDF overlay draw
       if (debug) {
 	cout<<" MyCrossSection::DrawinFrame: print reference histogram"<<endl;
 	href->Print("all");
@@ -1446,9 +1446,11 @@ void MyCrossSection::DrawinFrame(int iframe) {
 
     if (npdf<1) {
       //ratiostat[igrid]->Draw("hist,same");
-      ratiotot[igrid]->SetMarkerStyle(0);
+      ratiotot[igrid]->SetMarkerStyle(0); //circle
+      ratiotot[igrid]->SetMarkerSize(0); //don't show the plotted point
       //ratiotot[igrid] ->SetLineWidth(2);
-      ratiotot[igrid] ->Draw("p,same");
+      //ratiotot[igrid] ->Draw("p,same"); //orig
+      ratiotot[igrid] ->Draw("p,same"); //no PDF ratio draw
       // ratiotot[igrid] ->Draw("hist,same");
 
     } else {

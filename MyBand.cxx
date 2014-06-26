@@ -37,10 +37,10 @@ void MyBand::DrawPDFBandRatio()
 
  // stagger horizontal position of pdf points for readability
  if (staggerpdfpoints)  {
-   cout<<"STAGGERING!"<<endl;
+   if (debug) cout<<" MyBand::DrawPDFBandRatio: Staggering points."<<endl;
    MovePDFPoints();
  } else{
-   cout<<"NOT STAGGERING"<<endl;
+   if (debug) cout<<" MyBand::DrawPDFBandRatio: NOT Staggering points."<<endl;
  }
  
 
@@ -102,11 +102,11 @@ void MyBand::DrawPDFBand()
 
    // optionally stagger horizontal position of pdf points for readability
   if (staggerpdfpoints) {
-    cout<<"STAGGERING!2"<<endl;
+    if (debug) cout<<" MyBand::DrawPDFBand: Staggering points."<<endl;
     MovePDFPoints();
   }else{
-   cout<<"NOT STAGGERING"<<endl;
- }
+    if (debug) cout<<" MyBand::DrawPDFBand: NOT Staggering points."<<endl;
+  }
 
   
   // plot PDF info for overlay
