@@ -1,0 +1,29 @@
+%
+% steering file to compare CMS data to new ATLAS data
+%
+%datanamedir MyData/datanew/
+%
+% need always dataname, gridname, markerstyle, markercolor one after the other
+% need to order frameid from 0 to N
+%Gridnamedir
+debug
+%plotmarker
+%plotband
+% xlegend, ylabel is lower edge of legen 
+xlegend 0.9
+ylegend 0.9
+ratiotitlelabel Sherpa MCgrid/data
+ymaxoverlay 500
+%
+%pdfdata MyPDF/CT10.txt
+%
+dataname  CDF2009_ZRap.txt
+gridname  MyGrids/top/sherpa/MCgrid_CDF_2009-B.root
+markerstyledata 20
+markercolordata 1
+reflinestyle 1
+reflinecolor 4
+leglabel MCFM
+frameid 0
+divideid 0
+%
