@@ -29,7 +29,10 @@ class MyData {
 
   double ymin, ymax, sqrts;  
   double scale;
- 
+
+  double scaley; //scale y axis by a user defined constant
+  double scalex; //scale y axis by a user defined constant
+
   //std::vector<std::vector<double> > corr_matrix;
   bool systcorrelationmatrix;
   bool cov_matrix_ok;

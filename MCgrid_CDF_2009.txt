@@ -3,6 +3,7 @@
 %
 %datanamedir MyData/datanew/
 %
+pdfdata MyPDF/CT10.txt
 % need always dataname, gridname, markerstyle, markercolor one after the other
 % need to order frameid from 0 to N
 %Gridnamedir

@@ -24,6 +24,9 @@ MyData::MyData()
 
   dividebybinwidth=false; 
 
+  scaley=1.; //allow constant scale of units if user wants
+  scalex=1.;
+
   sqrts=0.; ymin=0.; ymax=0.;
   datavector=0;
   datavectorstat=0;
@@ -337,7 +340,6 @@ void MyData::ReadData(string fname, string dir, double myscale){
     //sscanf(line," %s %s ",text, name);
     columnname=TString(name);
     if (debug) cout<<" MyData::ReadData: columnname= "<<columnname.Data()<<endl;
-
    } else if (strstr(line,"OBS")!=0) {
     char text[100];     char name[100]; 
     sscanf(line," %s %[^\n] ",text, name);
@@ -378,8 +380,20 @@ void MyData::ReadData(string fname, string dir, double myscale){
     sscanf(line," %s %f ",text, &mys);
     ptlepcut=mys;
     //cout<<" ptlepcut= "<<ptlepcut<<endl;
+   } else if (strstr(line,"scaley")!=0) {
+     char text[100]; float myscaley=1;
+     sscanf(line," %s %f ",text, &myscaley);
+     scaley = myscaley;
+     //Scale(1.0, scaley); //performed as last task of reading from file
+     cout<<"TEST: MyBand::Read: scaley= "<<scaley<<endl;
+   } else if (strstr(line,"scalex")!=0) {
+     char text[100]; float myscalex;
+     sscanf(line," %s %f ",text, &myscalex);
+     scalex = myscalex;
+     //Scale(scalex, 1.0); //performed as last task of reading from file
+     cout<<"TEST: MyBand::Read: scalex= "<<scalex<<endl;
    } else if (strstr(line,"PTNEU")!=0) {
-    neucut=true;
+     neucut=true;
     char text[100]; float mys;
     sscanf(line," %s %f ",text, &mys);
     ptneucut=mys;
@@ -732,6 +746,9 @@ void MyData::ReadData(string fname, string dir, double myscale){
   }
  }
 
+ // Perform any hard-coded scaling if the user requested it
+ Scale(scalex,  scaley);
+
 return;
 }
 
@@ -971,6 +988,18 @@ void MyData::PutData(TH1* hdata, double mys, double myymin, double myymax){
 void MyData::DrawData(){
 
  if (debug) cout << " MyData::DrawData " << endl;
+ 
+
+ // TODO - scale measurment data depending on units in steering
+ //double xscale = GetUnitGeVFactor();
+ //double yscale = GetUnitfbFactor();
+ //Scale( 1., yscale );
+ //cout<<"SCALE: x:"<<xscale<<" y:"<<yscale<<endl;
+ //exit(1); //TEST
+
+ cout<<"TEST: xscale: "<<scalex<<", yscale: "<<scaley<<endl;
+ //Scale(scalex, scaley );
+
  for(int pi = 0; pi < datavector->GetN(); pi++) {
  /*
   if (debug) {

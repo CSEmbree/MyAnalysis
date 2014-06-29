@@ -53,6 +53,8 @@ class MyCrossSection {
   double yminoverlay;
   double ymaxratio;
   double yminratio;
+
+   
   
   typedef std::vector<int> vframe; 
   typedef std::vector<MyData*> vframedata; 

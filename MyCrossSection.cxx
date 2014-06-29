@@ -24,7 +24,7 @@ MyCrossSection::MyCrossSection(char name[100])
   framepointer.clear();
   vpdfchi2.clear();
 
-  xlegend=0.85;
+  xlegend=0.90;
   ylegend=0.95;
 
   //default values for overloading ratio & overlay y-axes 
@@ -33,6 +33,7 @@ MyCrossSection::MyCrossSection(char name[100])
   ymaxratio=DEFAULT_DOUBLE;
   yminratio=DEFAULT_DOUBLE;
 
+  
   plotchi2=false;
   plotmarker=false;
   plotband=false;
@@ -276,13 +277,20 @@ void MyCrossSection::Initialize() {
     if (pdfdata.size()<1) {
       TH1D *href=this->GetNormalisedReference(igrid);
       if (!href) cout<<" MyCrossSection::Initialize:  reference histo not found igrid= "<<igrid<<endl;
+      
+
       TGraphAsymmErrors* gref=TH1TOTGraphAsymm(href);
       if (!gref) cout<<" MyCrossSection::Initialize:  reference graph not created igrid= "<<igrid<<endl;
 
+      
       if (debug) {
 	cout<<" MyCrossSection::Initialize: ComputePDFBandRatio  dividing gref and "<<mydata[igrid]->GetDataName()<<endl;
       }
  
+
+      cout<<"TEST: MyCrossSection:Initialize: generating ratio data ... "<<endl; //TEST
+
+
       ratiotot.push_back(myTGraphErrorsDivide(gref,mydata[igrid]->GetTGraphTotErr(),0));
       TString rationame=gref->GetName();
       rationame+="/";
@@ -1266,6 +1274,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
     if (npdf<1) {
       href=this->GetNormalisedReference(igrid);
       if (!href) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
+      
       href->Draw("same,hist"); //no PDF overlay draw
       if (debug) {
 	cout<<" MyCrossSection::DrawinFrame: print reference histogram"<<endl;
@@ -1283,14 +1292,22 @@ void MyCrossSection::DrawinFrame(int iframe) {
       if (!mydata[igrid]) cout<<" MyCrossSection::DrawinFrame: mydata["<<igrid<<"] not found "<<endl;
       else if (debug)     cout<<" MyCrossSection::DrawinFrame: mydata["<<igrid<<"]  found "<<endl;
 
-      // test of already plotted
-      bool plotdata=true;
+      
+
+      // Only plot data once (ignore repeats)
       bool doubledata=DoubleDataSetName(igrid);
-      if (iplotdata>0) plotdata=false;
-      if (plotdata) {
-	iplotdata++;
+            
+      if (doubledata == false) { //if repeated data was not found
+      
 	if (debug) cout<<" MyCrossSection::DrawinFrame: plot data "<<dataname[igrid]<<endl;
-	mydata[igrid]->DrawData();
+	// scale data? //TEST
+	//this->Normalise(href,yscale,xscale,normtot);
+
+
+
+	// any scaling of my data is already done in the MyData class
+	//mydata[igrid]->Scale(datascalex, datascaley); //scale data by hardcoded values if user wants
+	mydata[igrid]->DrawData(); // plot actual data
 
 	TString mylabel=mydata[igrid]->GetLabel();
    
@@ -1298,7 +1315,8 @@ void MyCrossSection::DrawinFrame(int iframe) {
 
 	//add the data label to the legend
 	leg->AddEntry(mydata[igrid]->GetTGraphTotErr(),mylabel,"ep");
-      }
+    }
+	//}
     } else {
       href=this->GetReference(igrid);
       if (debug) cout<<" MyCrossSection::DrawinFrame: Data not ok igrid= "<<igrid<<endl;
@@ -1348,11 +1366,23 @@ void MyCrossSection::DrawinFrame(int iframe) {
     if (npdf<1) { 
       cout<<" MyCrossSection::DrawinFrame: No PDF's requested: Adding references to legend."<<endl;
       
+      TString curLegLable = "";
+      if (leglabel.size()>0) curLegLable = leglabel[igrid].c_str();
+      else                   curLegLable = "reference";
+
+      if (debug) cout<<" MyCrossSection::DrawinFrame: Added '"<<curLegLable<<"' to legend."<<endl;
+
+      leg->AddEntry(href, curLegLable, "l");
+
+      /*      
       if (leglabel.size()>0) {
 	leg->AddEntry(href,leglabel[igrid].c_str(),"l"); 
-      } else
+      } else {
 	leg->AddEntry(href,"reference","l"); 
+      }
+      */
     }
+      
     leg->Draw();
     
     if (debug) cout<<" MyCrossSection::DrawinFrame: legend prepared "<<endl;
@@ -1867,17 +1897,29 @@ bool MyCrossSection::DoubleDataSetName(int idata){
   if (idata>dataname.size())
     cout<<" MyCrossSection::DoubleDataSetName: number of data sets too small "
 	<<dataname.size()<<" idata= "<<idata<<endl;
-
+  
+  if (debug) cout<<" MyCrossSection::DoubleDataSetName: "
+		 <<" dataname["<<idata<<"]= "<<dataname[idata]
+		 <<" compared to... "<<endl;
+  
+  //check each data name for duplicates
   for (int jdata=0; jdata<dataname.size(); jdata++) {
-    if (jdata>idata) {
-      if (debug) cout<<" MyCrossSection::DoubleDataSetName: "
-		     <<" dataname["<<idata<<"]= "<<dataname[idata]<<endl;
-      if (debug) cout<<" MyCrossSection::DoubleDataSetName: "
-		     <<" dataname["<<jdata<<"]= "<<dataname[jdata]<<endl;
-      if (dataname[idata].compare(dataname[jdata])== 0){
-	doubledataset=false;
+    if (jdata<idata) { //only check future data to be displayed
+      if(jdata!=idata) { //don't check youself
+	if (debug) cout<<" MyCrossSection::DoubleDataSetName: "
+		       <<" dataname["<<jdata<<"]= "<<dataname[jdata]<<endl;
+	
+	if (dataname[idata].compare(dataname[jdata])== 0){
+	  if (debug) cout<<" MyCrossSection::DoubleDataSetName: Duplicate data found."<<endl;
+	  
+	  doubledataset=true;
+	}
       }
     }
   }
+  
+  if (debug) cout<<" MyCrossSection::DoubleDataSetname: found duplicate="
+		 <<(doubledataset? "yes":"no")<<endl;
+
   return doubledataset;
 }

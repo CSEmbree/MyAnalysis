@@ -1,6 +1,12 @@
 %
 % steering file to compare CMS data to new ATLAS data
 %
+debug
+%plotmarker
+plotband
+%yminoverlay 0.000006
+%
+%
 %datanamedir MyData/datanew/
 %
 % need always dataname, gridname, markerstyle, markercolor one after the other
@@ -8,23 +14,27 @@ Gridnamedir MyGrids/top/mcfm
 %
 dataname  MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
 gridname grid--TTbar_mttatlas.root
-markerstyle 20
-markercolor 1
+markerstyledata 20
+markercolordata 1
+reflinecolor 4
+leglabel atlas-reference
 %mcscalex 1000
 %mcscalex 0.001 
 frameid 0
 divideid 0
 %
-%dataname MyData/datapub/top/cms2012_top_mtt_ljet.txt
-%gridname grid--TTbar_mttcms.root
-%markerstyle 24
-%markercolor 1
-%%reflinecolor 2
+dataname MyData/top/cms2012_top_mtt_ljet.txt
+%gridname topq-2012-08/nominal/grid--TTbar_mttcms.root
+gridname grid--TTbar_mttcms.root
+markerstyledata 24
+markercolordata 1
+reflinecolor 2
+leglabel cms-reference
 %reflinestyle 2
-%%mcscalex 1000
+%mcscalex 1000
 %scaley 1000.
-%frameid 0
-%divideid 0
+frameid 0
+divideid 0
 %
 %dataname MyData/datanew/atlas2012_5fb_top_pttt_ljet.txt
 %gridname grid--TTbar_ptttatlas5fb.root
