@@ -384,14 +384,12 @@ void MyData::ReadData(string fname, string dir, double myscale){
      char text[100]; float myscaley=1;
      sscanf(line," %s %f ",text, &myscaley);
      scaley = myscaley;
-     //Scale(1.0, scaley); //performed as last task of reading from file
-     cout<<"TEST: MyBand::Read: scaley= "<<scaley<<endl;
+     cerr<<" MyBand::Read:: WARN: Deprecated setting 'scaley="<<scaley<<"' will scale data and theory!"<<endl;
    } else if (strstr(line,"scalex")!=0) {
      char text[100]; float myscalex;
      sscanf(line," %s %f ",text, &myscalex);
      scalex = myscalex;
-     //Scale(scalex, 1.0); //performed as last task of reading from file
-     cout<<"TEST: MyBand::Read: scalex= "<<scalex<<endl;
+     cerr<<" MyBand::Read:: WARN: Deprecated setting 'scalex="<<scalex<<"' will scale data and theory!"<<endl;
    } else if (strstr(line,"PTNEU")!=0) {
      neucut=true;
     char text[100]; float mys;
@@ -990,18 +988,9 @@ void MyData::DrawData(){
  if (debug) cout << " MyData::DrawData " << endl;
  
 
- // TODO - scale measurment data depending on units in steering
- //double xscale = GetUnitGeVFactor();
- //double yscale = GetUnitfbFactor();
- //Scale( 1., yscale );
- //cout<<"SCALE: x:"<<xscale<<" y:"<<yscale<<endl;
- //exit(1); //TEST
-
- cout<<"TEST: xscale: "<<scalex<<", yscale: "<<scaley<<endl;
- //Scale(scalex, scaley );
-
+  /*
  for(int pi = 0; pi < datavector->GetN(); pi++) {
- /*
+ 
   if (debug) {
    Double_t x_val_dv;    Double_t  y_val_dv;
    datavector->GetPoint(pi, x_val_dv, y_val_dv);
@@ -1012,8 +1001,9 @@ void MyData::DrawData(){
 
    std::cout << "pi: " << pi << ", x_val_dv: " << x_val_dv << ", x_val_vs: " << x_val_dvs << ", y_val_dv: " << y_val_dv << ", dvs: " << y_val_dvs << " -" << ylowerr << " +" << yhigherr << "\n";
   };
- */
+ 
  };
+*/
 
  if (!datavector) cout<<" DrawData: datavector not found "<<endl;
  datavector->SetMarkerStyle(markerstyle);
@@ -1087,12 +1077,9 @@ void MyData::DrawDataXt(){
 };
 */
 
-void MyData::DrawData(char name[100], float x, float y){
+void MyData::DrawData(char name[100], float x, float y) {
  
  this->DrawLegend(name,x,y);
- //if (debug) 
- // this->PrintXt();
-
  this->DrawData();
 
  return;
@@ -1116,8 +1103,7 @@ void MyData::DrawExperimentandYear(double x, double y) {
 };
 
 
-
-void MyData::DrawLegend(char name[100], float x, float y){
+void MyData::DrawLegend(char name[100], float x, float y) {
  
    char text1[100]; char text2[100]; char text3[100];char text4[100];
 
@@ -1155,8 +1141,8 @@ void MyData::DrawLegend(char name[100], float x, float y){
    return;
 }
 
-//
-void MyData::ScaleGraph(TGraphAsymmErrors *g1, double scalex, double scaley){
+
+void MyData::ScaleGraph(TGraphAsymmErrors *g1, double scalex, double scaley) {
 
  Double_t* X1 = g1->GetX();
  Double_t* Y1 = g1->GetY();
@@ -1170,20 +1156,21 @@ void MyData::ScaleGraph(TGraphAsymmErrors *g1, double scalex, double scaley){
   g1->SetPointError(i,EXlow1[i]*scalex,EXhigh1[i]*scalex,
                       EYlow1[i]*scaley,EYhigh1[i]*scaley);
  }
+ 
  return;
 };
 
-void MyData::Scale(double scalex, double scaley){
+void MyData::Scale(double scalex, double scaley) {
   this->ScaleGraph(datavector      ,scalex,scaley);
   this->ScaleGraph(datavectorstat  ,scalex,scaley);
   this->ScaleGraph(datavectorsyst  ,scalex,scaley);
   this->ScaleGraph(datavectortoterr,scalex,scaley);
   miny*=scaley; maxy*=scaley; minx*=scalex; maxx*=scalex;  
+  
   return;
 };
 
-void MyData::split_string(std::string str, std::vector<std::string>& split_results, std::string delimiters)
-{
+void MyData::split_string(std::string str, std::vector<std::string>& split_results, std::string delimiters) {
   // Skip delimiters at beginning.
   string::size_type lastPos = str.find_first_not_of(delimiters, 0);
   // Find first "non-delimiter".
@@ -1198,5 +1185,6 @@ void MyData::split_string(std::string str, std::vector<std::string>& split_resul
     // Find next "non-delimiter"
     pos = str.find_first_of(delimiters, lastPos);
   }
-}
 
+  return;
+}

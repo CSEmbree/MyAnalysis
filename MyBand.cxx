@@ -23,26 +23,34 @@ MyBand::MyBand()
  gpdfdefault.clear();;
  gscaleband.clear();
 
-  yminratio=0.;
-  ymaxratio=0.;
+ yminratio = 0.0;
+ ymaxratio = 0.0;
+ 
+ scalex = 1.0;
+ scaley = 1.0;
 }
 
 
 void MyBand::DrawPDFBandRatio() 
 {
- if (debug) cout <<" MyBand::DrawPDFBandRatio: gpdfband.size()= " << gpdfbandratio.size()
+ if (debug) cout <<" MyBand::DrawPDFBandRatio: gpdfbandratio.size()= " << gpdfbandratio.size()
 		 <<", plotband="<<plotband
 		 <<", plotmarker="<<plotmarker<<endl;
 
 
+ // Visually prepare plots
  // stagger horizontal position of pdf points for readability
  if (staggerpdfpoints)  {
    if (debug) cout<<" MyBand::DrawPDFBandRatio: Staggering points."<<endl;
    MovePDFPoints();
- } else{
-   if (debug) cout<<" MyBand::DrawPDFBandRatio: NOT Staggering points."<<endl;
+ } 
+
+ //if data was artificially scaled, then theory must be equally scaled
+ if(scalex != 1.0 || scaley != 1.0 ) {
+   this->ScaleOverlayGraphs(scalex, scaley);
  }
  
+
 
  // plot each pdf info onto ratio
  for (int ipdf = 0; ipdf <  gpdfbandratio.size(); ipdf++) {
@@ -100,13 +108,18 @@ void MyBand::DrawPDFBand()
 		  <<", plotmarker="<<plotmarker<<endl;
   
 
-   // optionally stagger horizontal position of pdf points for readability
+  // Visually prepare plots
+  // optionally stagger horizontal position of pdf points for readability
   if (staggerpdfpoints) {
     if (debug) cout<<" MyBand::DrawPDFBand: Staggering points."<<endl;
     MovePDFPoints();
-  }else{
-    if (debug) cout<<" MyBand::DrawPDFBand: NOT Staggering points."<<endl;
   }
+
+  //if data was artificially scaled, then theory must be equally scaled
+  if(scalex != 1.0 || scaley != 1.0 ) {
+    this->ScaleRatioGraphs(scalex, scaley);
+  }
+
 
   
   // plot PDF info for overlay
@@ -134,6 +147,8 @@ void MyBand::DrawPDFBand()
     gpdfdefault.at(ipdf)->SetLineStyle(gpdfband.at(ipdf)->GetLineStyle());
     gpdfdefault.at(ipdf)->SetFillColor(gpdfband.at(ipdf)->GetFillColor());
     
+
+    
     // allow small perpendicular lines at end of error bar to be on or off on default
     if (ploterrorticks) gpdfdefault.at(ipdf)->Draw("P,same");
     else                gpdfdefault.at(ipdf)->Draw("PZ,same");
@@ -151,6 +166,7 @@ void MyBand::DrawPDFBand()
       cout<<" MyBand::DrawPDFBand: gpdfband["<<ipdf<<"] Data: "<<endl;
       gpdfband.at(ipdf)->Print("");
     }
+
     
     // plot data based on style's requested in steering
     TString bandstyle = GetBandStyle(); // determine style
@@ -434,4 +450,45 @@ TGraphAsymmErrors* MyBand::myTGraphErrorsDivide(TGraphAsymmErrors* g1,TGraphAsym
         }
     }
     return g3;
+}
+
+
+
+void MyBand::Scale(TGraphAsymmErrors *g1, double scalex, double scaley) {
+  
+  Double_t* X1 = g1->GetX();
+  Double_t* Y1 = g1->GetY();
+  Double_t* EXhigh1 = g1->GetEXhigh();
+  Double_t* EXlow1  = g1->GetEXlow();
+  Double_t* EYhigh1 = g1->GetEYhigh();
+  Double_t* EYlow1  = g1->GetEYlow();
+  
+  for (Int_t i=0; i<g1->GetN(); i++) {
+    g1->SetPoint(i, X1[i]*scalex, Y1[i]*scaley);
+    g1->SetPointError(i, EXlow1[i]*scalex, EXhigh1[i]*scalex,
+                      EYlow1[i]*scaley, EYhigh1[i]*scaley);
+  }
+
+  return;
+};
+
+
+void MyBand::ScaleOverlayGraphs(double scalex, double scaley) {
+  
+  for (int ipdf = 0; ipdf <  gpdfband.size(); ipdf++) {
+    this->Scale(gpdfband.at(ipdf),    scalex, scaley);
+    this->Scale(gpdfdefault.at(ipdf), scalex, scaley);
+  }
+
+  return;
+}
+
+void MyBand::ScaleRatioGraphs(double scalex, double scaley) {
+
+  for (int ipdf = 0; ipdf <  gpdfband.size(); ipdf++) {
+    this->Scale(gpdfdefaultratio.at(ipdf), scalex, scaley);
+    this->Scale(gpdfbandratio.at(ipdf), scalex, scaley);
+  }  
+
+  return;
 }

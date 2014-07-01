@@ -1,3 +1,12 @@
+/*
+ * Title:    MyData
+ * Author:   T. Carli, C. Embree
+ * Contact:  tancredi.carli@cern.ch
+ * Created:  01-Jun-2013
+ * Edited:   01-Jun-2014
+ * Notes:    
+ */
+
 #ifndef MyData_H
 #define MyData_H
 
@@ -129,6 +138,10 @@ class MyData {
    if (unitsypb) fac=1./1000.;
    return fac;
   }
+
+  //depricated artificial scaleing can be done in data steering
+  double GetScaley() { return scaley; } //depricated
+  double GetScalex() { return scalex; } //depricated
   
   bool CovarianceMatrixOk() { return cov_matrix_ok;}
 
@@ -286,6 +299,7 @@ class MyData {
 
   int GetNBins(){return datavector->GetN();};
 
+  
 };
 
 

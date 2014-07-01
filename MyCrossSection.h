@@ -1,3 +1,12 @@
+/*
+ * Title:    MyCrossSection
+ * Author:   T. Carli, C. Embree
+ * Contact:  tancredi.carli@cern.ch
+ * Created:  ##-##-##
+ * Edited:   01-Jun-2014
+ * Notes:    
+ */
+
 #ifndef __MY_CROSS_SECTION_H
 #define __MY_CROSS_SECTION_H
 
@@ -415,6 +424,8 @@ class MyCrossSection {
   TGraphAsymmErrors* TH1TOTGraphAsymm(TH1 *h1);
 
   void Print();
+
+  void ScaleGraph(TGraphAsymmErrors *g, double scalex, double scaley); //TODO - remove this?
 };
 
 

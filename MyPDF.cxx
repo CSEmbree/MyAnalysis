@@ -846,7 +846,7 @@ TGraphAsymmErrors* MyPDF::TH1TOTGraphAsymm(TH1 *h1)
 
   if (!h1) {
    cout<<" MyPDF::TH1TOTGraphAsymm: histogram not found !"<<endl;
-   exit(0); //TEST
+   exit(0); //No histogram provided, exit
   }
 
   TGraphAsymmErrors* g1= new TGraphAsymmErrors();
@@ -990,7 +990,7 @@ void MyPDF::ReadSteering(const string _fileName)
  if(!infile) {
   cerr<<" MyPDF::ReadSteering: WARNING: Can't open "<<fName<<endl;
   infile.close();
-  exit (1); //TEMP TEST
+  exit (1); // failed to read steering, exit
  } else {
   if (debug) cout<<" MyPDF::ReadSteering: Steering file named successfuly opened."<<std::endl;
  }

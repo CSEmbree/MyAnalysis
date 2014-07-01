@@ -1,9 +1,9 @@
 /*
  * Title:    MyPDF
- * Author:   Cameron S. Embree
- * Contact:  CSEmbree@gmail.com
+ * Author:   T. Carli, C. Embree
+ * Contact:  tancredi.carli@cern.ch
  * Created:  01-Jun-2013
- * Edited:   22-Jun-2013
+ * Edited:   01-Jun-2014
  * Notes:    
  */
 
@@ -122,6 +122,18 @@ class MyBand {
   double GetYmin() { return yminratio;};
   double GetYmax() { return ymaxratio;};
 
+  void SetScalex( double scale ) { 
+    cerr<<" MyBand::SetScalex: WARN: Depricated scaling 'scalex="<<scale<<"'"<<endl;
+    scalex = scale;
+  };
+  
+  void SetScaley( double scale ) { 
+    cerr<<" MyBand::SetScalex: WARN: Depricated scaling 'scaley="<<scale<<"'"<<endl;
+    scaley = scale;
+  };
+
+  
+
   private:
   //VARIABLES
 
@@ -143,6 +155,13 @@ class MyBand {
 
   double yminratio;
   double ymaxratio;
+
+  double scalex; //for forcefully scaling theory to data, if data is being scaled
+  double scaley;
+
+  void Scale(TGraphAsymmErrors *g1, double scalex, double scaley);
+  void ScaleRatioGraphs(double scalex, double scaley);
+  void ScaleOverlayGraphs(double scalex, double scaley);
 };
 
 #endif
