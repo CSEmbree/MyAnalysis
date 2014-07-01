@@ -1,6 +1,12 @@
-datanamedir MyData/top/
+%datanamedir MyData/top/
 %Gridnamedir /home/tcarli/topdiffxsection/
 %Gridnamedir /media/Sony_32GR/mcfm/inputgrids/
+%
+datanamedir MyData/top/
+Gridnamedir MyGrids/top/mcfm/
+%xlegend 0.9
+%ylegend 0.9
+%
 %
 % Mtt
 % need always dataname, gridname, markerstyle, markercolor one after the other
@@ -18,7 +24,7 @@ markercolor 1
 %reflinecolor 2
 reflinestyle 2
 %scalex 1.0
-scaley 1000.
+% scaley 1000. %unsupported
 frameid 0
 divideid 0
 %
@@ -37,7 +43,7 @@ markercolor 1
 %reflinecolor 2
 reflinestyle 2
 %scalex 1000.
-scaley 1000.
+% scaley 1000. %unsupported
 frameid 1
 divideid 1
 %

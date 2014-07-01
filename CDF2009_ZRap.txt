@@ -13,9 +13,9 @@ YEAR 2009
 NAME Rapidity_distro_epem
 label ep em 2009
 % default units are GeV and fb
-unitxGeV
-unitypb
-normtot
+%unitsxGeV
+%unitypb
+%normtot
 dividebywidth
 %
 framexmin 0.0
@@ -23,7 +23,7 @@ framexmax 2.8
 label e+ e- 2009
 titlex YRAP
 titley D(SIG)/YRAP IN PB 
-
+%scaley 0.01
 
 % ORIGONAL DATA 
 %xm   xlow xhigh y      dy+    dy-    dy+     dy-	

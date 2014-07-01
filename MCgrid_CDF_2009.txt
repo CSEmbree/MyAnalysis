@@ -9,17 +9,19 @@ pdfdata MyPDF/CT10.txt
 %Gridnamedir
 debug
 %plotmarker
-%plotband
+plotband
 % xlegend, ylabel is lower edge of legen 
 xlegend 0.9
 ylegend 0.9
 ratiotitlelabel Sherpa MCgrid/data
-ymaxoverlay 500
+%ymaxoverlay 500
 %
-%pdfdata MyPDF/CT10.txt
 %
 dataname  CDF2009_ZRap.txt
-gridname  MyGrids/top/sherpa/MCgrid_CDF_2009-B.root
+%grid with less events:
+%gridname  MyGrids/top/sherpa/MCgrid_CDF_2009-B.root
+%grid with more events
+gridname  MyGrids/top/sherpa/ZRapRun_d02_all.root
 markerstyledata 20
 markercolordata 1
 reflinestyle 1

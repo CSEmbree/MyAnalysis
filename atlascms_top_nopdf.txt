@@ -13,8 +13,7 @@ ylegend 0.9
 %
 %
 %datanamedir MyData/datanew/
-%pdfdata MyPDF/CT10.txt, MyPDF/HERAPDF15NLO.txt
-pdfdata MyPDF/CT10.txt
+%pdfdata MyPDF/CT10.txt
 %
 % need always dataname, gridname, markerstyle, markercolor one after the other
 %Gridnamedir MyGrids/top/mcfm
