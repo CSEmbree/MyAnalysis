@@ -9,10 +9,13 @@ EXP CMS
 framelogy
 framelogx
 %
-unitypb
+%unitypb
+%unitxGeV
 normtot
 ERRORINPERCENT
-scaley 1000.0
+%scaley 1000.0
+%scaley 40.0
+dividedbybinwidth
 scalex 1.0
 %
 label CMS 2012
