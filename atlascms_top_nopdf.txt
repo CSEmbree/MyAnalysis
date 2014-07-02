@@ -2,18 +2,24 @@
 % steering file to compare CMS data to new ATLAS data
 %
 debug
-plotmarker
+%plotmarker
 plotband
-xlegend 0.9
-ylegend 0.9
+%ploterrorticks
+%ymaxratio 2
+%ymaxoverlay 8
+%xlegend 0.9
+%ylegend 0.9
 %
 %yminoverlay 0.00001
-%yminratio -50.0
-%ymaxratio 50.0
+yminratio -50.0
+ymaxratio 50.0
 %
+%ratio theory/data
+ratio data/theory
 %
 %datanamedir MyData/datanew/
-%pdfdata MyPDF/CT10.txt
+%pdfdata MyPDF/CT10.txt, MyPDF/HERAPDF15NLO.txt
+pdfdata MyPDF/CT10.txt
 %
 % need always dataname, gridname, markerstyle, markercolor one after the other
 %Gridnamedir MyGrids/top/mcfm
@@ -30,18 +36,18 @@ leglabel atlas-reference
 frameid 0
 divideid 0
 %
-dataname MyData/top/cms2012_top_mtt_ljet-SCALED-TO-ATLAS.txt
-gridname MyGrids/top/mcfm/topq-2012-08/nominal/grid--TTbar_mttcms.root
-markerstyledata 24
-markercolordata 1
-vardesc atlas_mtt_5fb
-reflinecolor 2
-leglabel cms-reference
-%reflinestyle 2
-%mcscalex 1000
-%scaley 1000.
-frameid 0
-%divideid 0
+%dataname MyData/top/cms2012_top_mtt_ljet-SCALED-TO-ATLAS.txt
+%gridname MyGrids/top/mcfm/topq-2012-08/nominal/grid--TTbar_mttcms.root
+%markerstyledata 24
+%markercolordata 1
+%vardesc atlas_mtt_5fb
+%reflinecolor 2
+%leglabel cms-reference
+%%reflinestyle 2
+%%mcscalex 1000
+%%scaley 1000.
+%frameid 0
+%%divideid 0
 %
 %dataname MyData/datanew/atlas2012_5fb_top_pttt_ljet.txt
 %gridname grid--TTbar_ptttatlas5fb.root

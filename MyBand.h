@@ -31,6 +31,11 @@ class MyBand {
   void SetPlotMarker()       {plotmarker=true;};
   void SetErrorTicks()       {ploterrorticks=true;};
   void SetStaggerPDFPoints() {staggerpdfpoints=true;};
+  void SetRatioTheoryOverData(bool ratioType) {
+    ratioTheoryOverData = ratioType;
+  };
+
+  bool GetRatioTheoryOverData(){return ratioTheoryOverData;};
 
   void SetPdfBand       (TGraphAsymmErrors *mypdfband){
    TGraphAsymmErrors* gtmp=
@@ -142,6 +147,7 @@ class MyBand {
   bool plotmarker;
   bool ploterrorticks;
   bool staggerpdfpoints;
+  bool ratioTheoryOverData;
 
   std::vector<TGraphAsymmErrors *> gpdfband ; // per pdftype
   std::vector<TGraphAsymmErrors *> gpdfbandratio; // per pdftype

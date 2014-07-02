@@ -21,8 +21,10 @@ dividebywidth
 framexmin 0.0
 framexmax 2.8
 label e+ e- 2009
-titlex YRAP
-titley D(SIG)/YRAP IN PB 
+%titlex YRAP
+titlex y_{y}
+%titley D(SIG)/YRAP IN PB 
+titley d#sigma/y_{y} [pb]
 %scaley 0.01
 
 % ORIGONAL DATA 

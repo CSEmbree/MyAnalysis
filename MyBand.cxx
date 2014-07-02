@@ -17,6 +17,7 @@ MyBand::MyBand()
  plotmarker=false;
  ploterrorticks=false;
  staggerpdfpoints=false;
+ ratioTheoryOverData=true;
 
  gpdfbandratio.clear();
  gpdfband.clear(); 
@@ -73,28 +74,32 @@ void MyBand::DrawPDFBandRatio()
    // colors and settings set in 'ComputePDFBandRatio(TGraphAsymmErrors *gref) 
    gpdfdefaultratio.at(ipdf)->SetMarkerSize(0);
    
-   // allow small perpednicular lines at end of error bar to be on or off on default
-   if (ploterrorticks) gpdfdefaultratio.at(ipdf)->Draw("P,same");
-   else                gpdfdefaultratio.at(ipdf)->Draw("PZ,same");
- 
+   if(ratioTheoryOverData) {
+     // allow small perpednicular lines at end of error bar to be on or off on default
+     if (ploterrorticks) gpdfdefaultratio.at(ipdf)->Draw("P,same");
+     else                gpdfdefaultratio.at(ipdf)->Draw("PZ,same");
+     
 
-
-
-   //Part 2 of 2) draw additional data lines based on steering parameters
-   // ensure sure band ratio data was provided
-   if (!gpdfbandratio.at(ipdf)) {
-     cout<<" MyBand::DrawPDFBandandRatio: WARNING: gpdfbandratio not found ! "<<endl;
-     return;
+     //Part 2 of 2) draw additional data lines based on steering parameters
+     // ensure sure band ratio data was provided
+     if (!gpdfbandratio.at(ipdf)) {
+       cout<<" MyBand::DrawPDFBandandRatio: WARNING: gpdfbandratio not found ! "<<endl;
+       return;
+     }
+     
+     if (debug) { 
+       cout<<" MyBand::DrawPDFBandandRatio: gpdfbandratio["<<ipdf<<"] Data: "<<endl;
+       gpdfbandratio.at(ipdf)->Print("");
+     }
+     
+     // plot data based on style's requested in steering
+     TString bandratiostyle = GetBandRatioStyle(); // determine style
+     gpdfbandratio.at(ipdf)->Draw(bandratiostyle); // plot based on style
+   } else {
+     //gpdfbandratio.at(ipdf)->SetFillColor(kGray);
+     gpdfbandratio.at(ipdf)->Draw("E2"); //P2
+     
    }
-   
-   if (debug) { 
-     cout<<" MyBand::DrawPDFBandandRatio: gpdfbandratio["<<ipdf<<"] Data: "<<endl;
-     gpdfbandratio.at(ipdf)->Print("");
-   }
-
-   // plot data based on style's requested in steering
-   TString bandratiostyle = GetBandRatioStyle(); // determine style
-   gpdfbandratio.at(ipdf)->Draw(bandratiostyle); // plot based on style
  }
 
  return;
@@ -148,12 +153,22 @@ void MyBand::DrawPDFBand()
     gpdfdefault.at(ipdf)->SetFillColor(gpdfband.at(ipdf)->GetFillColor());
     
 
-    
+ 
     // allow small perpendicular lines at end of error bar to be on or off on default
-    if (ploterrorticks) gpdfdefault.at(ipdf)->Draw("P,same");
-    else                gpdfdefault.at(ipdf)->Draw("PZ,same");
-    
-    
+    //    if (!plotmarker && !plotband) {
+    //	if(ploterrorticks) gpdfdefault.at(ipdf)->Draw("P,same");  //no band or marker, draw line for data
+    //	else               gpdfdefault.at(ipdf)->Draw("PZ,same"); //same but with NO error ricks      
+    //}
+
+    if(!plotmarker) {
+      if(!plotband) {
+	if(ploterrorticks) gpdfdefault.at(ipdf)->Draw("P,same");  //no band or marker, draw line for data
+	else               gpdfdefault.at(ipdf)->Draw("PZ,same"); //same but with NO error ricks
+      }
+      //there is a band, do not display any marker or line for data
+    } 
+
+       
 
     // Part 2 of 2) draw additional data lines based on extra parameters from steering
     // ensure sure band ratio data was provided
@@ -265,28 +280,47 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
    if (!gpdfband.at(ipdf)) cout<<" MyBand::ComputePDFBandRatio: gpdfband not found ipdf= "<<ipdf<<endl;
 
    // set ratio data visual settings for printing later
-   TGraphAsymmErrors *gratio=myTGraphErrorsDivide(gpdfband.at(ipdf),gref,2);
-   TString rationame=gpdfband.at(ipdf)->GetName();
+   //TGraphAsymmErrors *gratio=myTGraphErrorsDivide(gpdfband.at(ipdf),gref,2); //origonal
+   TGraphAsymmErrors *g1, *g2, *g;
+   if(ratioTheoryOverData) {
+     g1 = gpdfband.at(ipdf);
+     g2 = gref;
+
+     g  = gpdfband.at(ipdf); //how visual settings will be defined
+   } else {
+     g1 = gpdfband.at(ipdf);
+     g2 = gpdfband.at(ipdf);
+
+     g  = gref; //how visual settings will be defined
+   }
+   
+   TGraphAsymmErrors *gratio=myTGraphErrorsDivide(g1,g2,2);
+   TString rationame=g1->GetName();
    rationame+="/";
-   rationame+=gref->GetName();
+   rationame+=g2->GetName();
    if (debug) cout<<" MyBand::ComputePDFBandRatio: rationame= "<<rationame.Data()<<endl;
    gratio->SetName(rationame);
-   gratio->SetMarkerStyle(gpdfband.at(ipdf)->GetMarkerStyle());
-   gratio->SetMarkerColor(gpdfband.at(ipdf)->GetMarkerColor());
-   gratio->SetLineColor(gpdfband.at(ipdf)->GetLineColor());
-   gratio->SetLineStyle(gpdfband.at(ipdf)->GetLineStyle());
-   gratio->SetFillStyle(gpdfband.at(ipdf)->GetFillStyle());
-   gratio->SetFillColor(gpdfband.at(ipdf)->GetFillColor());
+   gratio->SetMarkerStyle(g->GetMarkerStyle());
+   gratio->SetMarkerColor(g->GetMarkerColor());
+   gratio->SetLineColor(g->GetLineColor());
+   gratio->SetLineStyle(g->GetLineStyle());
+   gratio->SetFillStyle(g->GetFillStyle());
+   gratio->SetFillColor(g->GetFillColor());
 
    gpdfbandratio.push_back(gratio);
+
+
 
    if (debug) {
     cout<<" MyBand::ComputePDFBandRatio: gratio: "<<endl;
     gratio->Print();
    }
 
+
+
    // set defaul tratio visual settings for printing later
-   TGraphAsymmErrors *gratiodefault=myTGraphErrorsDivide(gpdfdefault.at(ipdf),gref,0);
+   //TGraphAsymmErrors *gratiodefault=myTGraphErrorsDivide(gpdfdefault.at(ipdf),gref,0); //origonal
+   TGraphAsymmErrors *gratiodefault=myTGraphErrorsDivide(gpdfdefault.at(ipdf),gpdfdefault.at(ipdf),0);
    TString rationamedefault=gpdfdefault.at(ipdf)->GetName();
    rationame+="/";
    rationame+=gref->GetName();

@@ -38,6 +38,7 @@ MyCrossSection::MyCrossSection(char name[100])
   plotband=false;
   ploterrorticks=false;
   staggerpdfpoints=false;
+  ratioTheoryOverData=true; //ratio default is (theory/data)
 
   pdf_function="";
   subprocesssteername="";
@@ -108,6 +109,7 @@ void MyCrossSection::Initialize() {
       mybandtmp->MovePDFPoints(); //plot markers are more visible if data points are shifted slightly
     }
     if (staggerpdfpoints) mybandtmp->SetStaggerPDFPoints();
+    mybandtmp->SetRatioTheoryOverData(ratioTheoryOverData); //tell the band if this is theory/data for ratio
 
 
     myband.push_back(mybandtmp);
@@ -296,10 +298,8 @@ void MyCrossSection::Initialize() {
       TH1D *href=this->GetNormalisedReference(igrid);
       if (!href) cout<<" MyCrossSection::Initialize:  reference histo not found igrid= "<<igrid<<endl;
       
-
       TGraphAsymmErrors* gref=TH1TOTGraphAsymm(href);
       if (!gref) cout<<" MyCrossSection::Initialize:  reference graph not created igrid= "<<igrid<<endl;
-
       
       if (debug) {
 	cout<<" MyCrossSection::Initialize: ComputePDFBandRatio  dividing gref and "<<mydata[igrid]->GetDataName()<<endl;
@@ -307,7 +307,20 @@ void MyCrossSection::Initialize() {
  
 
 
-      ratiotot.push_back(myTGraphErrorsDivide(gref,mydata[igrid]->GetTGraphTotErr(),0)); //TODO - change error bar saving?
+      // Flip ratio calculations if steering asks for it
+      //TGraphAsymmErrors* top;
+      //TGraphAsymmErrors* bot;
+      //if(ratioTheoryOverData) {
+      //	top = gref; //origonal
+      //	bot = mydata[igrid]->GetTGraphTotErr();
+      //} else {
+      //	top = mydata[igrid]->GetTGraphTotErr();
+      //	bot = gref;
+      //}
+
+      //      ratiotot.push_back(myTGraphErrorsDivide(gref,mydata[igrid]->GetTGraphTotErr(),0)); //TODO - change error bar saving?
+      ratiotot.push_back(myTGraphErrorsDivide(gref, mydata[igrid]->GetTGraphTotErr(), 0)); //TODO - change error bar saving?
+      //ratiotot.push_back(myTGraphErrorsDivide(top, bot, 0)); //TODO - change error bar saving?
       TString rationame=gref->GetName();
       rationame+="/";
       rationame+=mydata[igrid]->GetDataName();
@@ -691,6 +704,25 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	sscanf(line," %s %d ",text, &did);
 	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<did<<endl;
 	divideid[igrid]=did;
+      } else if (strstr(line,"ratio")!=0) {
+        sscanf(line, "%s %s",text,name);
+	
+	//determine how ratio will be computed
+	if(strstr(name,"theory/data")!=0) {
+	  ratioTheoryOverData = true; // ratio will be (theory/data)
+	  cout<<"t1"<<endl;
+	} else if (strstr(name,"data/theory")!=0) {
+	  ratioTheoryOverData = false; // ratio will be (data/theory)
+	  cout<<"t1"<<endl;
+	} else {
+	  //if no option is provided, assume ratio of (theory/data) for legacy steering files
+	  ratioTheoryOverData = true; //default 
+	  cout<<"t1"<<endl;
+	}
+
+	if(debug) cout<<" MyCrossSection::ReadSteering: ratio set to: "
+		      <<(ratioTheoryOverData? "(theory/data)":"(data/theory)")<<endl;
+
       } else if (strstr(line,"vardesc")!=0) {
 	sscanf(line," %s %[^\n] ",text, name);
 	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
@@ -819,19 +851,20 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 
 void MyCrossSection::Print() {
   //
-  // Display internal setting state read from steering
+  // Display internal setting states read from steering
   //
 
-  int w=30; //arbitrary size that makes the formatting look pretty
+  int w=30; //arbitrary spacing size that makes the formatting look pretty
 
   cout<<" MyCrossSection::Print: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      <<"\n"<<setw(w)<<"steering: "<<setw(w)<<steername
-      <<"\n"<<setw(w)<<"subprocesssteername: "<<setw(w)<<subprocesssteername
-      <<"\n"<<setw(w)<<"pdf_function: "<<setw(w)<<pdf_function
+      <<"\n"<<setw(w)<<"steering: "            <<setw(w)<<steername
+      <<"\n"<<setw(w)<<"subprocesssteername: " <<setw(w)<<subprocesssteername
+      <<"\n"<<setw(w)<<"pdf_function: "        <<setw(w)<<pdf_function
     //<<"\n"<<setw(w)<<"ntupdir= "<<ntupdirinput<<" ntupoutput= "<<ntupdiroutput
-      <<"\n"<<setw(w)<<"Dir of grids: "<<setw(w)<<gridnamebasedir
-      <<"\n"<<setw(w)<<"Dir of data: "<<setw(w)<<datanamedir
-      <<"\n"<<setw(w)<<"Num of grids: "<<setw(w)<<gridname.size()<<endl;
+      <<"\n"<<setw(w)<<"Dir of grids: "        <<setw(w)<<gridnamebasedir
+      <<"\n"<<setw(w)<<"Dir of data: "         <<setw(w)<<datanamedir
+      <<"\n"<<setw(w)<<"Num of grids: "        <<setw(w)<<gridname.size()
+      <<"\n"<<setw(w)<<"Ratio: "               <<(ratioTheoryOverData? "(theory/data)":"(data/theory)")<<endl;
 
   for (int  i = 0; i <   gridname.size(); i++) {
     if (this->GetDataOk(i)) {
@@ -1073,6 +1106,18 @@ TGraphAsymmErrors *MyCrossSection::GetPDFRatio(int iset1, int iset2, int itype, 
   if (debug) cout<<" MyCrossSection::GetPDFRatio: "<< ratio_to_ref_name.Data()<<endl;
 
 
+  // Flip ratio calculations if steering asks for it
+  //int top = -1, bot = -1;
+  //if(ratioTheoryOverData) {
+  // top = iset1; //origional
+  // bot = iset2; //origional
+  //} else {
+  // top = iset2;
+  // bot = iset1;
+  //}
+  // TGraphAsymmErrors* gpdfratio=myTGraphErrorsDivide(myband.at(igrid)->GetPdfBand(top),
+  //						    myband.at(igrid)->GetPdfBand(bot),2);
+
   TGraphAsymmErrors* gpdfratio=myTGraphErrorsDivide(myband.at(igrid)->GetPdfBand(iset1),
 						    myband.at(igrid)->GetPdfBand(iset2),2);
   gpdfratio->SetLineColor(markercolor[igrid]);
@@ -1106,7 +1151,14 @@ TGraphAsymmErrors *MyCrossSection::GetPDFTypeRatio(int iset1, int iset2, int igr
   if (debug) cout<<" MyCrossSection::GetPDFTypeRatio: "<< ratio_to_ref_name.Data()<<endl;
 
 
-  //TGraphAsymmErrors* gpdfratio=myTGraphErrorsDivide(gpdfband[igrid][iset1],gpdfband[igrid][iset2],2);
+  // Flip ratio calculations if steering asks for it
+  //int top = -1, bot = -1;
+  //if(ratioTheoryOverData) {
+  //  top = iset1; bot = iset2; //origional
+  //} else {
+  //  top = iset2; bot = iset1;
+  //}
+
   TGraphAsymmErrors* gpdfratio=myTGraphErrorsDivide(myband.at(igrid)->GetPdfBand(iset1),
 						    myband.at(igrid)->GetPdfBand(iset2),2);
   gpdfratio->SetLineColor(markercolor[igrid]);
@@ -1312,7 +1364,12 @@ void MyCrossSection::DrawinFrame(int iframe) {
   for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
     int igrid=gridinframe[iframe][i];
     int jframe=this->GetFrameID(igrid);
-    if (iframe!=jframe) continue;
+    if (iframe!=jframe) {
+      cout<<"TEST: NOT EQUAL: iframe:"<<iframe<<", jframe:"<<jframe<<endl;
+      continue;
+    } else {
+      cout<<"TEST: EQUAL, SKIPPING: iframe:"<<iframe<<", jframe:"<<jframe<<endl;
+    }
 
     if (debug) cout<<" MyCrossSection::DrawinFrame: for i= " << i << " igrid= "<<igrid<<endl;
     TH1D* href=0;
@@ -1348,90 +1405,87 @@ void MyCrossSection::DrawinFrame(int iframe) {
     }
 
 
-
+    // Draw data to the frame and add data name to the legend
     if (this->GetDataOk(igrid)) {
       if (!mydata[igrid]) cout<<" MyCrossSection::DrawinFrame: mydata["<<igrid<<"] not found "<<endl;
       else if (debug)     cout<<" MyCrossSection::DrawinFrame: mydata["<<igrid<<"]  found "<<endl;
 
-      
-
+   
       // Only plot data once (ignore repeats)
       bool doubledata=DoubleDataSetName(igrid);
-            
-      if (doubledata == false) { //if repeated data was not found
       
-	if (debug) cout<<" MyCrossSection::DrawinFrame: plot data "<<dataname[igrid]<<endl;
+      if (doubledata == false) { //if repeated data was not found
 	
-
-	// any scaling of data is already done in the MyData class from it's own steering
+	if (debug) cout<<" MyCrossSection::DrawinFrame: plot data "<<dataname[igrid]<<endl;
+       	// any scaling of data is already done in the MyData class from it's own steering
 	mydata[igrid]->DrawData(); // plot actual data
 
-	TString mylabel=mydata[igrid]->GetLabel();
-   
+	
+	TString mylabel=mydata[igrid]->GetLabel();	
 	if (debug) cout<<" MyCrossSection::DrawinFrame: mylabel= "<<mylabel.Data()<<endl;
-
 	//add the data label to the legend
 	leg->AddEntry(mydata[igrid]->GetTGraphTotErr(),mylabel,"ep");
-    }
-	//}
-    } else {
+      }
+    } else { //Data not OK
       href=this->GetReference(igrid);
       if (debug) cout<<" MyCrossSection::DrawinFrame: Data not ok igrid= "<<igrid<<endl;
       if (debug) cout<<" MyCrossSection::DrawinFrame: now draw reference igrid= "<<igrid<<endl;
       if (!href){cout<<" MyCrossSection::DrawinFrame: hreference not found "<<endl; exit;}
       href->Draw("hist,same");
     }
+    
 
-    if (debug) cout<<" MyCrossSection::DrawinFrame: npdf= "<<npdf<<endl;
-
+    if (debug) cout<<" MyCrossSection::DrawinFrame: npdf= "<<npdf<<endl;    
     if (debug) cout<<" MyCrossSection::DrawinFrame: vpdfchi2.size()= "<< vpdfchi2.size()<<endl;
     if (debug) cout<<" MyCrossSection::DrawinFrame: vpdfchi2.at("<<igrid<<").size()= "<< vpdfchi2.at(igrid).size()<<endl;
 
-    //Add PDF names to the legend
-    for (int ipdf=0; ipdf<npdf; ipdf++) {
-      TString pdfname="";
 
-      pdfname+= this->GetPdfName(ipdf);
-
-
-      if (plotchi2) {
-	//pdfname+=" #C^2 ";
-	pdfname+=" Chi2= ";
-	char tmp[30];
-	sprintf(tmp,"%5.2f",vpdfchi2.at(igrid).at(ipdf));
-	pdfname+=TString(tmp);
-      }
-      if (debug) cout<<" MyCrossSection::DrawinFrame: pdfname= "<<pdfname.Data()<<endl;
-      
-
-      //if (plotmarker) leg->AddEntry(gpdfband[igrid][i],pdfname,"p");
-      //else            leg->AddEntry(gpdfband[igrid][i],pdfname,"f");
-
-      //Before adding PDF titles to legend, create a title for the PDFs within the legend
-      if (ipdf==0 ) { 
-	TString pdfDataTitle="NLO QCD with:"; //"subtitle" for the following PDFs on the legend
-	leg->AddEntry((TObject*)0, pdfDataTitle.Data(), "");
-      }
-      
-      //Add PDF titles to legend
-      if (plotmarker) leg->AddEntry(myband.at(igrid)->GetPdfBand(ipdf),pdfname,"p");
-      else            leg->AddEntry(myband.at(igrid)->GetPdfBand(ipdf),pdfname,"f");
-
+    //All data names should be added to the legend before PDF names
+    if(this->GetFrameID(igrid) != this->GetFrameID(igrid+1) ) {
+      for (int ipdf=0; ipdf<npdf; ipdf++) {
+	
+	//retrieve a PDF name
+	TString pdfname="";
+	pdfname+= this->GetPdfName(ipdf);
+	
+	
+	if (plotchi2) {
+	  //pdfname+=" #C^2 ";
+	  pdfname+=" Chi2= ";
+	  char tmp[30];
+	  sprintf(tmp,"%5.2f",vpdfchi2.at(igrid).at(ipdf));
+	  pdfname+=TString(tmp);
+	}
+	if (debug) cout<<" MyCrossSection::DrawinFrame: pdfname= "<<pdfname.Data()<<endl;
+	
+	
+	//Before adding PDF titles to legend, create a title for the PDFs within the legend
+	if (ipdf==0 ) { 
+	  TString pdfDataTitle="NLO QCD with:"; //"subtitle" for the following PDFs on the legend
+	  leg->AddEntry((TObject*)0, pdfDataTitle.Data(), "");
+	}
+	
+	//Add PDF titles to legend
+	if (plotmarker) leg->AddEntry(myband.at(igrid)->GetPdfBand(ipdf),pdfname,"p");
+	else            leg->AddEntry(myband.at(igrid)->GetPdfBand(ipdf),pdfname,"f");	
+      }      
     }
+    
 
-    // when no pdfs, provide reference histogram info
+    // when no pdfs, provide reference histogram info after each data name in legend
     if (npdf<1) { 
       cout<<" MyCrossSection::DrawinFrame: No PDF's requested: Adding references to legend."<<endl;
       
       TString curLegLable = "";
       if (leglabel.size()>0) curLegLable = leglabel[igrid].c_str();
       else                   curLegLable = "reference";
-
-      if (debug) cout<<" MyCrossSection::DrawinFrame: Added '"<<curLegLable<<"' to legend."<<endl;
-
-      leg->AddEntry(href, curLegLable, "l");
-    }
       
+      if (debug) cout<<" MyCrossSection::DrawinFrame: Added '"<<curLegLable<<"' to legend."<<endl;	
+      leg->AddEntry(href, curLegLable, "l");
+    }	    
+    
+
+    // Draw the correctly filled legend
     leg->Draw();
     
     if (debug) cout<<" MyCrossSection::DrawinFrame: legend prepared "<<endl;
@@ -1515,23 +1569,58 @@ void MyCrossSection::DrawinFrame(int iframe) {
     int igrid=gridinframe[iframe][i];
     
     // draw the measurment ratio data with error bars
-    TGraphAsymmErrors* ratiodata=myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr(),mydata[igrid]->GetTGraphTotErr(),2);
-    if (!ratiodata) cout<<" MyCrossSection::DrawinFrame: ratiodata not found ! "<<endl;
-    ratiodata->SetMarkerStyle(mydata[igrid]->GetTGraphTotErr()->GetMarkerStyle());
-    ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
-    ratiodata->SetMarkerSize(0);
-    ratiodata->SetFillColor(kGray); //filled light gray error bars
+    // Flip ratio calculations if steering asks for it
+    //TGraphAssymErrors* top;
+    //TGraphAssymErrors* bot;
+    //if(ratioTheoryOverData) {
+    //  top = iset1; bot = iset2; //origional
+    //} else {
+    //  top = iset2; bot = iset1;
+    //}
 
-
-    // provide different data in ratio section should have different color
-    // TODO - remove this - SPECIAL CASE FOR CMS v ATLAS DATA
-    // if(igrid == 0) ratiodata->SetFillColor(kGray+2);
-    // if(igrid == 1) ratiodata->SetFillColor(kGray);
-
+    TGraphAsymmErrors* ratiodata;
     
-    //draw the actual data
-    if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
-    ratiodata->Draw("E2,same");
+    if(ratioTheoryOverData) {
+      if(debug) cout<<" MyCrossSection::DrawinFrame: computing (theory/data) ratio."<<endl;
+      
+      ratiodata=myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr()
+				     ,mydata[igrid]->GetTGraphTotErr(),2);
+      if (!ratiodata) cout<<" MyCrossSection::DrawinFrame: ratiodata not found ! "<<endl;
+      ratiodata->SetMarkerStyle(mydata[igrid]->GetTGraphTotErr()->GetMarkerStyle());
+      ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
+      ratiodata->SetMarkerSize(0);
+      ratiodata->SetFillColor(kGray); //filled light gray error bars
+      
+      
+      // provide different data in ratio section should have different color
+      // TODO - remove this - SPECIAL CASE FOR CMS v ATLAS DATA
+      //if(igrid == 0) ratiodata->SetFillColor(kGray+2);
+      //if(igrid == 1) ratiodata->SetFillColor(kGray);
+      
+      
+      //draw the ratio of (theory/data)
+      if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
+      ratiodata->Draw("E2,same");
+    } else {
+      if(debug) cout<<" MyCrossSection::DrawinFrame: computing (data/theory) ratio(s) for each pdf."<<endl;
+
+      for(int ipdf = 0; ipdf < npdf; ipdf++) {
+	ratiodata=myTGraphErrorsDivide(myband[igrid]->GetPdfBand(ipdf)
+				       ,mydata[igrid]->GetTGraphTotErr(),2);
+	if (!ratiodata) cout<<" MyCrossSection::DrawinFrame: ratiodata not found ! "<<endl;
+	ratiodata->SetMarkerStyle(mydata[igrid]->GetTGraphTotErr()->GetMarkerStyle());
+	ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
+	ratiodata->SetMarkerSize(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
+	//ratiodata->SetFillColor(kGray); //filled light gray error bars
+
+	ratiodata->Print(); //TEST
+	//exit(0); //TEST
+	
+	//draw the ratio of (data/theory) for each theory
+	if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
+	ratiodata->Draw("P,same");
+      }
+    }
   }
 
 
