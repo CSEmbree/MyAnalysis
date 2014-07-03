@@ -306,21 +306,30 @@ void MyCrossSection::Initialize() {
       }
  
 
+      /*
+      if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
+	cout<<"TEST: scaleit"<<endl;
+	ScaleGraph( gref, mydata[igrid]->GetScalex(), mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
+      }
+      */
 
       // Flip ratio calculations if steering asks for it
-      //TGraphAsymmErrors* top;
-      //TGraphAsymmErrors* bot;
-      //if(ratioTheoryOverData) {
-      //	top = gref; //origonal
-      //	bot = mydata[igrid]->GetTGraphTotErr();
-      //} else {
-      //	top = mydata[igrid]->GetTGraphTotErr();
-      //	bot = gref;
-      //}
+      TGraphAsymmErrors* top;
+      TGraphAsymmErrors* bot;
+      int errorBarType;
+      if(ratioTheoryOverData) {
+      	top = gref; //origonal
+      	bot = mydata[igrid]->GetTGraphTotErr();
+	errorBarType = 0;
+      } else {
+      	top = mydata[igrid]->GetTGraphTotErr();
+      	bot = mydata[igrid]->GetTGraphTotErr();
+	errorBarType = 2;
+      }
 
-      //      ratiotot.push_back(myTGraphErrorsDivide(gref,mydata[igrid]->GetTGraphTotErr(),0)); //TODO - change error bar saving?
-      ratiotot.push_back(myTGraphErrorsDivide(gref, mydata[igrid]->GetTGraphTotErr(), 0)); //TODO - change error bar saving?
-      //ratiotot.push_back(myTGraphErrorsDivide(top, bot, 0)); //TODO - change error bar saving?
+      
+      //      ratiotot.push_back(myTGraphErrorsDivide(gref, mydata[igrid]->GetTGraphTotErr(), 0)); //TODO - change error bar saving?
+      ratiotot.push_back(myTGraphErrorsDivide(top, bot, errorBarType)); //TODO - change error bar saving?
       TString rationame=gref->GetName();
       rationame+="/";
       rationame+=mydata[igrid]->GetDataName();
@@ -1365,10 +1374,10 @@ void MyCrossSection::DrawinFrame(int iframe) {
     int igrid=gridinframe[iframe][i];
     int jframe=this->GetFrameID(igrid);
     if (iframe!=jframe) {
-      cout<<"TEST: NOT EQUAL: iframe:"<<iframe<<", jframe:"<<jframe<<endl;
+      //cout<<"TEST: NOT EQUAL: iframe:"<<iframe<<", jframe:"<<jframe<<endl; //TODO - check does this do anything?
       continue;
     } else {
-      cout<<"TEST: EQUAL, SKIPPING: iframe:"<<iframe<<", jframe:"<<jframe<<endl;
+      //cout<<"TEST: EQUAL, SKIPPING: iframe:"<<iframe<<", jframe:"<<jframe<<endl;
     }
 
     if (debug) cout<<" MyCrossSection::DrawinFrame: for i= " << i << " igrid= "<<igrid<<endl;
@@ -1382,13 +1391,17 @@ void MyCrossSection::DrawinFrame(int iframe) {
       href=this->GetNormalisedReference(igrid);
       if (!href) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
       
+      /*
       if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
-	if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling reference histo. "<<endl;
+      	if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling reference histo. "
+		      <<"\n\txscale: "<<mydata[igrid]->GetScalex()
+		      <<"\n\tyscale: "<<mydata[igrid]->GetScaley()<<endl;
+      	
 	
-
-	//set theory's scaling to the same as data's
-	href->Scale( mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
+      	//set theory's scaling to the same as data's
+      	href->Scale( mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
       }
+      */
       
       //no PDF, plot reference histogram for overlay
       href->Draw("same,hist"); //no PDF overlay draw
@@ -1423,8 +1436,17 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	
 	TString mylabel=mydata[igrid]->GetLabel();	
 	if (debug) cout<<" MyCrossSection::DrawinFrame: mylabel= "<<mylabel.Data()<<endl;
+	
+	// label sqrts before data on legend
+	if(mydata[igrid]->GetPlotSqrts())  {
+	  TString sqrtslabel = "";
+	  sqrtslabel.Form("#sqrt{s}= %0.0f TeV", (mydata[igrid]->GetSQRTS()/1000) ); //TODO - hardcoded, make generic
+	  leg->AddEntry((TObject*)0, sqrtslabel, "");
+	}
+	
 	//add the data label to the legend
 	leg->AddEntry(mydata[igrid]->GetTGraphTotErr(),mylabel,"ep");
+	
       }
     } else { //Data not OK
       href=this->GetReference(igrid);
@@ -1496,10 +1518,12 @@ void MyCrossSection::DrawinFrame(int iframe) {
   myframe->GetSubPad2()->cd();
   myframe->SetSubPad2TitleOffsetX(0.8);
 
-  TString titlename="NLO QCD/";
-  titlename+="Data "; 
-  if (ratiotitlelabel.size()>0)
-    titlename=ratiotitlelabel;
+  // setup ratio labels
+  TString titlename="";
+  if(ratioTheoryOverData) titlename="NLO QCD/Data";
+  else                    titlename="Data/NLO QCD";
+
+  if (ratiotitlelabel.size()>0) titlename=ratiotitlelabel;
 
   if (!this->GetDataOk(igrid)) titlename="";
   myframe->GetYAxis2()->SetTitle(titlename.Data());
@@ -1516,24 +1540,65 @@ void MyCrossSection::DrawinFrame(int iframe) {
     if (debug) cout<<" MyCrossSection::DrawinFrame: gridinframe["<<iframe<<"]["<<i<<"] = " 
 		   << gridinframe[iframe][i] 
 		   << " Draw reference for igrid= "<<igrid<<endl;
+    
 
+    
     //plot just the data if no pdfs are to be overlayed
     if (npdf<1) {
-      //no pdfs are being plotted, so data alone dictates range of ratio
       ratiotot[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
       if (ymin<Ymin) Ymin=ymin;
-      if (ymax>Ymax) Ymax=ymax;
-      
-      if (debug) cout<<" MyCrossSection::DrawinFrame: NO PDF's listed!"<<endl;
+      if (ymax>Ymax) Ymax=ymax;	
     } else {
-      //if a pdf exists, then determine range based on most max and most min of all pdfs
       myband[igrid]->ComputePDFBandRatioRange();
       Ymin=myband[igrid]->GetYmin();
       Ymax=myband[igrid]->GetYmax();
-      
-      if (debug) cout<<" MyCrossSection::DrawinFrame: "<<npdf<<" PDF's listed!"<<endl;
     }
     
+
+    /*
+    if(ratioTheoryOverData) {
+      if (npdf<1) {
+	ratiotot[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
+	if (ymin<Ymin) Ymin=ymin;
+	if (ymax>Ymax) Ymax=ymax;	
+      } else {
+	myband[igrid]->ComputePDFBandRatioRange();
+	Ymin=myband[igrid]->GetYmin();
+	Ymax=myband[igrid]->GetYmax();
+      }
+    } else {
+	TH1D *href=this->GetNormalisedReference(igrid);
+	TGraphAsymmErrors* gref=TH1TOTGraphAsymm(href);
+	TGraphAsymmErrors *tmp = myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr()
+						     ,gref,2);
+	tmp->ComputeRange(xmin,ymin,xmax,ymax);
+	if (ymin<Ymin) Ymin=ymin;
+	if (ymax>Ymax) Ymax=ymax;
+    }
+    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     if (debug) cout<<" MyCrossSection::DrawinFrame: Ymin= "<<Ymin<<" Ymax= "<<Ymax<<endl;
     /*
       for (int ipdf=0; ipdf<npdf; ipdf++) {
@@ -1565,22 +1630,15 @@ void MyCrossSection::DrawinFrame(int iframe) {
   myframe->GetYAxis2()->SetRangeUser(Ymin*0.9,Ymax*1.1); //<--Do this per each because each run is chaning the min and max??
 
 
-  for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
-    int igrid=gridinframe[iframe][i];
+  // Draw ratio onto plots
+  TGraphAsymmErrors* ratiodata;  
+  if(ratioTheoryOverData) { // (THEORY / DATA)
+    // draw data ratio (background bands) before pdf ratio (relative to bands)
     
-    // draw the measurment ratio data with error bars
-    // Flip ratio calculations if steering asks for it
-    //TGraphAssymErrors* top;
-    //TGraphAssymErrors* bot;
-    //if(ratioTheoryOverData) {
-    //  top = iset1; bot = iset2; //origional
-    //} else {
-    //  top = iset2; bot = iset1;
-    //}
-
-    TGraphAsymmErrors* ratiodata;
-    
-    if(ratioTheoryOverData) {
+    for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
+      int igrid=gridinframe[iframe][i];
+      
+      //FIRST - draw data ratio to itself in background
       if(debug) cout<<" MyCrossSection::DrawinFrame: computing (theory/data) ratio."<<endl;
       
       ratiodata=myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr()
@@ -1589,99 +1647,114 @@ void MyCrossSection::DrawinFrame(int iframe) {
       ratiodata->SetMarkerStyle(mydata[igrid]->GetTGraphTotErr()->GetMarkerStyle());
       ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
       ratiodata->SetMarkerSize(0);
-      ratiodata->SetFillColor(kGray); //filled light gray error bars
-      
+      //ratiodata->SetFillColor(kGray); //filled light gray error bars
       
       // provide different data in ratio section should have different color
-      // TODO - remove this - SPECIAL CASE FOR CMS v ATLAS DATA
-      //if(igrid == 0) ratiodata->SetFillColor(kGray+2);
-      //if(igrid == 1) ratiodata->SetFillColor(kGray);
-      
+      ratiodata->SetFillColor(kGray+i); //TODO - Choose a more predictable color based on data color?
       
       //draw the ratio of (theory/data)
       if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
       ratiodata->Draw("E2,same");
-    } else {
-      if(debug) cout<<" MyCrossSection::DrawinFrame: computing (data/theory) ratio(s) for each pdf."<<endl;
+    } 
 
-      for(int ipdf = 0; ipdf < npdf; ipdf++) {
-	ratiodata=myTGraphErrorsDivide(myband[igrid]->GetPdfBand(ipdf)
-				       ,mydata[igrid]->GetTGraphTotErr(),2);
+
+    //SECOND - Draw the reference or pdf ratio over the data ratio in forground
+    for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
+      int igrid=gridinframe[iframe][i];
+      
+      // no pdf means only need to display each set of ratios overlayed to the data
+      if (npdf<1) {
+	ratiotot[igrid]->SetMarkerStyle(0); //circle
+	ratiotot[igrid]->SetMarkerSize(0); //don't show the plotted point
+	
+	//PDF ratio drawing needs no scaling because it was generated from scaled data
+	ratiotot[igrid]->Draw("p,same"); 
+      } 
+      
+      
+      if (debug) cout<<" MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= "<<igrid<<endl;
+      //draw the PDF ratio data
+      myband[igrid]->DrawPDFBandRatio();
+    }
+    // finished drawing ratio (theory/data)
+
+  } else { // (DATA / THEORY)
+    // draw pdf ratio (background bands) before data ratio (relative to bands)
+
+    //FIRST - Draw the reference or pdf ratio to itself in the background 
+    for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
+      int igrid=gridinframe[iframe][i];
+      
+      // no pdf means only need to display each set of ratios overlayed to the data
+      if (npdf<1) {
+	ratiotot[igrid]->SetMarkerStyle(0); //circle
+	ratiotot[igrid]->SetMarkerSize(0); //don't show the plotted point
+	//ratiotot[igrid]->SetFillStyle(3005);
+	//ratiotot[igrid]->SetFillColor(kWhite);
+	
+	if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
+	  if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling ratiotot. "<<endl;	
+	  //set reference ratio scaling to the same as data's
+	  ScaleGraph(ratiotot[igrid], mydata[igrid]->GetScalex(), mydata[igrid]->GetScaley() ); //TODO
+	}
+	
+	ratiotot[igrid]->Draw("E1,same"); //no PDF ratio draw
+      } 
+    }
+    
+    //TODO - Move up into FIRST section for loop for each igrid?
+    if (debug) cout<<" MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= "<<igrid<<endl;
+    //draw the PDF ratio data
+    myband[igrid]->DrawPDFBandRatio();
+    
+    
+    //SECOND - Draw the data ratio over the pdf or reference histo ratio in the forground
+    if(debug) cout<<" MyCrossSection::DrawinFrame: computing (data/theory) ratio(s) for each pdf."<<endl;
+    for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
+      int igrid=gridinframe[iframe][i];
+      
+      if(npdf<1) {
+	TH1D *href=this->GetNormalisedReference(igrid);
+	TGraphAsymmErrors* gref=TH1TOTGraphAsymm(href);
+	
+	ratiodata=myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr(),gref,0);
 	if (!ratiodata) cout<<" MyCrossSection::DrawinFrame: ratiodata not found ! "<<endl;
 	ratiodata->SetMarkerStyle(mydata[igrid]->GetTGraphTotErr()->GetMarkerStyle());
 	ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
 	ratiodata->SetMarkerSize(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
-	//ratiodata->SetFillColor(kGray); //filled light gray error bars
 
-	ratiodata->Print(); //TEST
-	//exit(0); //TEST
+	//ratiodata->SetLineColor(gref->GetMarkerColor()); 
+	ratiodata->SetLineColor(kBlack);  //errorbar color depends on data color
+
+	
+	//draw the ratio of (data/theory) for each theory
+	if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
+	ratiodata->Draw("P,same");      
+      }
+      
+      for(int ipdf = 0; ipdf < npdf; ipdf++) {
+	ratiodata=myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr()
+				       ,myband[igrid]->GetPdfBand(ipdf),2);
+		
+	if (!ratiodata) cout<<" MyCrossSection::DrawinFrame: ratiodata not found ! "<<endl;
+	ratiodata->SetMarkerStyle(mydata[igrid]->GetTGraphTotErr()->GetMarkerStyle());
+	ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
+	ratiodata->SetMarkerSize(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
+
+	// errorbar color is dependant on which PDF the data ratio is relative to
+	//ratiodata->SetLineColor(myband[igrid]->GetPdfBand(ipdf)->GetMarkerColor()); 
+	ratiodata->SetFillColor(kBlack);
 	
 	//draw the ratio of (data/theory) for each theory
 	if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
 	ratiodata->Draw("P,same");
       }
     }
+    // finished drawing ratio (data/theory)
   }
+  
+  
 
-
-
-  //Draw the ratio data
-  for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
-    int igrid=gridinframe[iframe][i];
-    
-    if (debug) cout<<" MyCrossSection::DrawinFrame: at i='"<<i<<"' of gridinframe["<<iframe<<"].size='"
-		   <<(int)gridinframe[iframe].size()<<"'"
-		   <<", igrid='"<<igrid<<"'"
-		   <<endl;
-
-    
-    
-    // no pdf means only need to display each set of ratios overlayed to the data
-    if (npdf<1) {
-      //ratiostat[igrid]->Draw("hist,same");
-      ratiotot[igrid]->SetMarkerStyle(0); //circle
-      ratiotot[igrid]->SetMarkerSize(0); //don't show the plotted point
-      //      ratiotot[igrid]->SetLineColor(refhistlinecolor[igrid]);
-
-
-      if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
-	if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling ratiotot. "<<endl;
-	
-	//set reference ratio scaling to the same as data's
-	ScaleGraph(ratiotot[igrid], mydata[igrid]->GetScalex(), mydata[igrid]->GetScaley() ); //TODO
-      }
-      
-
-      ratiotot[igrid]->Draw("p,same"); //no PDF ratio draw
-      //ratiotot[igrid] ->Draw("hist,same");
-    } 
-
-
-    if (debug) cout<<" MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= "<<igrid<<endl;
-    //if (!ratiostat[igrid])cout<<" MyCrossSection::DrawinFrame ratiostat not found igrid= "<<igrid<<endl;
-    //if (!ratiotot[igrid]) cout<<" MyCrossSection::DrawinFrame: ratiotot not found igrid= "<<igrid<<endl;
-   
-    //if (debug) {
-    // cout<<" MyCrossSection::DrawInFrame print ratiotot: "<<ratiotot[igrid]->GetName()<<endl;
-    // ratiotot[igrid]->Print("all");
-    //}
- 
-    //draw the PDF ratio data
-    myband[igrid]->DrawPDFBandRatio();
-    /*
-      if (this->GetDataOk(igrid)) {   
-      //int npdf=myband.at(igrid)->GetNPDF();
-      if (debug) cout<<" MyCrossSection::DrawinFrame: npdf= "<<npdf<<endl;
-      for (int ipdf=0; ipdf<npdf; ipdf++) {
-      if (debug) cout<<" MyCrossSection::DrawinFrame: ipdf= "<<ipdf<<endl;
-      if (plotmarker) gpdfbandratiotot[igrid][ipdf]->Draw("P1 same");
-      else            gpdfbandratiotot[igrid][ipdf]->Draw("E2 same");
-      gpdfdefaultratiotot[igrid][ipdf]->SetMarkerSize(0);
-      gpdfdefaultratiotot[igrid][ipdf]->Draw("P1 same");
-      }
-      }
-    */
-  }
 
   TLine *myline= new TLine(myframe->GetXmin(),1.,myframe->GetXmax(),1.);
   myline->Draw(); 
@@ -1726,9 +1799,24 @@ TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
     bool  normtot=mydata[igrid]->isNormTot();
 
 
+    if(mydata[igrid]->GetScalex() != 1.0) xscale += mydata[igrid]->GetScalex();
+    if(mydata[igrid]->GetScaley() != 1.0) yscale += mydata[igrid]->GetScaley();
+
     this->Normalise(href,yscale,xscale,normtot);
   }
 
+  
+    if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
+      if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling reference histo. "
+		    <<"\n\txscale: "<<mydata[igrid]->GetScalex()
+		    <<"\n\tyscale: "<<mydata[igrid]->GetScaley()<<endl;
+      
+      //set theory's scaling to the same as data's
+      href->Scale( mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
+    }
+  
+
+  
   return href;
 }
 
