@@ -31,6 +31,7 @@ class MyData {
   bool unitsxTeV; // if true units are in TeV, default is GeV
   bool unitsypb;  // if true units are in pb, default is fb
   bool normtot;   // if true y-axis is normalised by sigtot
+  bool plotsqrts; // tell the MyCrossSection to plot the sqrts info
 
   bool dividebybinwidth; //data are divided by bin width 
 
@@ -187,6 +188,8 @@ class MyData {
   bool GetLinX (){ return blinx;};
   bool GetSetFrameXmin (){ return setframexmin;};
   double GetFrameXmin  (){return framexmin;};
+  
+  bool GetPlotSqrts(){return plotsqrts;};
  
   int GetNJet()  {return njets;};
   bool GetNJetCut() {return njetcut;};
@@ -253,7 +256,7 @@ class MyData {
   double GetMaxY() {return maxy;};
   double GetMinX() {return minx;};
   double GetMaxX() {return maxx;};
-  double GetSQRTS()    {return sqrts;};
+  double GetSQRTS(){return sqrts;};
 
   //void ReadData(const char fname[1000], const char dir[1000]="data", double scale=1.);
   void ReadData( string fname, string dir="data", double scale=1.);

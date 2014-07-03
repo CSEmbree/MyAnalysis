@@ -23,6 +23,7 @@ MyData::MyData()
   cov_matrix_ok=false;
 
   dividebybinwidth=false; 
+  plotsqrts=false;
 
   scaley=1.; //allow constant scale of units if user wants
   scalex=1.;
@@ -402,6 +403,8 @@ void MyData::ReadData(string fname, string dir, double myscale){
     sscanf(line," %s %f ",text, &mys);
     Mtwcut=mys;
     //cout<<" Mtwcut= "<<Mtwcut<<endl;
+   } else if (strstr(line,"plotsqrts")!=0) {
+    plotsqrts = true;
    } else if (strstr(line,"DRLJ")!=0) {
     drljcut=true;
     char text[100]; float mys;
@@ -415,8 +418,8 @@ void MyData::ReadData(string fname, string dir, double myscale){
     nsyst++;
     //sscanf(line," %s %[^\n] ",text, name);
     // read in systematics commponents
-    if (debug) cout << " MyData::ReadData: nsyst= "<<nsyst<<endl;
-
+     if (debug) cout << " MyData::ReadData: nsyst= "<<nsyst<<endl;
+     
     std::string cpp_line(line);   
     std::vector<std::string> split_line;  split_line.clear();
     split_string(cpp_line, split_line, " ");
