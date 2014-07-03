@@ -58,6 +58,7 @@ TStyle* AtlasStyle()
   atlasStyle->SetTitleFont(font,"y");
   atlasStyle->SetLabelFont(font,"z");
   atlasStyle->SetTitleFont(font,"z");
+  atlasStyle->SetLegendFont(font);
   
   atlasStyle->SetLabelSize(tsize,"x");
   atlasStyle->SetTitleSize(tsize,"x");
