@@ -47,9 +47,9 @@ void MyBand::DrawPDFBandRatio()
  } 
 
  //if data was artificially scaled, then theory must be equally scaled
- if(scalex != 1.0 || scaley != 1.0 ) {
-   this->ScaleOverlayGraphs(scalex, scaley);
- }
+ //if(scalex != 1.0 || scaley != 1.0 ) {
+ //  this->ScaleOverlayGraphs(scalex, scaley);
+ //}
  
 
 
@@ -97,6 +97,7 @@ void MyBand::DrawPDFBandRatio()
      gpdfbandratio.at(ipdf)->Draw(bandratiostyle); // plot based on style
    } else {
      //gpdfbandratio.at(ipdf)->SetFillColor(kGray);
+     //gpdfbandratio.at(ipdf)->SetFillStyle();
      gpdfbandratio.at(ipdf)->Draw("E2"); //P2
      
    }
@@ -121,10 +122,12 @@ void MyBand::DrawPDFBand()
   }
 
   //if data was artificially scaled, then theory must be equally scaled
-  if(scalex != 1.0 || scaley != 1.0 ) {
-    this->ScaleRatioGraphs(scalex, scaley);
-  }
-
+  //if(scalex != 1.0 || scaley != 1.0 ) {
+  //  this->ScaleRatioGraphs(scalex, scaley);
+  //}
+  //  if(scalex != 1.0 || scaley != 1.0 ) {
+  //  this->ScaleOverlayGraphs(scalex, scaley);
+  //}
 
   
   // plot PDF info for overlay
@@ -270,6 +273,11 @@ TString MyBand::GetBandRatioStyle() {
 void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref) 
 {
 
+  //if data was asked to be artificially scaled, then theory must be equally scaled before visual ranges can be determined
+  if(scalex != 1.0 || scaley != 1.0 ) {
+    this->ScaleOverlayGraphs(scalex, scaley);
+  }
+  
  if (debug) {
   cout <<" MyBand::ComputePDFBandRatio: gpdfband.size()= " << gpdfband.size()<<endl;
   cout <<" MyBand::ComputePDFBandRatio: gref name: " << gref->GetName()<<endl;
@@ -285,14 +293,14 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
    if(ratioTheoryOverData) {
      g1 = gpdfband.at(ipdf);
      g2 = gref;
-
-     g  = gpdfband.at(ipdf); //how visual settings will be defined
+     //g  = gpdfband.at(ipdf); //how visual settings will be defined
    } else {
      g1 = gpdfband.at(ipdf);
      g2 = gpdfband.at(ipdf);
-
-     g  = gref; //how visual settings will be defined
+     //g  = gref; //how visual settings will be defined 
    }
+   
+   g = gpdfband.at(ipdf);
    
    TGraphAsymmErrors *gratio=myTGraphErrorsDivide(g1,g2,2);
    TString rationame=g1->GetName();
@@ -347,6 +355,8 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
 
 
 void MyBand::ComputePDFBandRatioRange(){
+
+
 
  double xmin=0.; double xmax=0.; 
  double ymin=0.; double ymax=0.;
