@@ -16,6 +16,7 @@ normtot
 dividedbybinwidth
 %
 %
+plotsqrts
 framexmin 250.
 framexmin 2700.
 framelogy
