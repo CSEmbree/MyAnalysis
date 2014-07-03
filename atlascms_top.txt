@@ -2,8 +2,11 @@
 % steering file to compare CMS data to new ATLAS data
 %
 debug
-plotmarker
+%plotmarker
 plotband
+%ploterrorticks
+%ymaxratio 2
+ymaxoverlay 8
 xlegend 0.9
 ylegend 0.9
 %
@@ -11,10 +14,14 @@ ylegend 0.9
 %yminratio -50.0
 %ymaxratio 50.0
 %
+%ratio theory/data
+ratio data/theory
 %
 %datanamedir MyData/datanew/
-%pdfdata MyPDF/CT10.txt, MyPDF/HERAPDF15NLO.txt
+%pdfdata MyPDF/HERAPDF15NLO.txt
 pdfdata MyPDF/CT10.txt
+%pdfdata MyPDF/MSTW2008nlo.txt
+%pdfdata MyPDF/NNPDF23nlo.txt
 %
 % need always dataname, gridname, markerstyle, markercolor one after the other
 %Gridnamedir MyGrids/top/mcfm
@@ -38,7 +45,7 @@ markercolordata 1
 vardesc atlas_mtt_5fb
 reflinecolor 2
 leglabel cms-reference
-%reflinestyle 2
+reflinestyle 2
 %mcscalex 1000
 %scaley 1000.
 frameid 0
