@@ -36,6 +36,8 @@ class MyData {
   bool dividebybinwidth; //data are divided by bin width 
 
   TString label;
+  string xunits; //steering declariation of x units
+  string yunits; //steering declariation of y units
 
   double ymin, ymax, sqrts;  
   double scale;
@@ -144,6 +146,10 @@ class MyData {
   double GetScaley() { return scaley; } //depricated
   double GetScalex() { return scalex; } //depricated
   
+  string GetXUnits(){ return xunits ;};
+  string GetYUnits(){ return yunits ;};
+
+  
   bool CovarianceMatrixOk() { return cov_matrix_ok;}
 
   //  TMatrixT <double> GetCovarianceMatrix() { 
@@ -180,6 +186,10 @@ class MyData {
 
   void ScaleGraph(TGraphAsymmErrors *g1, double scalex, double scaley);
   void Scale(double scalex, double scaley);
+
+  //void NormaliseGraph(TGraphAsymmErrors* , double , double , bool , bool );
+  void NormaliseGraph(TGraphAsymmErrors* g1, double yscale, double xscale, bool normtot, bool divbinwidth);
+  void Normalise(double yscale, double xscale);
 
   bool DivideByBinWidth() {return dividebybinwidth;}; 
   bool GetLogY1(){ return blogy;};

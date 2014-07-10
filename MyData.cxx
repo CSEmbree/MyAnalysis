@@ -5,6 +5,8 @@
  ** Method Implementations
  ******************************************************************/
 
+const string cn = " MyData::";
+
 MyData::MyData()
 {
   debug=false;
@@ -74,6 +76,8 @@ MyData::MyData()
   incljets=false;
 
   corrfilename="";
+  xunits="GeV"; //TODO - default, make generic
+  yunits="fb"; //TODO - default, make generic
 
 }
 
@@ -149,6 +153,7 @@ void MyData::ReadCorrelations()
 void MyData::ReadData(string fname, string dir, double myscale){
 
  if (debug) cout << " MyData::ReadData:" << endl;
+ string mn = "ReadData:";
  bool errorinpercent=false;
 
  filename.Clear();
@@ -188,7 +193,7 @@ void MyData::ReadData(string fname, string dir, double myscale){
 
  //TString fnametmp=TString(dir);
  TString fnametmp=dir;
- fnametmp+="/";
+ if(fnametmp.EqualTo("") == false) fnametmp+="/"; //add slash for file path if directory is not local
  fnametmp+=TString(fname);
  //fnametmp+=fname;
  //if (debug) 
@@ -209,7 +214,9 @@ void MyData::ReadData(string fname, string dir, double myscale){
  int isyst=0;
  int nbin=-1;
  int nbinold=-999;
- char line[1024];
+ char line[1024]; char option[1024]; char value[1024];
+ double doubleVal; float floatVal;
+ float mymin=0, mymax=0;
 
  double  xm=0., xl=0.,xh=0., y=0., ey=0.;
  std::vector<double> eyh;
@@ -229,528 +236,543 @@ void MyData::ReadData(string fname, string dir, double myscale){
  bool nextlinereaddatavalues=true;
  bool newbin=true;
 
- while (1) {
-  //if (debug) cout << " MyData::ReadData: good: " << infile.good() << " eof: " << infile.eof() << endl;
-  if (!infile.good()) break;
-  infile.getline(line,sizeof(line),'\n');
-  //std::string cpp_line(line);   
-//
-  if (debug) cout<< "line= "<< line << "\n";
-
-  if (line[0] != '%'){ // this is a comment line in the steering
-   if (strstr(line,"unitxTeV")!=0) {
-    unitsxTeV=true; 
-   } else if (strstr(line,"normtot")!=0) {
-    normtot=true; 
-   } else if (strstr(line,"unitypb")!=0) {
-    unitsypb=true; 
-   } else if (strstr(line,"framelogy")!=0) {
-    blogy=true; bliny=false;
-    //cout<<" set logy "<<endl;
-   } else if (strstr(line,"frameliny")!=0) {
-    blogy=false; bliny=true;
-    //cout<<" set linx "<<endl;
-   } else if (strstr(line,"framelogx")!=0) {
-    blogx=true; blinx=false;
-    //cout<<" set logx "<<endl;
-   } else if (strstr(line,"dividedbybinwidth")!=0) {
-    dividebybinwidth=true;
-    if (debug) cout<<" MyData turn on divide by bin width "<<endl; 
-   } else if (strstr(line,"framelinx")!=0) {
-    blogx=false; blinx=true;
-    //cout<<" set linx "<<endl;
-   } else if (strstr(line,"framexmin")!=0) {
-    char text[100]; float myframexmin;
-    sscanf(line," %s %f ",text, &myframexmin);
-    setframexmin=true;
-    framexmin=myframexmin;
-    //if (debug) cout<<" framexmin= "<<framexmin<<endl;
-   } else if (strstr(line,"YRAP")!=0) {
-    char text[100];
-    float myymin, myymax;
-    sscanf(line," %s %f %f",text, &myymin,&myymax);
-    ymin=myymin; ymax=myymax;
-    if (debug) printf(" MyData::ReadData: ymin= %f  ymax = %f  \n",myymin,myymax); 
-   } else if (strstr(line,"YJET")!=0) {
-    char text[100];
-    float myymin, myymax;
-    jetcut=true;
-    sscanf(line," %s %f %f",text, &myymin,&myymax);
-    yjetmin=myymin; yjetmax=myymax;
-    if (debug) printf(" MyData::ReadData: ymin= %f  ymax = %f  \n",myymin,myymax); 
-   } else if (strstr(line,"YLEP")!=0) {
-    lepcut=true;
-    char text[100];
-    float myymin, myymax;
-    sscanf(line," %s %f %f",text, &myymin,&myymax);
-    ylepmin=myymin; ylepmax=myymax;
-    if (debug) printf(" MyData::ReadData: ymin= %f  ymax = %f  \n",myymin,myymax); 
-   } else if (strstr(line,"SQRTS")!=0) {
-    char text[100]; float mys;
-    sscanf(line," %s %f ",text, &mys);
-    sqrts=mys;
-    if (debug) printf(" MyData::ReadData: s= %f   \n",mys);
-   } else if (strstr(line,"ERRORINPERCENT")!=0) {
-    errorinpercent=true;
-    if (debug) cout<<" MyData::ReadData: errors given in percent "<<endl;
-   } else if (strstr(line,"TABLEPLUSMINUS")!=0) {
-    tableplusminus=true;
-    if (tableplusminus) cout<<" MyData::ReadData: Syst uncertainties with +/- values "<<endl;
-   } else if (strstr(line,"YEAR")!=0) {
-    char text[100]; 
-    sscanf(line," %s %d ",text, &year);
-    //cout<<" year= "<<year<<endl;
-   } else if (strstr(line,"JETALGO")!=0) {
-    char text[100];     char jetname[100]; 
-    sscanf(line," %s %s ",text, jetname);
-    jetalgo=jetname;
-   } else if (strstr(line,"corrname")!=0) {
-    char text[100];     char  name[100]; 
-    sscanf(line," %s %[^\n] ",text, name);
-    if (debug) cout<<" MyData::ReadData: text= "<<text<<endl;
-    corrfrommatrix=true;
-    corrfilename=TString(dir);
-    corrfilename+="/";
-    corrfilename+=TString(name);
-    if (debug) cout<<" MyData::ReadData: corrfilename= "<<corrfilename.Data()<<endl;
-   } else if (strstr(line,"label")!=0) {
-    char text[100];     char labelname[100]; 
-    sscanf(line," %s %[^\n] ",text, labelname);
-    //if (debug) cout<<" MyData::ReadData text= "<<text<<endl;
-    if (debug) cout<<" MyData::ReadData: labelname= "<<labelname<<endl;
-    label=TString(labelname);
-   } else if (strstr(line,"EXP")!=0) {
-    char text[100];     char name[100]; 
-    sscanf(line," %s %[^\n] ",text, name);
-    experiment=TString(name);
-    //cout<<" Reaction= "<<name<<endl;
-   } else if (strstr(line,"REACTION")!=0) {
-    char text[100];     char name[100]; 
-    sscanf(line," %s %[^\n] ",text, name);
-    //sscanf(line," %s %s ",text, name);
-    reaction=TString(name);
-    //cout<<" Reaction= "<<name<<endl;
-   } else if (strstr(line,"NAME")!=0) {
-    char text[100];     char name[100]; 
-    sscanf(line," %s %[^\n] ",text, name);
-    //sscanf(line," %s %s ",text, name);
-    dataname=TString(name);
-   } else if (strstr(line,"COLUMNNAME")!=0) {
-    char text[100];     char name[100]; 
-    sscanf(line," %s %[^\n] ",text, name);
-    //sscanf(line," %s %s ",text, name);
-    columnname=TString(name);
-    if (debug) cout<<" MyData::ReadData: columnname= "<<columnname.Data()<<endl;
-   } else if (strstr(line,"OBS")!=0) {
-    char text[100];     char name[100]; 
-    sscanf(line," %s %[^\n] ",text, name);
-    observable=TString(name);
-    if (debug) cout<<" MyData::ReadData: observable= "<<observable.Data()<<endl;
-    if (observable.Contains("INCLJETS")) incljets=true;
-    if (incljets) cout<<" MyData::ReadData: variable for inclusive jets "<<endl;
-    //double *bins = new double[nbins];
-   } else if (strstr(line,"titlex")!=0) {
-    char text[100];     char name[100]; 
-    sscanf(line," %s %[^\n] ",text, name);
-    titlex=TString(name);
-    //cout<<" TitleX= "<<name<<endl;
-   } else if (strstr(line,"titley")!=0) {
-    char text[100];     char name[100]; 
-    sscanf(line," %s %[^\n] ",text, name);
-    titley=TString(name);
-    //cout<<" TitleY= "<<name<<endl;
-   } else if (strstr(line,"JETALGR")!=0) {
-    char text[100]; 
-    sscanf(line," %s %d ",text, &jetalgoR);
-    //cout<<" jet R= "<<jetalgoR<<endl;
-   } else if (strstr(line,"NJETS")!=0) {
-    njetcut=true;
-    njets=0;
-    char text[100]; 
-    sscanf(line," %s %d ",text, &njets);
-    //cout<<" NJets= "<<njets<<endl;
-   } else if (strstr(line,"PTJET")!=0) {
-    jetcut=true;
-    char text[100]; float mys;
-    sscanf(line," %s %f ",text, &mys);
-    ptjetcut=mys;
-    //cout<<" ptjetcut= "<<ptjetcut<<endl;
-   } else if (strstr(line,"PTLEP")!=0) {
-    lepcut=true;
-    char text[100]; float mys;
-    sscanf(line," %s %f ",text, &mys);
-    ptlepcut=mys;
-    //cout<<" ptlepcut= "<<ptlepcut<<endl;
-   } else if (strstr(line,"scaley")!=0) {
-     char text[100]; float myscaley=1;
-     sscanf(line," %s %f ",text, &myscaley);
-     scaley = myscaley;
-     cerr<<" MyBand::Read:: WARN: Deprecated setting 'scaley="<<scaley<<"' will scale data and theory!"<<endl;
-   } else if (strstr(line,"scalex")!=0) {
-     char text[100]; float myscalex;
-     sscanf(line," %s %f ",text, &myscalex);
-     scalex = myscalex;
-     cerr<<" MyBand::Read:: WARN: Deprecated setting 'scalex="<<scalex<<"' will scale data and theory!"<<endl;
-   } else if (strstr(line,"PTNEU")!=0) {
-     neucut=true;
-    char text[100]; float mys;
-    sscanf(line," %s %f ",text, &mys);
-    ptneucut=mys;
-    //cout<<" ptneucut= "<<ptneucut<<endl;
-   } else if (strstr(line,"MTW")!=0) {
-    cutMtw=true;
-    char text[100]; float mys;
-    sscanf(line," %s %f ",text, &mys);
-    Mtwcut=mys;
-    //cout<<" Mtwcut= "<<Mtwcut<<endl;
-   } else if (strstr(line,"plotsqrts")!=0) {
-    plotsqrts = true;
-   } else if (strstr(line,"DRLJ")!=0) {
-    drljcut=true;
-    char text[100]; float mys;
-    sscanf(line," %s %f ",text, &mys);
-    deltaRLepJet=mys;
-   } else if (strstr(line,"SYSTCORRELATIONMATRIX")!=0) { // flag that systematic correlation matrix set
-    systcorrelationmatrix=true;
-    if (systcorrelationmatrix) cout << " MyData::ReadData systcorrelationmatrix is defined \n";
-   } else if (strstr(line,"Syst_")!=0) { // systematics components
-    //char text[100];     char  name[100]; 
-    nsyst++;
-    //sscanf(line," %s %[^\n] ",text, name);
-    // read in systematics commponents
-     if (debug) cout << " MyData::ReadData: nsyst= "<<nsyst<<endl;
-     
-    std::string cpp_line(line);   
-    std::vector<std::string> split_line;  split_line.clear();
-    split_string(cpp_line, split_line, " ");
-    string name=split_line.at(0);
-    //for (int ci = 1; ci < (int) split_line.size(); ci++) {
-    // double val = atof( split_line.at(ci).c_str() );
-    //}
-
-    TGraphAsymmErrors* gtmp= new  TGraphAsymmErrors();
-    gtmp->SetName(TString(name));
-    if (debug) cout<<" MyData::ReadData: gtmp name= "<<gtmp->GetName()<<endl;
-    if (debug) gtmp->Print();
-    // read here correlation matrix
-    datavectorsystcomp.push_back(gtmp);
-
-   } else {
 
 
-    //if (newbin) cout<<" start newbin on "<<endl;
-    //else        cout<<" start newbin off "<<endl;
+ while ( infile.good() ) {
 
-    if (nextlinereaddatavalues) {
-     if (debug) cout<<" MyData::ReadData: found bin= "<<nbin<<" nbinold= "<<nbinold<<endl;
-     if (nbin!=nbinold) nbinold=nbin;
+   infile.getline(line,sizeof(line),'\n');
+  
+   if(debug) cout<<cn<<mn<< "line = '"<< line <<"'"<<endl; //TEST
 
-     std::string cpp_line(line);   
-     std::vector<std::string> split_line;  split_line.clear();
-     split_string(cpp_line, split_line, " ");
+   if (line[0] != '%' ){ // this is a comment line in the steering
 
-     //if (debug) cout << "Dump numerical contents (should be identical):\n";
-     //
-     // This code assumes that tables are formated
-     // with 5 column per line xm xl xh sigma sigma stat
-     // and then following lines with 2 colums for each systematic uncertainty
-     // or everything in one line with syst everything what follows after statistical uncertainty
-     //
-
-     if (split_line.size()>=5) {
-      if (split_line.size()>5) newbin=true;
-      if (split_line.size()==5) {
-       if (newbin)  {newbin=false;
-       } else       {newbin=true;}
-       if (isyst==0){newbin=true;}
+    switch(toupper(line[0])) {
+    case 'A': break;
+    case 'B': break;
+    case 'C': 
+      if (strstr(line,"corrname")!=0) { 
+	sscanf(line," %s %[^\n] ", option, value);
+	corrfrommatrix=true;
+	corrfilename=TString(dir);
+	corrfilename+="/";
+	corrfilename+=TString(value);
+	if (debug) cout<<cn<<mn<<" corrfilename= "<<corrfilename.Data()<<endl;
+      } else if (strstr(line,"COLUMNNAME")!=0) {
+	sscanf(line," %s %[^\n] ", option, value);
+	columnname=TString(value);
+	if (debug) cout<<cn<<mn<<" columnname= "<<columnname.Data()<<endl;
       }
-      if (newbin) {
-       nbin++;
-       eyl.clear(); eyh.clear();  
-       isyst=0;
+      break;
+    case 'D': 
+      if (strstr(line,"dividedbybinwidth")!=0) {
+	dividebybinwidth=true;
+	if (debug) cout<<cn<<mn<<" Divide by bin width is ON"<<endl; 
+      } else if (strstr(line,"DRLJ")!=0) {
+	drljcut=true;
+	sscanf(line," %s %f ",option, &floatVal);
+	deltaRLepJet=floatVal;
       }
-
-      //if (newbin) cout<<" in splitline newbin on "<<endl;
-      //else        cout<<" in splitline newbin off "<<endl;
-   
-      if (debug) cout << " MyData::ReadData: read line mean xl xh sigma stat"<<endl; 
-      for (int ci = 0; ci < (int) split_line.size(); ci++) {
-       double val = atof( split_line.at(ci).c_str() );
-       if (debug) cout<<" MyData::ReadData: ci= "<<ci<<" val= "<<val<<endl;      
-       if (ci==0) xm=val;
-       if (ci==1) xl=val;
-       if (ci==2) xh=val;
-       if (ci==3) y=val;
-       if (ci==4) ey=val;
-       if (ci>=5) {
-	//cout<<" MyData::ReadData: isyst= "<<isyst<<" ci= "<<ci<<" mod= "<<(ci-5)%2<<endl;
-
-        if (tableplusminus) {
-	  if ((ci-5)%2==0) {
-          isyst++;
-          eyh.push_back(atof( split_line.at(ci).c_str() ));
-          eyl.push_back(atof( split_line.at(ci+1).c_str() ));
-         }
-        } else {
-         isyst++;
-         eyh.push_back(atof( split_line.at(ci).c_str() ));
-         eyl.push_back(atof( split_line.at(ci).c_str() ));
-        }
-       }
+      break;
+    case 'E': 
+      if (strstr(line,"ERRORINPERCENT")!=0) {
+	errorinpercent=true;
+	if (debug) cout<<cn<<mn<<" Errors given in percent "<<endl;
+      } else if (strstr(line,"EXP")!=0) { 
+	sscanf(line," %s %[^\n] ", option, value);
+	experiment=TString(value);
       }
-     }
-
-     if (tableplusminus&&split_line.size()==2) {
-      if (debug) cout << " MyData::ReadData read line syst= "<<isyst<<endl; 
-      isyst++;
-      eyh.push_back( atof( split_line.at(0).c_str() ));
-      eyl.push_back( atof( split_line.at(1).c_str() ));
-      newbin=false;
-     }
- 
-     //if (newbin) cout<<" end newbin on "<<endl;
-     //else       cout<<" end newbin off "<<endl;
-
-     double myy=y, myey=ey;
-     if (errorinpercent) {myey *=y/100.;}
-     myy  *=myscale; myey *=myscale;
-
-     if (miny>y) miny=myy;
-     if (maxy<y) maxy=myy;
-     if (minx>xl) minx=xl;
-     if (maxx<xh) maxx=xh;
-
-
-     float x= (xh+xl)/2.;
-     float b= (xh-xl)/2.;
-
-     if (debug) {
-      cout<<" MyData::ReadData: nbin= "<<nbin<<" isyst= "<<isyst
-          <<" x= "<<x<<" xl= "<<xl<<" xh= "<<xh<<" y= "<<myy<<" ey= " << myey << endl;
-      for (int i=0; i<(int)eyl.size(); i++) {
-       cout<<" MyData::ReadData: i= "<<i<<" eyh= "<<eyh[i]<<" eyl= "<<eyl[i]<<endl;
+      break;
+    case 'F': 
+      if (strstr(line,"framelogy")!=0) {
+	blogy=true; bliny=false;
+      } else if (strstr(line,"frameliny")!=0) {
+	blogy=false; bliny=true;
+      } else if (strstr(line,"framelogx")!=0) {
+	blogx=true; blinx=false;
+      } else if (strstr(line,"framelinx")!=0) {
+	blogx=false; blinx=true;
+      } else if (strstr(line,"framexmin")!=0) {
+	sscanf(line," %s %f ",option, &floatVal);
+	setframexmin=true;
+	framexmin=floatVal;
       }
-     }
-     
-     datavector->SetPoint(nbin ,xm, myy);
-     datavector->SetPointEXlow (nbin ,xm-x+b); 
-     datavector->SetPointEXhigh(nbin,x+b-xm); 
-
-     datavectortoterr->SetPoint(nbin ,xm, myy);
-     datavectortoterr->SetPointEXlow (nbin ,xm-x+b); 
-     datavectortoterr->SetPointEXhigh(nbin,x+b-xm); 
-
-     if (debug) {
-      cout<<" MyData::ReadData: datavector: "<<endl;
-      datavector->Print();
-     }
-
-     datavectorstat->SetPoint(nbin ,xm, myy);
-     datavectorstat->SetPointEXlow (nbin ,xm-x+b); 
-     datavectorstat->SetPointEXhigh(nbin,x+b-xm); 
-     datavectorstat->SetPointEYlow (nbin,myey); 
-     datavectorstat->SetPointEYhigh(nbin,myey); 
-
-     if (debug) {
-      cout<<" datavectorstat: "<<endl;
-      datavectorstat->Print();
-     }
-
-     if (debug) cout<<" MyData::ReadData: number of systematics= "<<eyl.size()<<endl;
-
-     if (debug) cout<<" MyData::ReadData: datavectorsystcomp.size() = "<<datavectorsystcomp.size()<<endl;
-
-     if (datavectorsystcomp.size()>0) {
-      for (int i=0; i<(int)eyl.size(); i++) {
-       if (debug) cout<<" MyData::ReadData: i= "<<i<<endl;
-       double myeyh=eyh[i], myeyl=eyl[i];
-       if (errorinpercent) {myeyh *=y/100.; myeyl *=y/100.;}
-       if (debug) cout<<" MyData::ReadData: huhu i= "<<i<<endl;
-       myeyl *=myscale; myeyh *=myscale; 
-
-       if (debug) cout<<" MyData::ReadData: eyl.size()= "<<eyl.size()<<endl;
-       if (datavectorsystcomp.size()<i) {
-        cout<<" MyData::ReadData datavectorsystcomp["<<i<<"] not found "<<endl;
-        continue;
-       }
-       if (debug) cout<<" MyData::ReadData: nbin= "<<nbin<<" xm= "<<xm<<endl; 
- 
-       datavectorsystcomp[i]->SetPoint(nbin ,xm, myy);
-       datavectorsystcomp[i]->SetPointEXlow (nbin,xm-x+b); 
-       datavectorsystcomp[i]->SetPointEXhigh(nbin,x+b-xm); 
-       datavectorsystcomp[i]->SetPointEYlow (nbin,myeyl); 
-       datavectorsystcomp[i]->SetPointEYhigh(nbin,myeyh); 
+      break;
+    case 'G': break;
+    case 'H': break;
+    case 'I': break;
+    case 'J': 
+      if (strstr(line,"JETALGO")!=0) {
+	sscanf(line," %s %s ", option, value);
+	jetalgo=value;
+      } else if (strstr(line,"JETALGR")!=0) {
+	sscanf(line," %s %d ",option, &jetalgoR);
       }
-     }
-    }
-   }
-  } 
+      break;
+    case 'K': break;
+    case 'L': 
+      if (strstr(line,"label")!=0) { 
+	sscanf(line," %s %[^\n] ", option, value);
+	if (debug) cout<<cn<<mn<<" labelname= "<<value<<endl;
+	label=TString(value);
+      }
+      break;
+    case 'M': 
+      if (strstr(line,"MTW")!=0) {
+	cutMtw=true;
+	sscanf(line," %s %f ", option, &floatVal);
+	Mtwcut=floatVal;
+      }
+      break;
+    case 'N': 
+      if (strstr(line,"normtot")!=0) {
+	normtot=true; 
+      } else if (strstr(line,"NAME")!=0) {
+	sscanf(line," %s %[^\n] ", option, value);
+	dataname=TString(value);
+      } else if (strstr(line,"NJETS")!=0) {
+	njetcut=true;
+	njets=0;
+	sscanf(line," %s %d ", option, &njets);
+      }
+      break;
+    case 'O': 
+      if (strstr(line,"OBS")!=0) {
+	sscanf(line," %s %[^\n] ", option, value);
+	observable=TString(value);
+	if (debug) cout<<cn<<mn<<" observable= "<<observable.Data()<<endl;
+	if (observable.Contains("INCLJETS")) incljets=true;
+	if (incljets) cout<<cn<<mn<<" Variable for inclusive jets "<<endl;
+      }
+      break;
+    case 'P': 
+      if (strstr(line,"PTJET")!=0) {
+	jetcut=true;
+	sscanf(line," %s %f ", option, &floatVal);
+	ptjetcut=floatVal;
+      } else if (strstr(line,"PTLEP")!=0) {
+	lepcut=true;
+	sscanf(line," %s %f ", option, &floatVal);
+	ptlepcut=floatVal;
+      } else if (strstr(line,"PTNEU")!=0) {
+	neucut=true;
+	sscanf(line," %s %f ", option, &floatVal);
+	ptneucut=floatVal;
+      } else if (strstr(line,"plotsqrts")!=0) {
+	plotsqrts = true;
+      }
+      break;
+    case 'Q': break;
+    case 'R': 
+      if (strstr(line,"REACTION")!=0) {
+	sscanf(line," %s %[^\n] ", option, value);
+	reaction=TString(value);
+      }
+      break;
+    case 'S': 
+      if (strstr(line,"SQRTS")!=0) {
+	sscanf(line," %s %f ", option, &floatVal);
+	sqrts=floatVal;
+	if (debug) cout<<cn<<mn<<" s = "<<floatVal<<endl;
+      } else if (strstr(line,"scaley")!=0) {
+	sscanf(line," %s %f ", option, &floatVal);
+	scaley = floatVal;
+	cerr<<cn<<mn<<" WARN: Deprecated setting 'scaley="<<scaley<<"' will scale data and theory!"<<endl;
+      } else if (strstr(line,"scalex")!=0) {
+	sscanf(line," %s %f ", option, &floatVal);
+	scalex = floatVal;
+	cerr<<cn<<mn<<" WARN: Deprecated setting 'scalex="<<scalex<<"' will scale data and theory!"<<endl;
+      } else if (strstr(line,"SYSTCORRELATIONMATRIX")!=0) { // flag that systematic correlation matrix set
+	systcorrelationmatrix=true;
+	if (systcorrelationmatrix) cout << " MyData::ReadData systcorrelationmatrix is defined \n";
+      } else if (strstr(line,"Syst_")!=0) { // systematics components
+
+	nsyst++;
+
+	// read in systematics commponents
+	if (debug) cout << " MyData::ReadData: nsyst= "<<nsyst<<endl;
+	
+	std::string cpp_line(line);   
+	std::vector<std::string> split_line;  split_line.clear();
+	split_string(cpp_line, split_line, " ");
+	string name=split_line.at(0);
+	//for (int ci = 1; ci < (int) split_line.size(); ci++) {
+	// double val = atof( split_line.at(ci).c_str() );
+	//}
+	
+	TGraphAsymmErrors* gtmp= new  TGraphAsymmErrors();
+	gtmp->SetName(TString(name));
+	if (debug) cout<<cn<<mn<<" gtmp name= "<<gtmp->GetName()<<endl;
+	if (debug) gtmp->Print();
+	// read here correlation matrix
+	datavectorsystcomp.push_back(gtmp);
+      }
+      break;
+    case 'T': 
+      if (strstr(line,"TABLEPLUSMINUS")!=0) {
+	tableplusminus=true;
+	if (tableplusminus) cout<<cn<<mn<<" Syst uncertainties with +/- values "<<endl;
+      } else if (strstr(line,"titlex")!=0) {
+	sscanf(line," %s %[^\n] ", option, value);
+	titlex=TString(value);
+      } else if (strstr(line,"titley")!=0) {
+	sscanf(line," %s %[^\n] ", option, value);
+	titley=TString(value);
+      }
+      break;
+    case 'U': 
+      if (strstr(line,"unitxTeV")!=0) {
+	unitsxTeV=true; 
+      } else if (strstr(line,"unitypb")!=0) {
+	unitsypb=true; 
+      }
+      break;
+    case 'V': break;
+    case 'W': break;
+    case 'X': 
+      if (strstr(line,"xunits")!=0) {
+	sscanf(line," %s %[^\n] ", option, value);
+	if (debug) cout<<cn<<mn<<" unit= "<<value<<endl;
+	xunits=TString(value);
+      }
+      break;
+    case 'Y': 
+      if (strstr(line,"YRAP")!=0) {
+	sscanf(line," %s %f %f", option, &mymin,&mymax);
+	ymin=mymin; ymax=mymax;
+	if (debug) cout<<cn<<mn<<" ymin = "<<mymin<<", ymax = "<<mymax<<endl; 
+      } else if (strstr(line,"YJET")!=0) {
+	jetcut=true;
+	sscanf(line," %s %f %f", option, &mymin,&mymax);
+	yjetmin=mymin; yjetmax=mymax;
+	if (debug) cout<<cn<<mn<<" ymin = "<<mymin<<", ymax = "<<mymax<<endl; 
+      } else if (strstr(line,"YLEP")!=0) {
+	lepcut=true;
+	sscanf(line," %s %f %f", option, &mymin,&mymax);
+	ylepmin=mymin; ylepmax=mymax;
+	if (debug) cout<<cn<<mn<<" ymin= "<<mymin<<", ymax = "<<mymax<<endl; 
+      } else if (strstr(line,"YEAR")!=0) {
+	sscanf(line," %s %d ", option, &year);
+      } else if (strstr(line,"yunits")!=0) {
+	sscanf(line," %s %[^\n] ", option, value);
+	if (debug) cout<<cn<<mn<<" unit= "<<value<<endl;
+	yunits=TString(value);
+      }
+      break;
+    case 'Z': break;
+    default:
+      
+      //read in data
+      if (nextlinereaddatavalues) {
+	if (debug) cout<<" MyData::ReadData: found bin= "<<nbin<<" nbinold= "<<nbinold<<endl;
+	if (nbin!=nbinold) nbinold=nbin;
+	
+	std::string cpp_line(line);   
+	std::vector<std::string> split_line;  split_line.clear();
+	split_string(cpp_line, split_line, " ");
+	
+	//if (debug) cout << "Dump numerical contents (should be identical):\n";
+	//
+	// This code assumes that tables are formated
+	// with 5 column per line xm xl xh sigma sigma stat
+	// and then following lines with 2 colums for each systematic uncertainty
+	// or everything in one line with syst everything what follows after statistical uncertainty
+	//
+	
+	if (split_line.size()>=5) {
+	  if (split_line.size()>5) newbin=true;
+	  if (split_line.size()==5) {
+	    if (newbin)  {newbin=false;
+	    } else       {newbin=true;}
+	    if (isyst==0){newbin=true;}
+	  }
+	  if (newbin) {
+	    nbin++;
+	    eyl.clear(); eyh.clear();  
+	    isyst=0;
+	  }
+	  
+	  //if (newbin) cout<<" in splitline newbin on "<<endl;
+	  //else        cout<<" in splitline newbin off "<<endl;
+	  
+	  if (debug) cout << " MyData::ReadData: read line mean xl xh sigma stat"<<endl; 
+	  for (int ci = 0; ci < (int) split_line.size(); ci++) {
+	    double val = atof( split_line.at(ci).c_str() );
+	    if (debug) cout<<" MyData::ReadData: ci= "<<ci<<" val= "<<val<<endl;      
+	    if (ci==0) xm=val;
+	    if (ci==1) xl=val;
+	    if (ci==2) xh=val;
+	    if (ci==3) y=val;
+	    if (ci==4) ey=val;
+	    if (ci>=5) {
+	      //cout<<" MyData::ReadData: isyst= "<<isyst<<" ci= "<<ci<<" mod= "<<(ci-5)%2<<endl;
+	      
+	      if (tableplusminus) {
+		if ((ci-5)%2==0) {
+		  isyst++;
+		  eyh.push_back(atof( split_line.at(ci).c_str() ));
+		  eyl.push_back(atof( split_line.at(ci+1).c_str() ));
+		}
+	      } else {
+		isyst++;
+		eyh.push_back(atof( split_line.at(ci).c_str() ));
+		eyl.push_back(atof( split_line.at(ci).c_str() ));
+	      }
+	    }
+	  }
+	}
+	
+	if (tableplusminus&&split_line.size()==2) {
+	  if (debug) cout << " MyData::ReadData read line syst= "<<isyst<<endl; 
+	  isyst++;
+	  eyh.push_back( atof( split_line.at(0).c_str() ));
+	  eyl.push_back( atof( split_line.at(1).c_str() ));
+	  newbin=false;
+	}
+	
+	//if (newbin) cout<<" end newbin on "<<endl;
+	//else       cout<<" end newbin off "<<endl;
+	
+	double myy=y, myey=ey;
+	if (errorinpercent) {myey *=y/100.;}
+	myy  *=myscale; myey *=myscale;
+	
+	if (miny>y) miny=myy;
+	if (maxy<y) maxy=myy;
+	if (minx>xl) minx=xl;
+	if (maxx<xh) maxx=xh;
+	
+	
+	float x= (xh+xl)/2.;
+	float b= (xh-xl)/2.;
+	
+	if (debug) {
+	  cout<<" MyData::ReadData: nbin= "<<nbin<<" isyst= "<<isyst
+	      <<" x= "<<x<<" xl= "<<xl<<" xh= "<<xh<<" y= "<<myy<<" ey= " << myey << endl;
+	  for (int i=0; i<(int)eyl.size(); i++) {
+	    cout<<" MyData::ReadData: i= "<<i<<" eyh= "<<eyh[i]<<" eyl= "<<eyl[i]<<endl;
+	  }
+	}
+	
+	datavector->SetPoint(nbin ,xm, myy);
+	datavector->SetPointEXlow (nbin ,xm-x+b); 
+	datavector->SetPointEXhigh(nbin,x+b-xm); 
+	
+	datavectortoterr->SetPoint(nbin ,xm, myy);
+	datavectortoterr->SetPointEXlow (nbin ,xm-x+b); 
+	datavectortoterr->SetPointEXhigh(nbin,x+b-xm); 
+	
+	if (debug) {
+	  cout<<" MyData::ReadData: datavector: "<<endl;
+	  datavector->Print();
+	}
+	
+	datavectorstat->SetPoint(nbin ,xm, myy);
+	datavectorstat->SetPointEXlow (nbin ,xm-x+b); 
+	datavectorstat->SetPointEXhigh(nbin,x+b-xm); 
+	datavectorstat->SetPointEYlow (nbin,myey); 
+	datavectorstat->SetPointEYhigh(nbin,myey); 
+	
+	if (debug) {
+	  cout<<" datavectorstat: "<<endl;
+	  datavectorstat->Print();
+	}
+	
+	if (debug) cout<<" MyData::ReadData: number of systematics= "<<eyl.size()<<endl;
+	
+	if (debug) cout<<" MyData::ReadData: datavectorsystcomp.size() = "<<datavectorsystcomp.size()<<endl;
+	
+	if (datavectorsystcomp.size()>0) {
+	  for (int i=0; i<(int)eyl.size(); i++) {
+	    if (debug) cout<<" MyData::ReadData: i= "<<i<<endl;
+	    double myeyh=eyh[i], myeyl=eyl[i];
+	    if (errorinpercent) {myeyh *=y/100.; myeyl *=y/100.;}
+	    if (debug) cout<<" MyData::ReadData: huhu i= "<<i<<endl;
+	    myeyl *=myscale; myeyh *=myscale; 
+	    
+	    if (debug) cout<<" MyData::ReadData: eyl.size()= "<<eyl.size()<<endl;
+	    if (datavectorsystcomp.size()<i) {
+	      cout<<" MyData::ReadData datavectorsystcomp["<<i<<"] not found "<<endl;
+	      continue;
+	    }
+	    if (debug) cout<<" MyData::ReadData: nbin= "<<nbin<<" xm= "<<xm<<endl; 
+	    
+	    datavectorsystcomp[i]->SetPoint(nbin ,xm, myy);
+	    datavectorsystcomp[i]->SetPointEXlow (nbin,xm-x+b); 
+	    datavectorsystcomp[i]->SetPointEXhigh(nbin,x+b-xm); 
+	    datavectorsystcomp[i]->SetPointEYlow (nbin,myeyl); 
+	    datavectorsystcomp[i]->SetPointEYhigh(nbin,myeyh); 
+	  }
+	}
+      }
+    }      
+  }
  } 
+ //} 
 
- if (debug) cout<<" MyData::ReadData: nsyst= "<<nsyst
+ if (debug) cout<<cn<<mn<<" nsyst= "<<nsyst
                 <<" datavectorsystcomp.size()= "<<datavectorsystcomp.size()<<endl;  
  if (nsyst!=(int)datavectorsystcomp.size()) 
-  cout<<" MyData::ReadData: something is wrong nsyst not equal vector size "<<endl;  
-
+   cout<<cn<<mn<<" something is wrong nsyst not equal vector size "<<endl;  
+ 
  if (debug) {
-  for (int i=0; i<nsyst; i++) {
-   cout<<" \n MyData::ReadData: datavectsyst["<<i<<"]: "<<datavectorsystcomp[i]->GetName()<<endl;
-   datavectorsystcomp[i]->Print();
-  }
-
-  cout<<" \n MyData::ReadData: datavectorstat "<<endl;
-  datavectorstat->Print();
+   for (int i=0; i<nsyst; i++) {
+     cout<<"\n"<<cn<<mn<<" datavectsyst["<<i<<"]: "<<datavectorsystcomp[i]->GetName()<<endl;
+     datavectorsystcomp[i]->Print();
+   }
+   
+   cout<<"\n"<<cn<<mn<<" datavectorstat "<<endl;
+   datavectorstat->Print();
  }
-
+ 
  for (int ibin=0; ibin<datavectorstat->GetN(); ibin++) {
-  double eytoth=datavectorstat->GetErrorYhigh(ibin);
-  double eytotl=datavectorstat->GetErrorYlow (ibin);
-  if (eytoth!=eytotl) cout<<" MyData::ReadData: some is wrong eystath= "<<eytoth<<" eystatl= "<<eytotl<<endl;
-
-  for (int i=0; i<nsyst; i++) {
-   double meyh=datavectorsystcomp[i]->GetErrorYhigh(ibin);
-   double meyl=datavectorsystcomp[i]->GetErrorYlow (ibin);
-
-   eytoth = TMath::Sqrt(pow(eytoth, 2.) + pow(meyh, 2.));
-   eytotl = TMath::Sqrt(pow(eytotl, 2.) + pow(meyl, 2.));
-
-   //if (debug) cout<<" MyData::ReadData: ibin= "<<ibin<<" i= "<<i
-   //               <<" eyh= "<<meyh<<" eyl= "<<meyl
-   //               <<" eytoth= "<<eytoth<<" eytotl= "<<eytotl<<endl;
-  }
-  datavectortoterr->SetPointEYhigh(ibin,eytoth);
-  datavectortoterr->SetPointEYlow (ibin,eytotl);
+   double eytoth=datavectorstat->GetErrorYhigh(ibin);
+   double eytotl=datavectorstat->GetErrorYlow (ibin);
+   if (eytoth!=eytotl) cout<<cn<<mn<<" some is wrong eystath= "<<eytoth<<" eystatl= "<<eytotl<<endl;
+   
+   for (int i=0; i<nsyst; i++) {
+     double meyh=datavectorsystcomp[i]->GetErrorYhigh(ibin);
+     double meyl=datavectorsystcomp[i]->GetErrorYlow (ibin);
+     
+     eytoth = TMath::Sqrt(pow(eytoth, 2.) + pow(meyh, 2.));
+     eytotl = TMath::Sqrt(pow(eytotl, 2.) + pow(meyl, 2.));
+     
+     //if (debug) cout<<" MyData::ReadData: ibin= "<<ibin<<" i= "<<i
+     //               <<" eyh= "<<meyh<<" eyl= "<<meyl
+     //               <<" eytoth= "<<eytoth<<" eytotl= "<<eytotl<<endl;
+   }
+   datavectortoterr->SetPointEYhigh(ibin,eytoth);
+   datavectortoterr->SetPointEYlow (ibin,eytotl);
  }
-
+ 
  if (debug) {
-  cout<<" \n MyData::ReadData datavectortoterr "<<endl;
-  datavectortoterr->Print();
+   cout<<"\n"<<cn<<mn<<" datavectortoterr "<<endl;
+   datavectortoterr->Print();
  }
-
+ 
  //cout<<" fname= "<<fname<<endl;
  if (corrfrommatrix) {
-  if (debug) cout<<" MyData::ReadData: read corrfilename= "<<corrfilename<<endl;
-  this->ReadCorrelations();
+   if (debug) cout<<cn<<mn<<" read corrfilename= "<<corrfilename<<endl;
+   this->ReadCorrelations();
  } else {
-  int Nbin=datavectortoterr->GetN();
-
-  corr_matrixtot  = new TMatrixT<double>(Nbin, Nbin);
-  corr_matrixsyst = new TMatrixT<double>(Nbin, Nbin);
-
-  //TMatrixT <double >*cov_matrixk  = new TMatrixT<double>(nbin, nbin);
-  // need to do this since addition of matrices does not work either += or Plus()
-  double cov_matrixk[Nbin][Nbin];
-  for (int i=0; i<Nbin; i++) {
-   for (int j=0; j<Nbin; j++) {
-    cov_matrixk[Nbin][Nbin]=0.;
+   int Nbin=datavectortoterr->GetN();
+   
+   corr_matrixtot  = new TMatrixT<double>(Nbin, Nbin);
+   corr_matrixsyst = new TMatrixT<double>(Nbin, Nbin);
+   
+   //TMatrixT <double >*cov_matrixk  = new TMatrixT<double>(nbin, nbin);
+   // need to do this since addition of matrices does not work either += or Plus()
+   double cov_matrixk[Nbin][Nbin];
+   for (int i=0; i<Nbin; i++) {
+     for (int j=0; j<Nbin; j++) {
+       cov_matrixk[Nbin][Nbin]=0.;
+     }
    }
-  }
-
-  cov_matrixtot  = new TMatrixT<double>(Nbin, Nbin);
-  cov_matrixsyst = new TMatrixT<double>(Nbin, Nbin);
-  if (datavectorsystcomp.size()==1) {
-   cout<<" MyData::ReadData: use unit matrix as correlation matrix "<<endl;
-   cov_matrixtot->UnitMatrix();
-   cov_matrixsyst->UnitMatrix();
-  }
-
-  cov_matrix_ok=true;
-
-  //if (debug) {
-  // cout<<" MyData::ReadData: print unity matrix "<<nbin<<"x"<<nbin<<endl;
-  // cov_matrixtot->Print();
-  //}
-
-  if (datavectorsystcomp.size()>1) {
-   cout<<" MyData::ReadData: calculate correlation matrix from uncertainty components "
-       <<" nsyst= "<<datavectorsystcomp.size()<<endl;
-
-   //
-   // put here something for statistical correlation matrix
-   // fetch stat uncertainty
-   // if (i==j)  (*covMatStat_)[i][j] = pow( gstat->GetErrorYhigh(i), 2 );
-   //
-   for (int k=0; k<(int)datavectorsystcomp.size(); k++) {
-    for ( int ibin=0; ibin<nbin; ibin++ ){
-     for ( int jbin=0; jbin<nbin; jbin++ ){
-      double cov_val = 0.;
-
-      double iyval=0., jyval=0., xval=0.;
-      datavectorsystcomp[0]->GetPoint(ibin,xval,iyval);
-      datavectorsystcomp[0]->GetPoint(jbin,xval,jyval);
-
-      // could implement here something for +/- uncertainties
-      double ibin_err = 0.5*(datavectorsystcomp[k]->GetErrorYhigh(ibin) + datavectorsystcomp[k]->GetErrorYlow(ibin));
-      double jbin_err = 0.5*(datavectorsystcomp[k]->GetErrorYhigh(jbin) + datavectorsystcomp[k]->GetErrorYlow(jbin));
-      
-      // relative uncertainties
-      //ibin_err=1;
-      //jbin_err=1;
-      //ibin_err/=iyval;
-      //jbin_err/=jyval;
-
-      if (debug) cout <<" k= "<<k<<" ibin= "<<ibin<<" ibin_err= "<<ibin_err
-          	      <<" jbin= "<<jbin<<" jbin_err= "<<jbin_err<<endl;
+   
+   cov_matrixtot  = new TMatrixT<double>(Nbin, Nbin);
+   cov_matrixsyst = new TMatrixT<double>(Nbin, Nbin);
+   if (datavectorsystcomp.size()==1) {
+     cout<<cn<<mn<<" use unit matrix as correlation matrix "<<endl;
+     cov_matrixtot->UnitMatrix();
+     cov_matrixsyst->UnitMatrix();
+   }
+   
+   cov_matrix_ok=true;
+   
+   //if (debug) {
+   // cout<<" MyData::ReadData: print unity matrix "<<nbin<<"x"<<nbin<<endl;
+   // cov_matrixtot->Print();
+   //}
+   
+   if (datavectorsystcomp.size()>1) {
+     cout<<cn<<mn<<" calculate correlation matrix from uncertainty components "
+	 <<" nsyst= "<<datavectorsystcomp.size()<<endl;
      
-      cov_val +=ibin_err*jbin_err;
-      //(*cov_matrixk)(ibin, jbin) = cov_val;
-      cov_matrixk[ibin][jbin]+=cov_val;
-
+     //
+     // put here something for statistical correlation matrix
+     // fetch stat uncertainty
+     // if (i==j)  (*covMatStat_)[i][j] = pow( gstat->GetErrorYhigh(i), 2 );
+     //
+     for (int k=0; k<(int)datavectorsystcomp.size(); k++) {
+       for ( int ibin=0; ibin<nbin; ibin++ ){
+	 for ( int jbin=0; jbin<nbin; jbin++ ){
+	   double cov_val = 0.;
+	   
+	   double iyval=0., jyval=0., xval=0.;
+	   datavectorsystcomp[0]->GetPoint(ibin,xval,iyval);
+	   datavectorsystcomp[0]->GetPoint(jbin,xval,jyval);
+	   
+	   // could implement here something for +/- uncertainties
+	   double ibin_err = 0.5*(datavectorsystcomp[k]->GetErrorYhigh(ibin) + datavectorsystcomp[k]->GetErrorYlow(ibin));
+	   double jbin_err = 0.5*(datavectorsystcomp[k]->GetErrorYhigh(jbin) + datavectorsystcomp[k]->GetErrorYlow(jbin));
+	   
+	   // relative uncertainties
+	   //ibin_err=1;
+	   //jbin_err=1;
+	   //ibin_err/=iyval;
+	   //jbin_err/=jyval;
+	   
+	   if (debug) cout <<" k= "<<k<<" ibin= "<<ibin<<" ibin_err= "<<ibin_err
+			   <<" jbin= "<<jbin<<" jbin_err= "<<jbin_err<<endl;
+	   
+	   cov_val +=ibin_err*jbin_err;
+	   //(*cov_matrixk)(ibin, jbin) = cov_val;
+	   cov_matrixk[ibin][jbin]+=cov_val;
+	   
+	 }
+       }
      }
-    }
-   }
-
-   if (debug) cout <<" MyData::ReadData: now fill covarince and correlation matrix "<<endl;
-
-   for (int i=0; i<nbin; i++) {
-    for (int j=0; j<nbin; j++) {
-
-     double eystath=0., eystatl=0., eystat=0.;
-     if (i==j)  {
-      eystath=datavectorstat->GetErrorYhigh(i);
-      eystatl=datavectorstat->GetErrorYlow (i);
-      if (eystath!=eystatl) cout<<" MyData::ReadData some is wrong eystath= "<<eystath<<" eystatl= "<<eystatl<<endl;
-      eystat=0.5*(eystath+eystatl);
+     
+     if (debug) cout<<cn<<mn<<" now fill covarince and correlation matrix "<<endl;
+     
+     for (int i=0; i<nbin; i++) {
+       for (int j=0; j<nbin; j++) {
+	 
+	 double eystath=0., eystatl=0., eystat=0.;
+	 if (i==j)  {
+	   eystath=datavectorstat->GetErrorYhigh(i);
+	   eystatl=datavectorstat->GetErrorYlow (i);
+	   if (eystath!=eystatl) cout<<cn<<mn<<" some is wrong eystath= "<<eystath<<" eystatl= "<<eystatl<<endl;
+	   eystat=0.5*(eystath+eystatl);
+	 }
+	 
+	 //if (debug) cout << " MyData::ReadData: systematic correlation matrix eystat= "<<eystat << endl;
+	 
+	 (*cov_matrixsyst)(i,j)=cov_matrixk[i][j];
+	 (*cov_matrixtot )(i,j)=sqrt(pow(eystat,2)+pow(cov_matrixk[i][j],2));
+	 
+	 double sig=cov_matrixk[i][i]*cov_matrixk[j][j];
+	 if (sig!=0.) sig=sqrt(sig);
+	 
+	 (*corr_matrixsyst)(i,j)=cov_matrixk[i][j]/sig;
+	 // is the below correct ? changed nothing see below
+	 (*corr_matrixtot)(i,j) =sqrt(pow(eystat,2)+pow(cov_matrixk[i][j],2))/sqrt(pow(eystat,2)+pow(sig,2));
+       }
      }
-
-     //if (debug) cout << " MyData::ReadData: systematic correlation matrix eystat= "<<eystat << endl;
-
-     (*cov_matrixsyst)(i,j)=cov_matrixk[i][j];
-     (*cov_matrixtot )(i,j)=sqrt(pow(eystat,2)+pow(cov_matrixk[i][j],2));
-
-     double sig=cov_matrixk[i][i]*cov_matrixk[j][j];
-     if (sig!=0.) sig=sqrt(sig);
-
-     (*corr_matrixsyst)(i,j)=cov_matrixk[i][j]/sig;
-     // is the below correct ? changed nothing see below
-     (*corr_matrixtot)(i,j) =sqrt(pow(eystat,2)+pow(cov_matrixk[i][j],2))/sqrt(pow(eystat,2)+pow(sig,2));
-    }
+     
+     //(*cov_matrix)+=(*cov_matrixk);
+     //cov_matrix->Plus(*cov_matrix,*cov_matrixk);
+     
+     if (debug) {
+       cout<<cn<<mn<<" using correlation matrix from uncertainties components " << endl;
+       cout<<cn<<mn<<" systematic correlation matrix: " << endl;
+       corr_matrixsyst->Print();
+       
+       // total correllation matrix is not different, if from stat uncertainty (diagonal elements normalised out)
+       //cout << " MyData::ReadData: total correlation matrix: " << endl;
+       //corr_matrixtot->Print();
+       
+       cout<<cn<<mn<<" print systematics covariance matrix: "<<endl;
+       cov_matrixsyst->Print();
+       cout<<cn<<mn<<" total covariance matrix "<<endl;
+       cov_matrixtot->Print();
+     }
    }
-
-   //(*cov_matrix)+=(*cov_matrixk);
-   //cov_matrix->Plus(*cov_matrix,*cov_matrixk);
-
-   if (debug) {
-    cout << " MyData::ReadData: using correlation matrix from uncertainties components " << endl;
-    cout << " MyData::ReadData: systematic correlation matrix: " << endl;
-    corr_matrixsyst->Print();
-
-    // total correllation matrix is not different, if from stat uncertainty (diagonal elements normalised out)
-    //cout << " MyData::ReadData: total correlation matrix: " << endl;
-    //corr_matrixtot->Print();
-
-    cout<<" MyData::ReadData: print systematics covariance matrix: "<<endl;
-    cov_matrixsyst->Print();
-    cout<<" MyData::ReadData: total covariance matrix "<<endl;
-    cov_matrixtot->Print();
-   }
-  }
  }
-
+ 
  // Perform any hard-coded scaling if the user requested it
- Scale(scalex,  scaley);
-
-return;
+ Scale(scalex,  scaley); //TEST - turn back on
+ 
+ return;
 }
 
 
@@ -1172,6 +1194,78 @@ void MyData::Scale(double scalex, double scaley) {
   
   return;
 };
+
+void MyData::Normalise(double yscale, double xscale=1.) {
+  bool dbbw = this->DivideByBinWidth();
+  bool nt = this->isNormTot();
+
+  this->NormaliseGraph(datavector      ,scaley,scalex,nt,dbbw);
+  this->NormaliseGraph(datavectorstat  ,scaley,scalex,nt,dbbw);
+  this->NormaliseGraph(datavectorsyst  ,scaley,scalex,nt,dbbw);
+  this->NormaliseGraph(datavectortoterr,scaley,scalex,nt,dbbw);
+  miny*=scaley; maxy*=scaley; minx*=scalex; maxx*=scalex;  
+
+  return;
+}
+
+void MyData::NormaliseGraph(TGraphAsymmErrors* g1, double yscale, double xscale=1., bool normtot=false, bool divbinwidth=true) {
+  //
+  // Normalise a graph  
+  //
+
+  // convolution is divided by binwidth
+  Double_t x, y, ey;
+  Double_t sigtot=0.;
+
+  Double_t* X1 = g1->GetX();
+  Double_t* Y1 = g1->GetY();
+  Double_t* EXhigh1 = g1->GetEXhigh();
+  Double_t* EXlow1  = g1->GetEXlow();
+  Double_t* EYhigh1 = g1->GetEYhigh();
+  Double_t* EYlow1  = g1->GetEYlow();
+
+  if (!g1) cout<<" MyCrossSection::Normalise graph not found ! "<<endl;
+  int Nbin=g1->GetN();
+  //cout<<" MyCrossSection::Normalize: n= "<<Nbin<<endl;
+
+  for (Int_t i=0; i<Nbin; i++) {
+    y=Y1[i]*yscale;
+    double binw=EXhigh1[i]+EXlow1[i];
+    //cout<<" binw= "<<binw<<endl;
+    if (divbinwidth) sigtot+=y*binw;
+    else             sigtot+=y;
+    sigtot+=y;
+  }
+
+  //if (debug) cout<<"MyCrossSection::Normalise: sigtot= "<<sigtot<<endl;
+
+  double scal=yscale;
+  for (Int_t i=0; i<Nbin; i++) {
+    if (normtot) scal=yscale/sigtot;
+    double binw=1.;
+    if (divbinwidth) binw=EXhigh1[i]+EXlow1[i];
+    //if (debug) cout<<" MyCrossSection::Normalise: i= "<<i<<" scal= "<<scal<<endl;
+
+    double y =Y1[i]*scal*binw;
+    double yl=EYlow1[i] *scal*binw;
+    double yh=EYhigh1[i]*scal*binw;
+    if (divbinwidth) {
+      binw*=xscale;
+      yl/=binw;  
+      yh/=binw;
+      y /=binw;
+ 
+    }
+    g1->SetPoint(i, X1[i],y);
+    g1->SetPointError(i,EXlow1[i],EXhigh1[i],yl,yh);
+  }
+
+  //if (debug) std::cout << " MyCrossSection::Normalise: return" << std::endl;
+  return;
+}
+
+
+
 
 void MyData::split_string(std::string str, std::vector<std::string>& split_results, std::string delimiters) {
   // Skip delimiters at beginning.
