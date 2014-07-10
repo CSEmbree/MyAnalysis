@@ -1,29 +1,31 @@
+debug
 %datanamedir MyData/top/
 %Gridnamedir /home/tcarli/topdiffxsection/
 %Gridnamedir /media/Sony_32GR/mcfm/inputgrids/
 %
 datanamedir MyData/top/
 Gridnamedir MyGrids/top/mcfm/
-%xlegend 0.9
-%ylegend 0.9
+xlegend 0.9
+ylegend 0.9
 %
 %
 % Mtt
 % need always dataname, gridname, markerstyle, markercolor one after the other
 dataname atlas2012_top_mtt_ljet.txt
 gridname grid--TTbar_mttatlas.root
-markerstyle 20
-markercolor 1
+markerstyledata 20
+markercolordata 1
+reflinecolor 2
 frameid 0
 divideid 0
 %
 dataname cms2012_top_mtt_ljet.txt
 gridname grid--TTbar_mttcms.root
-markerstyle 24
-markercolor 1
-%reflinecolor 2
+markerstyledata 24
+markercolordata 1
+reflinecolor 4
 reflinestyle 2
-%scalex 1.0
+% scalex 1.0 %unsupported
 % scaley 1000. %unsupported
 frameid 0
 divideid 0
@@ -31,16 +33,17 @@ divideid 0
 % pt recoil
 dataname atlas2012_top_pttt_ljet.txt
 gridname grid--TTbar_ptttatlas.root
-markerstyle 20
-markercolor 1
+markerstyledata 20
+markercolordata 1
+reflinecolor 2
 frameid 1
 divideid 1
 %
 dataname cms2012_top_ptt_ljet.txt
 gridname grid--TTbar_ptttcms.root
-markerstyle 24
-markercolor 1
-%reflinecolor 2
+markerstyledata 24
+markercolordata 1
+reflinecolor 4
 reflinestyle 2
 %scalex 1000.
 % scaley 1000. %unsupported
@@ -52,17 +55,17 @@ divideid 1
 %
 dataname atlas2012_top_ytt_ljet.txt
 gridname grid--TTbar_yttatlas.root
-markerstyle 20
-markercolor 1
-%reflinecolor 2
+markerstyledata 20
+markercolordata 1
+reflinecolor 2
 frameid 2
 divideid 2
 %
 dataname cms2012_top_ytt_ljet.txt
 gridname grid--TTbar_yttcms.root
-markerstyle 24
-markercolor 1
-%reflinecolor 2
+markerstyledata 24
+markercolordata 1
+reflinecolor 4
 reflinestyle 2
 frameid 2
 divideid 2

@@ -8,39 +8,45 @@ debug
 %datanamedir MyData/datanew
 Gridnamedir MyGrids/top/mcfm/
 %
-%
+xlegend 0.9
+ylegend 0.9
 %
 % Mtt
+%
 % need always dataname, gridname, markerstyle, markercolor one after the other
 dataname MyData/top/atlas2012_top_mtt_ljet.txt
 gridname grid--TTbar_mttatlas.root
-markerstyle 20
-markercolor 1
+markerstyledata 20
+markercolordata 1
+reflinecolor 2
 frameid 0
 divideid 0
 %
 dataname MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
 gridname grid--TTbar_mttatlas.root
-markerstyle 24
-markercolor 1
-%reflinecolor 2
+markerstyledata 24
+markercolordata 1
+reflinecolor 4
 reflinestyle 2
 frameid 0
 divideid 0
 %
+%
 % pt recoil
+%
 dataname MyData/top/atlas2012_top_pttt_ljet.txt
 gridname grid--TTbar_ptttatlas.root
-markerstyle 20
-markercolor 1
+markerstyledata 20
+markercolordata 1
+reflinecolor 2
 frameid 1
 divideid 1
 %
 dataname MyData/datanew/atlas2012_5fb_top_pttt_ljet.txt
 gridname grid--TTbar_ptttatlas5fb.root
-markerstyle 24
-markercolor 1
-%reflinecolor 2
+markerstyledata 24
+markercolordata 1
+reflinecolor 4
 reflinestyle 2
 frameid 1
 divideid 1
@@ -50,9 +56,9 @@ divideid 1
 %
 dataname MyData/top/atlas2012_top_ytt_ljet.txt
 gridname grid--TTbar_yttatlas.root
-markerstyle 20
-markercolor 1
-%reflinecolor 2
+markerstyledata 20
+markercolordata 1
+reflinecolor 2
 frameid 2
 divideid 2
 %
@@ -60,7 +66,7 @@ dataname MyData/datanew/atlas2012_5fb_top_ytt_ljet.txt
 gridname grid--TTbar_yttatlas.root
 markerstyle 24
 markercolor 1
-%reflinecolor 2
+reflinecolor 4
 reflinestyle 2
 frameid 2
 divideid 2

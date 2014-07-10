@@ -7,8 +7,8 @@ plotband
 %ploterrorticks
 %ymaxratio 2
 ymaxoverlay 8
-%xlegend 0.9
-%ylegend 0.9
+xlegend 0.9
+ylegend 0.9
 %
 %yminoverlay 0.00001
 %yminratio -50.0
@@ -16,6 +16,9 @@ ymaxoverlay 8
 %
 ratio theory/data
 %ratio data/theory
+%
+xunits GeV
+yunits fb
 %
 %datanamedir MyData/datanew/
 %pdfdata MyPDF/CT10.txt, MyPDF/HERAPDF15NLO.txt

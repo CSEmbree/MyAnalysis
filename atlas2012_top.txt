@@ -5,7 +5,7 @@
 %Gridnamedir mcfm/
 debug
 plotmarker
-xlegend 0.65
+xlegend 0.9
 ylegend 0.9
 %ratiotitlelabel test
 %
