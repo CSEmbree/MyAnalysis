@@ -8,15 +8,18 @@
 %x : YRAP
 %y : D(SIG)/YRAP IN PB
 REACTION  Pb P --> E+ E- X
-SQRT  1960.0
+SQRTS  1960.0
+plotsqrts
 YEAR 2009
 NAME Rapidity_distro_epem
 label ep em 2009
 % default units are GeV and fb
 %unitsxGeV
 %unitypb
+xunits GeV
+yunits fb
 %normtot
-dividebywidth
+dividebybinwidth
 %
 framexmin 0.0
 framexmax 2.8

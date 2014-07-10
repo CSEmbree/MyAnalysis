@@ -1,32 +1,69 @@
 %
-% steering file to compare CMS data to new ATLAS data
+% steering file to test the example from MCGrid
 %
 %datanamedir MyData/datanew/
 %
-pdfdata MyPDF/CT10.txt
+%pdfdata MyPDF/CT10.txt
 % need always dataname, gridname, markerstyle, markercolor one after the other
 % need to order frameid from 0 to N
-%Gridnamedir
 debug
-%plotmarker
 plotband
+%
 % xlegend, ylabel is lower edge of legen 
 xlegend 0.9
 ylegend 0.9
 ratiotitlelabel Sherpa MCgrid/data
-%ymaxoverlay 500
+ratio theory/data
 %
+%
+% B-like 
+%
+%dataname  CDF2009_ZRap.txt
+%gridname  MyGrids/top/sherpa/ZRapRun_d02_B.root
+%markerstyledata 20
+%markercolordata 1
+%reflinestyle 1
+%reflinecolor 4
+%leglabel SHERPA
+%frameid 0
+%%divideid 0
+%
+%
+% R-like
+%
+%dataname  CDF2009_ZRap.txt
+%gridname  MyGrids/top/sherpa/ZRapRun_d02_R.root
+%markerstyledata 20
+%markercolordata 1
+%reflinestyle 1
+%reflinecolor 4
+%leglabel SHERPA
+%frameid 1
+%%divideid 0
+%
+%
+% R+B
 %
 dataname  CDF2009_ZRap.txt
-%grid with less events:
-%gridname  MyGrids/top/sherpa/MCgrid_CDF_2009-B.root
-%grid with more events
-gridname  MyGrids/top/sherpa/ZRapRun_d02_all.root
+%gridname  MyGrids/top/sherpa/ZRapRun_d02_RpB.root
+gridname  MyGrids/top/sherpa/combined.root
 markerstyledata 20
 markercolordata 1
 reflinestyle 1
 reflinecolor 4
-leglabel MCFM
+leglabel SHERPA
 frameid 0
-divideid 0
+%divideid 0
 %
+%
+% all (both R and B generated at the same time)
+%
+%dataname  CDF2009_ZRap.txt
+%gridname  MyGrids/top/sherpa/ZRapRun_d02_all.root
+%markerstyledata 20
+%markercolordata 1
+%reflinestyle 1
+%reflinecolor 4
+%leglabel SHERPA
+%frameid 3
+%%divideid 0
