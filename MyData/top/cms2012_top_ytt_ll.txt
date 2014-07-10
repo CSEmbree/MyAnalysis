@@ -4,12 +4,17 @@ YEAR 2012
 JETALGO ANTIKT
 JETALGR 4
 EXP CMS
+NAME CMS_2012_top_tyy_ll
 framelogy
 %framelogx
 label CMS 2012
 titlex y_{t #bar{t}} [GeV]
 titley 1/#sigma d#sigma/dy_{t, \bar{t}} [pb/GeV]
-unitypb
+%unitypb
+%
+xunits GeV
+yunits pb
+%
 normtot
 ERRORINPERCENT
 %

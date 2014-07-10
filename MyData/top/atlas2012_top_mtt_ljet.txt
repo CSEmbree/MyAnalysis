@@ -5,12 +5,18 @@ YEAR 2012
 JETALGO ANTIKT
 JETALGR 4
 EXP ATLAS
+NAME ATLAS_2012_diffcross_mtt_ljet
+%
 framelogy
 framelogx
 % 
 % default units are GeV and fb
-unitxTeV
-unitypb
+%unitxTeV
+%unitypb
+%
+xunits TeV
+yunits pb
+%
 normtot
 %
 label ATLAS 2012

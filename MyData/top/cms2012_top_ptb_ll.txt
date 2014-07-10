@@ -5,11 +5,17 @@ SQRTS  7000.0
 YEAR 2012
 JETALGO ANTIKT
 JETALGR 5
+NAME CMS_2012_ptb_ll
+%
 framelogy
 %framelogx
 titlex p_{T,ll} [GeV]
 titley 1/#sigma d#sigma/dp_{T, ll} [pb/GeV]
-unitypb
+%unitypb
+%
+xunits GeV
+yunits pb
+%
 normtot
 ERRORINPERCENT
 label CMS 2012

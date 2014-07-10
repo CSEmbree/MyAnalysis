@@ -3,19 +3,27 @@ SQRTS  7000.0
 YEAR 2012
 JETALGO ANTIKT
 JETALGR 4
+EXP ATLAS
+NAME ATLAS_2012_diffcross_ytt_ljet
+%
 %framexmin -3.
 %framexmax  3.
 % default units are GeV and fb
-%unitxTeV
-unitypb
-normtot
 %
+%%unitxTeV
+%unitypb
+%
+xunits GeV
+yunits pb
+%
+normtot
 framelogy
 framelinx
 label ATLAS 2012
 titlex y_{t, #bar{t}} 
 titley  1/#sigma d#sigma/dy_{t,#bar{t}} [pb/TeV]
 EXP ATLAS
+%
 %in
 %http://link.springer.com/article/10.1140/epjc/s10052-012-2261-1
 % total uncertainty is given, put sigma stat to zero

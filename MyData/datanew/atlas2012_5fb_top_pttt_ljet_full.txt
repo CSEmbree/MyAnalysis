@@ -8,8 +8,12 @@ NAME ATLAS_2012_diffcross_pttt_full
 framelogy
 framelinx
 % default units are GeV and fb
-unitxTeV
-unitypb
+%unitxTeV
+%unitypb
+%
+xunits TeV
+yunits pb
+%
 normtot
 dividedbybinwidth
 %

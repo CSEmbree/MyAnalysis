@@ -4,9 +4,15 @@ YEAR 2012
 JETALGO ANTIKT
 JETALGR 4
 EXP CMS
+NAME CMS_2012_diffcross_pttt
+%
 framelogy
 %framelogx
-unitypb
+%unitypb
+%
+xunits GeV
+yunits pb
+%
 normtot
 %
 ERRORINPERCENT

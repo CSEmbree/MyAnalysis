@@ -4,7 +4,6 @@ YEAR 2012
 JETALGO ANTIKT
 JETALGR 5
 EXP CMS
-NAME CMS_2012_diffcross_mtt
 %
 %framexmin 100
 framelogy
@@ -13,13 +12,12 @@ framelogx
 %unitypb
 %unitxGeV
 %
+yunits pb
 xunits GeV
-yunits fb
 %
 normtot
 ERRORINPERCENT
 scaley 1000.0
-%scaley 40.0
 dividedbybinwidth
 scalex 1.0
 %

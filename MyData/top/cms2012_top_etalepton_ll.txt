@@ -4,12 +4,17 @@ SQRTS  7000.0
 YEAR 2012
 JETALGO ANTIKT
 JETALGR 5
+NAME CMS_2012_etalepton_ll
+%
+xunits GeV
+yunits pb
+%
 framelogy
 %framelogx
 label CMS 2012
 titlex #h_{T,l} [GeV]
 titley 1/#sigma d#sigma/d#h_{T, l} [pb/GeV]
-unitypb
+%unitypb
 normtot
 ERRORINPERCENT
 %

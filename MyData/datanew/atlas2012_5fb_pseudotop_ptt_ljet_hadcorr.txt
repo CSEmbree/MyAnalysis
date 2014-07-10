@@ -5,6 +5,11 @@ JETALGO ANTIKT
 JETALGR 4
 EXP ATLAS
 ERRORINPERCENT
+NAME atlas_2012_pseudotop_ptt_ljet_hadcorr
+%
+xunits GeV
+yunits fb
+%
 % default units are GeV and fb
 %
 % hadronisation correction from pseudo-top to top parton

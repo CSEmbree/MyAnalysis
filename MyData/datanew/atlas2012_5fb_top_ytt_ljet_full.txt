@@ -13,8 +13,12 @@ titlex y_{t, #bar{t}}
 titley 1/#sigma d#sigma/dy_{t,#bar{t}}
 EXP ATLAS
 ERRORINPERCENT
-unitypb
-%unitxTeV
+%unitypb
+%%unitxTeV
+%
+yunits pb
+xunits GeV
+%
 normtot
 dividedbybinwidth
 %

@@ -20,6 +20,10 @@ normtot
 dividedbybinwidth
 %
 %
+xunits TeV
+yunits pb
+%
+%
 plotsqrts
 framexmin 250.
 framexmin 2700.

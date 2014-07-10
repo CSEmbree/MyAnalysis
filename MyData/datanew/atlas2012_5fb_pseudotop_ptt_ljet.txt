@@ -9,8 +9,12 @@ EXP ATLAS
 %ERRORINPERCENT
 NAME ATLAS_2012_diffcross_pseudotoppt
 % default units are GeV and fb
-%unitxTeV
-%unitypb
+%%unitxTeV
+%%unitypb
+%
+xunits GeV
+yunits fb
+%
 %normtot
 dividedbybinwidth
 label ATLAS Data 2013 (particle)

@@ -4,6 +4,12 @@ SQRTS  7000.0
 YEAR 2012
 JETALGO ANTIKT
 JETALGR 5
+NAME CMS_2012_etab_ll
+%
+xunits GeV
+%was origonally as fb, but should not this be pb instead?
+yunits pb
+%
 framelogy
 %framelogx
 label CMS 2012

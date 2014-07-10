@@ -3,19 +3,25 @@ SQRTS  7000.0
 YEAR 2013
 JETALGO ANTIKT
 JETALGR 4
+EXP ATLAS
+ERRORINPERCENT
+NAME ATLAS_2012_diffcross_ytt
+%
+%unitypb
+%%unitxTeV
+%
+yunits pb
+xunits GeV
+%
+dividedbybinwidth
+normtot
+%
 %framexmin -3.
 %framexmax  3.
 framelogy
 framelinx
 titlex |y_{t, #bar{t}}| 
 titley 1/#sigma d#sigma/d|y_{t,#bar{t}}|
-EXP ATLAS
-ERRORINPERCENT
-NAME ATLAS_2012_diffcross_ytt
-unitypb
-%unitxTeV
-dividedbybinwidth
-normtot
 %
 % http://cds.cern.ch/record/1600778/files/ATLAS-CONF-2013-099.pdf
 % This is the old table
