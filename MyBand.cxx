@@ -74,7 +74,7 @@ void MyBand::DrawPDFBandRatio()
    // colors and settings set in 'ComputePDFBandRatio(TGraphAsymmErrors *gref) 
    gpdfdefaultratio.at(ipdf)->SetMarkerSize(0);
    
-   if(ratioTheoryOverData) {
+   if(ratioTheoryOverData) { //(THEORY/DATA)
      // allow small perpednicular lines at end of error bar to be on or off on default
      if (ploterrorticks) gpdfdefaultratio.at(ipdf)->Draw("P,same");
      else                gpdfdefaultratio.at(ipdf)->Draw("PZ,same");
@@ -95,11 +95,9 @@ void MyBand::DrawPDFBandRatio()
      // plot data based on style's requested in steering
      TString bandratiostyle = GetBandRatioStyle(); // determine style
      gpdfbandratio.at(ipdf)->Draw(bandratiostyle); // plot based on style
-   } else {
-     //gpdfbandratio.at(ipdf)->SetFillColor(kGray);
-     //gpdfbandratio.at(ipdf)->SetFillStyle();
-     gpdfbandratio.at(ipdf)->Draw("E2"); //P2
+   } else { //(DATA/THEORY)
      
+     gpdfbandratio.at(ipdf)->Draw("E2"); //P2
    }
  }
 
@@ -291,15 +289,18 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
    //TGraphAsymmErrors *gratio=myTGraphErrorsDivide(gpdfband.at(ipdf),gref,2); //origonal
    TGraphAsymmErrors *g1, *g2, *g;
    if(ratioTheoryOverData) {
+     //(THEORY/DATA) - pdf band is relative to the reference
      g1 = gpdfband.at(ipdf);
      g2 = gref;
      //g  = gpdfband.at(ipdf); //how visual settings will be defined
    } else {
+     //(DATA/THEORY) - pdf band is relative to itself, around 1.
      g1 = gpdfband.at(ipdf);
      g2 = gpdfband.at(ipdf);
      //g  = gref; //how visual settings will be defined 
    }
    
+   //set visuals for the ratio
    g = gpdfband.at(ipdf);
    
    TGraphAsymmErrors *gratio=myTGraphErrorsDivide(g1,g2,2);
@@ -355,8 +356,6 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
 
 
 void MyBand::ComputePDFBandRatioRange(){
-
-
 
  double xmin=0.; double xmax=0.; 
  double ymin=0.; double ymax=0.;
