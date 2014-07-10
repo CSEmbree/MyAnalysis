@@ -11,13 +11,17 @@ using namespace std;
  ******************************************************************/
 
 //HARDCODED default value for an unused double - how to choose a better number?
-const double DEFAULT_DOUBLE = -999;
+const double DEFAULT_DOUBLE = -999;\
+const string cn = " MyCrossSection::"; //class name, used for print statemants
 
 MyCrossSection::MyCrossSection(char name[100])
 {
   debug=false;
   crosssectionname="";
   ratiotitlelabel="";
+
+  xunits="GeV"; //TODO - default, make generic
+  yunits="fb"; //TODO - default, make generic
 
   frameid.clear();
   divideid.clear();
@@ -68,7 +72,6 @@ MyCrossSection::MyCrossSection(char name[100])
   markerstyle.clear();
   markercolor.clear();
   mydata.clear();
-
   do_PDFBand = false;
   do_AlphaS = false;
   do_RenormalizationScale = false;
@@ -140,8 +143,19 @@ void MyCrossSection::Initialize() {
     bool normtot=false;
     bool divbinwidth=false;
     if (this->GetDataOk(igrid)) {
-      yfac=mydata[igrid]->GetUnitfbFactor();
-      xfac=mydata[igrid]->GetUnitGeVFactor();
+      //yfac=mydata[igrid]->GetUnitfbFactor(); //old scaling
+      //xfac=mydata[igrid]->GetUnitGeVFactor(); //old scaling
+
+      //convert units from data to desired
+      yfac = GetUnitScaleY(mydata[igrid]->GetYUnits(), this->GetYUnits()); //new scaling
+      xfac = GetUnitScaleX(mydata[igrid]->GetXUnits(), this->GetXUnits()); //new scaling
+
+      
+      //mydata[igrid]->Scale(1.,yfac/xfac);
+      //mydata[igrid]->Normalise(yfac, xfac); //TODO - scale actual data now?
+      cout<<"TEST:: igrid:"<<igrid<<", xfac:"<<xfac<<", yfac:"<<yfac<<endl;
+
+
       if (debug) cout<<" MyCrossSection::Initialize: yfac= "<<yfac<<" xfac= "<<xfac<<endl;
       normtot=mydata[igrid]->isNormTot();
       if (debug&&normtot) cout<<" MyCrossSection::Initialize: normalise to total cross section "<<endl;
@@ -312,40 +326,54 @@ void MyCrossSection::Initialize() {
 	ScaleGraph( gref, mydata[igrid]->GetScalex(), mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
       }
       */
+      
 
       // Flip ratio calculations if steering asks for it
       TGraphAsymmErrors* top;
       TGraphAsymmErrors* bot;
       int errorBarType;
+      TString rationame = "";
       if(ratioTheoryOverData) {
-      	top = gref; //origonal
+      	top = gref; //origonal - reference over the data
       	bot = mydata[igrid]->GetTGraphTotErr();
+	bot = mydata[igrid]->GetTGraphTotErr(); //TEST
+
+
+	rationame += gref->GetName()+igrid;
+	rationame +="/";
+	rationame +=mydata[igrid]->GetDataName();
 	errorBarType = 0;
       } else {
-      	top = mydata[igrid]->GetTGraphTotErr();
-      	bot = mydata[igrid]->GetTGraphTotErr();
+	top = gref; //reference over itself
+	bot = gref;
+	
+	rationame += gref->GetName()+igrid;
+	rationame+="/";
+	rationame+=gref->GetName()+igrid;
 	errorBarType = 2;
       }
 
       
-      //      ratiotot.push_back(myTGraphErrorsDivide(gref, mydata[igrid]->GetTGraphTotErr(), 0)); //TODO - change error bar saving?
+      //ratiotot.push_back(myTGraphErrorsDivide(gref, mydata[igrid]->GetTGraphTotErr(), 0)); // origional
       ratiotot.push_back(myTGraphErrorsDivide(top, bot, errorBarType)); //TODO - change error bar saving?
-      TString rationame=gref->GetName();
-      rationame+="/";
-      rationame+=mydata[igrid]->GetDataName();
-      if (debug) cout<<" MyCrossSection::Initialize: rationame= "<<rationame.Data()<<endl;
       ratiotot[igrid]->SetName(rationame);
       ratiotot[igrid]->SetMarkerStyle(this->GetMarkerStyle(igrid));
       ratiotot[igrid]->SetMarkerColor(this->GetMarkerColor(igrid));
       ratiotot[igrid]->SetLineColor(refhistlinecolor[igrid]);
       ratiotot[igrid]->SetLineStyle(refhistlinestyle[igrid]);
-
+      ratiotot[igrid]->SetFillColor(refhistlinecolor[igrid]);
+      ratiotot[igrid]->SetFillStyle(3004+igrid);
+      
       if (debug) {
-	cout<<" MyCrossSection::Initialize: ratiotot["<<igrid<<"]: "<<endl;
+	cout<<" MyCrossSection::Initialize: ratiotot["<<igrid<<"] called '"<<rationame.Data()<<"': "<<endl;
 	ratiotot[igrid]->Print();
       }
     } else {
-      myband[igrid]->ComputePDFBandRatio(mydata[igrid]->GetTGraphTotErr());
+      //TH1D *href=this->GetNormalisedReference(igrid);
+      //TGraphAsymmErrors* gref=TH1TOTGraphAsymm(href);
+      //myband[igrid]->ComputePDFBandRatio(gref); //should be same as origional
+
+      myband[igrid]->ComputePDFBandRatio(mydata[igrid]->GetTGraphTotErr()); //TEST - origonal
     }
     /*
     // move this to MyBand
@@ -507,6 +535,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
   //
   // read steering from file fname
   //
+  string mn = "ReadSteering: "; //Method name, for printing
 
   steername=fname; 
   if (debug) cout<<" MyCrossSection::ReadSteering: steering "<<steername<<endl;
@@ -524,7 +553,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
   int iline=0;
   int nsyst=1;
 
-  char line[1024]; char text[256]; char name[256]; 
+  char line[1024]; char text[256]; char name[256];  int intVal; double doubleVal;
 
   while (1) {
     //if (debug) cout << " good: " << infile.good() << " eof: " << infile.eof() << endl;
@@ -566,293 +595,214 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 
   int igrid=-1;
 
-  while (1) {
-    //if (debug) cout << " good: " << infile.good() << " eof: " << infile.eof() << endl;
-    if (!infile.good()) break;
+  // read all options from text file
+  while (infile.good()) {
     infile.getline(line,sizeof(line),'\n');
     std::string cpp_line(line);
     std::vector<std::string> colon_split_cpp_line;  colon_split_cpp_line.clear();
     split_string(cpp_line, colon_split_cpp_line, ":");
-    //
-    if (debug) cout<< " MyCrossSection::ReadSteering: line= "<< line << "\n";
-    if(line[0] != '%'){
-      if(line[0] != 'g' && line[0] != 'n' && line[0] != 's' && line[0] != 'p' && line[0] != 'm'
-	 && line[0] != 'd' && line[0] != 's' && line[0] != 'v' && line[0] != 'c' && line[0] != 'G'
-	 && line[0] != 'r' && line[0] != 'f' && line[0] != 'p' && line[0] != 'G' && line[0] != 'x' 
-	 && line[0] != 'y' && line[0] != 'l' 
-	 ){
-	// do nothing, could simplify code
-      } else if (strstr(line,"debug")!=0) {
-	debug=true;
-	if (debug) printf(" MyCrossSection::ReadSteering: debug turned on  \n");
-	//} else if (strstr(line,"nprocessnumber")!=0) {
-	//  sscanf(line," %s %d ",text, &processnumber);
-	//  if (debug) printf(" MyCrossSection::ReadSteering: processnumber= %d   \n",processnumber);
-      } else if (strstr(line,"xlegend")!=0) {
-	float myvalue;
-	sscanf(line," %s %f ",text, &myvalue);
-	xlegend=myvalue;
-	if (debug) printf(" MyCrossSection::ReadSteering: xlegend= %f   \n",xlegend);
-      } else if (strstr(line,"ylegend")!=0) {
-	float myvalue;
-	sscanf(line," %s %f ",text, &myvalue);
-	ylegend=myvalue;
-	if (debug) printf(" MyCrossSection::ReadSteering: ylegend= %f   \n",ylegend);
-      } else if (strstr(line,"Gridnamedir")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	gridnamebasedir=string(name);
-      } else if (strstr(line,"subprocesssteername")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	subprocesssteername=string(name);
-	if (debug) 
-	  printf(" MyCrossSection::ReadSteering: subprocesssteername= %s \n",subprocesssteername.c_str());
-      } else if (strstr(line,"pdffunction")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	pdf_function=string(name);
-	if (debug) cout<<" MyCrossSection:ReadSteering pdffunction= "<<pdf_function<<endl;
-      } else if (strstr(line,"ratiotitlelabel")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	ratiotitlelabel=name;
-      } else if (strstr(line,"plotmarker")!=0) {
-	plotmarker=true;
-	//plotband=false;
-      } else if (strstr(line,"plotband")!=0) {
-	plotband=true;
-      } else if (strstr(line,"ploterrorticks")!=0) {
-	ploterrorticks=true;
-      } else if (strstr(line,"staggerpdfpoints")!=0) {
-	staggerpdfpoints=true;
-      } else if (strstr(line,"plotchi2")!=0) {
-	plotchi2=true;
-      } else if (strstr(line,"ntupname")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) 
-	  cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	ntupname=name;
-      } else if (strstr(line,"gridnamebasedir")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	gridnamebasedir=name;
-	if (debug) cout<<" MyCrossSection::ReadSteering: gridnamebasedir= "<<" "<<gridnamebasedir<<endl;
-      } else if (strstr(line,"gridnamesystbasedir")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	gridnamesystbasedir=name;
-	if (debug) cout<<" MyCrossSection::ReadSteering: gridnamesystbasedir= "<<" "<<gridnamesystbasedir<<endl;
-      } else if (strstr(line,"gridnamedefaultdir")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	gridnamedefaultdir=name;
-	if (debug) cout<<" MyCrossSection::ReadSteering: gridnamedefaultdir= "<<" "<<gridnamedefaultdir<<endl;
-      } else if (strstr(line,"datanamedir")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	datanamedir=name;
-      } else if (strstr(line,"gridname")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	string myname=name;
-	//gridname.push_back(myname);
-	igrid++;
-	if (debug) cout<<" MyCrossSection::ReadSteering: igrid= "<<igrid<<" "<<name<<endl;
-	// sscanf(line," %s %[^\n] ",text, name);
-	//if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	//if (debug) cout<<" MyCrossSection: ReadSteering: igrid= "<<igrid<<endl;
-      } else if (strstr(line,"markerstyledata")!=0) {
-	int mymarker;
-	sscanf(line," %s %d ",text, &mymarker);
-	if (debug) cout<<" MyCrossSection::ReadSteering "<<text<<" "<<mymarker<<endl;
-	if (igrid<0) cout<<" MyCrossSection::ReadSteering: something wrong ! "<<endl;
-	markerstyle[igrid]=mymarker;
-      } else if (strstr(line,"markercolordata")!=0) {
-	int mymarker;
-	sscanf(line," %s %d ",text, &mymarker);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<mymarker<<endl;
-	markercolor[igrid]=mymarker;
-      } else if (strstr(line,"reflinestyle")!=0) {
-	int mystyle;
-	sscanf(line," %s %d ",text, &mystyle);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<mystyle<<endl;
-	refhistlinestyle[igrid]=mystyle;
-      } else if (strstr(line,"reflinecolor")!=0) {
-	int mycolor;
-	sscanf(line," %s %d ",text, &mycolor);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<mycolor<<endl;
-	refhistlinecolor[igrid]=mycolor;
-      } else if (strstr(line,"leglabel")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	leglabel.push_back(string(name));
-
-	/*
-	  } else if (strstr(line,"datascalex")!=0) {
-	  double sx;
-	  sscanf(line," %s %lf ",text, &sx);
-	  if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<sx<<endl;
-	  datascalex[igrid]=sx;
-	  } else if (strstr(line,"mcscalex")!=0) {
-	  double sx;
-	  sscanf(line," %s %lf ",text, &sx);
-	  if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<sx<<endl;
-	  mcscalex[igrid]=sx;
-	  } else if (strstr(line,"scaley")!=0) {
-	  double sy;
-	  sscanf(line," %s %lf ",text, &sy);
-	  if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<sy<<endl;
-	  scaley[igrid]=sy;
-	*/
-      } else if (strstr(line,"frameid")!=0) {
-	int frid;
-	sscanf(line," %s %d ",text, &frid);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<frid
-		       <<" igrid= "<<igrid<<" frameid= "<<frid<<endl;
-	frameid[igrid]=frid;
-      } else if (strstr(line,"divideid")!=0) {
-	int did;
-	sscanf(line," %s %d ",text, &did);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<did<<endl;
-	divideid[igrid]=did;
-      } else if (strstr(line,"ratio")!=0) {
-        sscanf(line, "%s %s",text,name);
-	
-	//determine how ratio will be computed
-	if(strstr(name,"theory/data")!=0) {
-	  ratioTheoryOverData = true; // ratio will be (theory/data)
-	  cout<<"t1"<<endl;
-	} else if (strstr(name,"data/theory")!=0) {
-	  ratioTheoryOverData = false; // ratio will be (data/theory)
-	  cout<<"t1"<<endl;
-	} else {
-	  //if no option is provided, assume ratio of (theory/data) for legacy steering files
-	  ratioTheoryOverData = true; //default 
-	  cout<<"t1"<<endl;
-	}
-
-	if(debug) cout<<" MyCrossSection::ReadSteering: ratio set to: "
-		      <<(ratioTheoryOverData? "(theory/data)":"(data/theory)")<<endl;
-
-      } else if (strstr(line,"vardesc")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	//if(debug ) cout << "Filling vardesc" << endl;
-	string myname=name;
-	vardesc.push_back(myname);
-      } else if (strstr(line,"dataname")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
-	string myname=name;
-	dataname.push_back(myname);  
-	//} else if (strstr(line,"corrname")!=0) {
-	//sscanf(line," %s %[^\n] ",text, name);
-	//if (debug) cout<<" MyCrossSection:ReadSteering: "<<text<<" "<<name<<endl;
-	//string myname=name;
-	//corrname.push_back(myname);
-      } else if (strstr(line,"pdfdata")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<"text: "<<text<<"name: "<<name<<endl;
-	std::vector<string> *parsedNames;
-	std::string pdfSteeringFileNames = name;
-	char delimeter = ',';
-	parsedNames = ParseString(pdfSteeringFileNames, delimeter);
-	if (debug) cout<<" MyCrossSection::ReadSteering: found this many pdfs: "
-		       <<parsedNames->size()<<endl;
-	if (debug) cout<<" MyCrossSection::ReadSteering: pdfsteering for grid: "
-		       <<pdfSteeringFileNames<<"'"<<endl;
-	//pdfdata.push_back(*parsedNames);
-
-	for (int iname=0; iname<parsedNames->size(); iname++)
-	  pdfdata.push_back(parsedNames->at(iname));
-
-      } else if (strstr(line,"renscale")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<"text: "<<text<<"name: "<<name<<endl;
-	std::vector<string> *parsedNames;
-	std::string rennames = name;
-	char delimeter = ' ';
-	parsedNames = ParseString(rennames, delimeter);
-	if (debug) cout<<" MyCrossSection::ReadSteering: found this ren scales: "<<parsedNames->size()<<endl;
-	if (debug) cout<<" MyCrossSection::ReadSteering: pdfsteering for grid: "<<rennames<<"'"<<endl;
-	for (int i=0; i<parsedNames->size(); i++){
-	  renscale.push_back(atof( (parsedNames->at(i)).c_str()) );
-	}
-	do_RenormalizationScale=true;
-      } else if (strstr(line,"facscale")!=0) {
-	sscanf(line," %s %[^\n] ",text, name);
-	if (debug) cout<<"text: "<<text<<"name: "<<name<<endl;
-	std::vector<string> *parsedNames;
-	std::string facnames = name;
-	char delimeter = ' ';
-	parsedNames = ParseString(facnames, delimeter);
-	if (debug) 
-	  cout<<" MyCrossSection::ReadSteering: found this fac scales: "
-	      <<parsedNames->size()<<endl;
-	if (debug) 
-	  cout<<" MyCrossSection::ReadSteering: fac for grid: "
-	      <<facnames<<"'"<<endl;
-
-	for (int i=0; i<parsedNames->size(); i++){
-	  facscale.push_back(atof( (parsedNames->at(i)).c_str()) );
-	}
-
-	do_FactorizationScale=true;
     
-      } else if (strstr(line,"ymaxoverlay")!=0) {
-	sscanf(line," %s %lf ",text, &ymaxoverlay);
-	if (debug) printf(" MyCrossSection::ReadSteering: ymaxoverlay='%f' \n",ymaxoverlay);
-      } else if (strstr(line,"yminoverlay")!=0) {
-	sscanf(line," %s %lf ",text, &yminoverlay);
-	if (debug) printf(" MyCrossSection::ReadSteering: yminoverlay='%f' \n",yminoverlay);
-      } else if (strstr(line,"ymaxratio")!=0) {
-	sscanf(line," %s %lf ",text, &ymaxratio);
-	if (debug) printf(" MyCrossSection::ReadSteering: ymaxratio='%f' \n",ymaxratio);
-      } else if (strstr(line,"yminratio")!=0) {
-	sscanf(line," %s %lf ",text, &yminratio);
-	if (debug) printf(" MyCrossSection::ReadSteering: yminratio='%f' \n",yminratio);
-      }
+    if (debug) cout<< " MyCrossSection::ReadSteering: line= "<< line << "\n";
+    if(line[0] != '%' ) { //ignore lines beginning with comments - could be done better
 
-      ////// What theory error types will we consider and how will they be displayed?
-      if(line[0] != '%'){
+      switch( toupper(line[0]) ) { //use first letter of option to find where to start
+      case 'A':	break;
+      case 'B': break; 
+      case 'C': break;
+      case 'D':
+	if (strstr(line,"debug")!=0) {
+	  debug=true;
+	  if (debug) cout<<cn<<mn<<" Debug turned on"<<endl;
+	} else if (strstr(line,"datanamedir")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  datanamedir = string(name);
+	} else if (strstr(line,"divideid")!=0) {
+	  sscanf(line," %s %d ",text, &intVal);
+	  divideid[igrid]=intVal;
+	} else if (strstr(line,"dataname")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  dataname.push_back(string(name));  
+	}
+	break;
+      case 'E': break;
+      case 'F': 
+	if (strstr(line,"frameid")!=0) {
+	  sscanf(line," %s %d ",text, &intVal);
+	  frameid[igrid]=intVal;
+	} else if (strstr(line,"facscale")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  if (debug) cout<<"text: "<<text<<"name: "<<name<<endl;
+	  std::vector<string> *parsedNames;
+	  std::string facnames = name;
+	  char delimeter = ' ';
+	  parsedNames = ParseString(facnames, delimeter);
 
-	/*
-	  for(int pdfi = 0; pdfi < e_n_PDFs; pdfi++) {
-	  //     std::cout << "Compare " << cpp_line << " with " << PDF_strs[e_HERAPDFVoica] << "\n";
-	  if(cpp_line == PDF_strs[pdfi]) {
-	  PDFSetCodes_vec.push_back(pdfi);
+	  if (debug) cout<<cn<<mn<<" found '"<<parsedNames->size()<<"' fac scales "<<endl;
+	  if (debug) cout<<cn<<mn<<" fac for grid: '"<<facnames<<"'"<<endl;
+	  
+	  for (int i=0; i<parsedNames->size(); i++){
+	    facscale.push_back(atof( (parsedNames->at(i)).c_str()) );
 	  }
+	  
+	  do_FactorizationScale=true;
+	}
+	break;
+      case 'G': 
+	if (strstr(line,"Gridnamedir")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  gridnamebasedir = string(name);
+	} else if (strstr(line,"gridnamebasedir")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  gridnamebasedir = string(name);
+	} else if (strstr(line,"gridnamesystbasedir")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  gridnamesystbasedir = string(name);
+	} else if (strstr(line,"gridnamedefaultdir")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  gridnamedefaultdir = string(name);
+	} else if (strstr(line,"gridname")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  igrid++;
+	}
+	break;
+      case 'H': break;
+      case 'I': break;
+      case 'J': break;
+      case 'K': break;
+      case 'L':
+	if (strstr(line,"leglabel")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  leglabel.push_back(string(name));
+	} 
+	break;
+      case 'M':
+	if (strstr(line,"markerstyledata")!=0) {
+	  sscanf(line," %s %d ",text, &intVal);
+	  if (igrid<0) cerr<<cn<<mn<<" Something wrong ! '"<<intVal<<"'"<<endl;
+	  markerstyle[igrid]=intVal;
+	} else if (strstr(line,"markercolordata")!=0) {
+	  sscanf(line," %s %d ",text, &intVal);
+	  markercolor[igrid]=intVal; 
+	}
+	break;
+      case 'N':
+	if (strstr(line,"ntupname")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  ntupname=string(name); 
+	}
+	break;
+      case 'O': break;
+      case 'P': 
+	if (strstr(line,"pdffunction")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  pdf_function=string(name);
+	} else if (strstr(line,"plotmarker")!=0) {
+	  plotmarker=true;
+	} else if (strstr(line,"plotband")!=0) {
+	  plotband=true;
+	} else if (strstr(line,"ploterrorticks")!=0) {
+	  ploterrorticks=true;
+	} else if (strstr(line,"plotchi2")!=0) {
+	  plotchi2=true;
+	} else if (strstr(line,"pdfdata")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  if (debug) cout<<"text: "<<text<<"name: "<<name<<endl;
+	  std::vector<string> *parsedNames;
+	  std::string pdfSteeringFileNames = name;
+	  char delimeter = ',';
+	  parsedNames = ParseString(pdfSteeringFileNames, delimeter);
+	  	 	  
+	  for (int iname=0; iname<parsedNames->size(); iname++)
+	    pdfdata.push_back(parsedNames->at(iname));
+	}
+	break;
+      case 'Q': break;
+      case 'R':
+	if (strstr(line,"ratiotitlelabel")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  ratiotitlelabel=name;
+	} else if (strstr(line,"reflinestyle")!=0) {
+	  sscanf(line," %s %d ",text, &intVal);
+	  refhistlinestyle[igrid]=intVal;
+	} else if (strstr(line,"reflinecolor")!=0) {
+	  sscanf(line," %s %d ",text, &intVal);
+	  if (debug) cout<<cn<<mn<<" reflinecolor:  "<<intVal<<endl;
+	  refhistlinecolor[igrid]=intVal;
+	} else if (strstr(line,"ratio")!=0) {
+	  sscanf(line, "%s %s",text,name);
+	  
+	  //determine how ratio will be computed
+	  if (strstr(name,"theory/data")!=0)      ratioTheoryOverData = true; // ratio will be (theory/data)
+	  else if (strstr(name,"data/theory")!=0) ratioTheoryOverData = false; // ratio will be (data/theory)
+	  else                                    ratioTheoryOverData = true; //default - (theory/data) for legacy steering files
+	} else if (strstr(line,"renscale")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  if (debug) cout<<"text: "<<text<<"name: "<<name<<endl;
+	  std::vector<string> *parsedNames;
+	  std::string rennames = name;
+	  char delimeter = ' ';
+	  parsedNames = ParseString(rennames, delimeter);
+	  if (debug) cout<<cn<<mn<<" found '"<<parsedNames->size()<<"' ren scales"<<endl;
+	  if (debug) cout<<cn<<mn<<" pdfsteering for grid: "<<rennames<<"'"<<endl;
+	  for (int i=0; i<parsedNames->size(); i++){
+	    renscale.push_back(atof( (parsedNames->at(i)).c_str()) );
 	  }
-	*/
-	/*
-	  if( cpp_line == "PDFErrorBand" ) do_PDFBand = true;
-	  if( cpp_line == "AlphaS" )  do_AlphaS = true;
-	  if( cpp_line == "RenormalizationScale" )  do_RenormalizationScale = true;
-	  if( cpp_line == "FactorizationScale" )  do_FactorizationScale = true;
-	  if( cpp_line == "Mtop" )  do_Mtop = true;
-	  if( cpp_line == "Ebeam" )  do_Ebeam = true;
-	  if( cpp_line == "OneSigma" )  ErrorSize = e_OneSigma;
-	  if( cpp_line == "90Percent" ) ErrorSize = e_90Percent;
-	  if( colon_split_cpp_line.size() == 3 ) {
-	  if( colon_split_cpp_line.at(0) == "Mtop" ) {
-	  do_Mtop = true;
-	  gridnamemassdowndir = colon_split_cpp_line.at(1);
-	  gridnamemassupdir = colon_split_cpp_line.at(2);
-	  }
-	  if( colon_split_cpp_line.at(0) == "Ebeam" ) {
-	  do_Ebeam = true;
-	  gridnamebeamdowndir = colon_split_cpp_line.at(1);
-	  gridnamebeamupdir = colon_split_cpp_line.at(2);
-	  }
-	  }
-	*/
-	//split_string(cpp_line, colon_split_cpp_line, ":");
-      }
+	  do_RenormalizationScale=true;
+	}
+	break;
+      case 'S': 
+	if (strstr(line,"subprocesssteername")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  subprocesssteername=string(name);
+	} else if (strstr(line,"staggerpdfpoints")!=0) {
+	  staggerpdfpoints=true;
+	}
+	break;
+      case 'T': break;
+      case 'U': break;
+      case 'V':
+	if (strstr(line,"vardesc")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  vardesc.push_back(string(name));
+	} 
+	break;
+      case 'W': break;
+      case 'X': 
+	if (strstr(line,"xlegend")!=0) {
+	  sscanf(line," %s %f ",text, &xlegend);
+	} else if (strstr(line,"xunits")!=0) {
+	  sscanf(line," %s %s ",text, name);
+	  xunits = string(name);
+	}
+	break;
+      case 'Y': 
+	if (strstr(line,"ylegend")!=0) {
+	  sscanf(line," %s %f ",text, &ylegend);
+	} else if (strstr(line,"ymaxoverlay")!=0) {
+	  sscanf(line," %s %lf ",text, &ymaxoverlay);
+	} else if (strstr(line,"yminoverlay")!=0) {
+	  sscanf(line," %s %lf ",text, &yminoverlay);
+	} else if (strstr(line,"ymaxratio")!=0) {
+	  sscanf(line," %s %lf ",text, &ymaxratio);
+	} else if (strstr(line,"yminratio")!=0) {
+	  sscanf(line," %s %lf ",text, &yminratio);
+	} else if (strstr(line,"yunits")!=0) {
+	  sscanf(line," %s %s ",text, name);
+	  yunits = string(name);
+	}
+	break;
+      case 'Z': break;
+      default: 
+	cerr<<cn<<mn<<" WARN: Invalid steering option found '"<<line<<"'"<<endl;
+	//exit(0); //stop if an invalid option found, it's probably an error!
+      } //end switch
+    }; //end comment check
+  }; //end file reading
 
-      // std::cout << "Here are the PDFs we are going to consider in this run:\n";
-      // for(int tpdfi = 0; tpdfi < (int) PDFSetCodes_vec.size(); tpdfi++) {
-      //   std::cout << "Using " << PDF_strs[PDFSetCodes_vec.at(tpdfi)] << "\n";
-      // }
-    };
-  };
+  if(debug) { 
+    cout<<cn<<mn<<" Finished reading steering. REPORT:"<<endl;
+    Print();
+  }
 
   return;
 };
@@ -1247,13 +1197,15 @@ void MyCrossSection::DrawinFrame(int iframe) {
     titx=mydata[igrid]->GetTitleX();
     tity=mydata[igrid]->GetTitleY();
     name=mydata[igrid]->GetDataName();
+    name+=iframe;
   } else {
     titx=this->GetGridName(igrid);
     //tity=this->GetGridName(igrid);
-    name=this->GetGridName(igrid);
+    name+=this->GetGridName(igrid);
+    name+=iframe;
   }
 
-  myframe->SetFrameName(name);
+  myframe->SetFrameName(name); //TEST
   myframe->SetSubPad2TitleX(titx);
   myframe->SetSubPad1TitleY(tity);
 
@@ -1369,6 +1321,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 
   const double BIG=1.36;
   double Ymin=BIG, Ymax=-BIG, Xmin=BIG, Xmax=-BIG;
+  int iframeRepeatCheck = -1; // turn on or off certain features if they are being done in the same frame twice
 
   for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
     int igrid=gridinframe[iframe][i];
@@ -1397,7 +1350,6 @@ void MyCrossSection::DrawinFrame(int iframe) {
 		      <<"\n\txscale: "<<mydata[igrid]->GetScalex()
 		      <<"\n\tyscale: "<<mydata[igrid]->GetScaley()<<endl;
       	
-	
       	//set theory's scaling to the same as data's
       	href->Scale( mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
       }
@@ -1410,7 +1362,6 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	href->Print("all");
       }
     } else { //PDFs provided
-      //
       if (debug) cout<<" MyCrossSection::DrawinFrame: draw band igrid= "<<igrid<<endl;
       
       //draw each PDF band on top pad of plot for overlay
@@ -1424,10 +1375,10 @@ void MyCrossSection::DrawinFrame(int iframe) {
       else if (debug)     cout<<" MyCrossSection::DrawinFrame: mydata["<<igrid<<"]  found "<<endl;
 
    
-      // Only plot data once (ignore repeats)
-      bool doubledata=DoubleDataSetName(igrid);
-      
-      if (doubledata == false) { //if repeated data was not found
+      // Only plot data once (ignore repeats) unless repeated data is on a new frame
+      if ( DoubleDataSetName(igrid) == false || iframeRepeatCheck != iframe ) { 
+	//repeated data was not found on that frame
+	iframeRepeatCheck = iframe;
 	
 	if (debug) cout<<" MyCrossSection::DrawinFrame: plot data "<<dataname[igrid]<<endl;
        	// any scaling of data is already done in the MyData class from it's own steering
@@ -1437,10 +1388,15 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	TString mylabel=mydata[igrid]->GetLabel();	
 	if (debug) cout<<" MyCrossSection::DrawinFrame: mylabel= "<<mylabel.Data()<<endl;
 	
-	// label sqrts before data on legend
+	// label sqrts before data on legend if MyData Steering requested it
 	if(mydata[igrid]->GetPlotSqrts())  {
 	  TString sqrtslabel = "";
-	  sqrtslabel.Form("#sqrt{s}= %0.0f TeV", (mydata[igrid]->GetSQRTS()/1000) ); //TODO - hardcoded, make generic
+	  double sqrtsval = mydata[igrid]->GetSQRTS() * GetUnitScaleX(mydata[igrid]->GetXUnits(), this->GetXUnits()); //new
+	  TString sqrtsunits = mydata[igrid]->GetXUnits();
+
+	  sqrtslabel.Form("#sqrt{s}= %0.0f %s", 
+			  sqrtsval, 
+			  sqrtsunits.Data() ); //TODO - too hardcoded? make generic
 	  leg->AddEntry((TObject*)0, sqrtslabel, "");
 	}
 	
@@ -1498,6 +1454,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
     if (npdf<1) { 
       cout<<" MyCrossSection::DrawinFrame: No PDF's requested: Adding references to legend."<<endl;
       
+      // create a nice legend name for reference histos
       TString curLegLable = "";
       if (leglabel.size()>0) curLegLable = leglabel[igrid].c_str();
       else                   curLegLable = "reference";
@@ -1512,6 +1469,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
     
     if (debug) cout<<" MyCrossSection::DrawinFrame: legend prepared "<<endl;
   }
+
 
 
   // RATIO DRAWING
@@ -1531,7 +1489,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
   if (debug) cout<<" MyCrossSection::DrawinFrame: npdf= "<<npdf<<endl;
 
 
-
+  // determine ratio view size
   for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
     int igrid=gridinframe[iframe][i];
     int jframe=this->GetFrameID(igrid);
@@ -1542,7 +1500,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 		   << " Draw reference for igrid= "<<igrid<<endl;
     
 
-    
+    /*
     //plot just the data if no pdfs are to be overlayed
     if (npdf<1) {
       ratiotot[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
@@ -1553,9 +1511,9 @@ void MyCrossSection::DrawinFrame(int iframe) {
       Ymin=myband[igrid]->GetYmin();
       Ymax=myband[igrid]->GetYmax();
     }
-    
+    */
 
-    /*
+    
     if(ratioTheoryOverData) {
       if (npdf<1) {
 	ratiotot[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
@@ -1575,27 +1533,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	if (ymin<Ymin) Ymin=ymin;
 	if (ymax>Ymax) Ymax=ymax;
     }
-    */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 
@@ -1612,20 +1550,20 @@ void MyCrossSection::DrawinFrame(int iframe) {
     
 
 
-  //allow for fixed Y-axis min/max for ratio pad if steering file provided
+  //allow for explicit fixed Y-axis min/max for ratio pad if steering file provided them
   if( yminratio != DEFAULT_DOUBLE ) Ymin = yminratio;
   if( ymaxratio != DEFAULT_DOUBLE ) Ymax = ymaxratio;
   
   //ensure user provided appropreate bounds (ymax must be > ymin)
   if( Ymin > Ymax ) { 
-    cout<<" MyCrossSection::DrawinFrame: ERROR: Invalid ratio max and minimums set!"
+    cerr<<" MyCrossSection::DrawinFrame: ERROR: Invalid ratio max and minimums set!"
 	<<" Ymin = '"<<Ymin<<"'"
 	<<" YmX = '"<<Ymax<<"'"<<endl;
     exit(0); //Do no further drawing if the steering file was set incorrectly
   }
  
 
-  //Set min and max on Yaxis with small buffer on top and bottom for visibility
+  //Set computed min and max on Yaxis with small buffer on top and bottom for visibility
   if (debug) cout<<" MyCrossSection::DrawinFrame: Ymin= "<<Ymin<<" Ymax= "<<Ymax<<endl;
   myframe->GetYAxis2()->SetRangeUser(Ymin*0.9,Ymax*1.1); //<--Do this per each because each run is chaning the min and max??
 
@@ -1634,11 +1572,11 @@ void MyCrossSection::DrawinFrame(int iframe) {
   TGraphAsymmErrors* ratiodata;  
   if(ratioTheoryOverData) { // (THEORY / DATA)
     // draw data ratio (background bands) before pdf ratio (relative to bands)
-    
+
+
+    //FIRST - draw data ratio to itself in background    
     for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
       int igrid=gridinframe[iframe][i];
-      
-      //FIRST - draw data ratio to itself in background
       if(debug) cout<<" MyCrossSection::DrawinFrame: computing (theory/data) ratio."<<endl;
       
       ratiodata=myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr()
@@ -1647,10 +1585,9 @@ void MyCrossSection::DrawinFrame(int iframe) {
       ratiodata->SetMarkerStyle(mydata[igrid]->GetTGraphTotErr()->GetMarkerStyle());
       ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
       ratiodata->SetMarkerSize(0);
-      //ratiodata->SetFillColor(kGray); //filled light gray error bars
-      
+            
       // provide different data in ratio section should have different color
-      ratiodata->SetFillColor(kGray+i); //TODO - Choose a more predictable color based on data color?
+      ratiodata->SetFillColor(kGray); //TODO - Choose a more predictable color based on data color?
       
       //draw the ratio of (theory/data)
       if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
@@ -1661,6 +1598,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
     //SECOND - Draw the reference or pdf ratio over the data ratio in forground
     for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
       int igrid=gridinframe[iframe][i];
+      if (debug) cout<<" MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= "<<igrid<<endl;
       
       // no pdf means only need to display each set of ratios overlayed to the data
       if (npdf<1) {
@@ -1670,9 +1608,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	//PDF ratio drawing needs no scaling because it was generated from scaled data
 	ratiotot[igrid]->Draw("p,same"); 
       } 
-      
-      
-      if (debug) cout<<" MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= "<<igrid<<endl;
+            
       //draw the PDF ratio data
       myband[igrid]->DrawPDFBandRatio();
     }
@@ -1687,21 +1623,24 @@ void MyCrossSection::DrawinFrame(int iframe) {
       
       // no pdf means only need to display each set of ratios overlayed to the data
       if (npdf<1) {
+		
+	//if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
+	//  if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling ratiotot. "<<endl;	
+	//  //set reference ratio scaling to the same as data's
+	//  ScaleGraph(ratiotot[igrid], mydata[igrid]->GetScalex(), mydata[igrid]->GetScaley() ); //TODO
+	//}
+	
 	ratiotot[igrid]->SetMarkerStyle(0); //circle
 	ratiotot[igrid]->SetMarkerSize(0); //don't show the plotted point
-	//ratiotot[igrid]->SetFillStyle(3005);
-	//ratiotot[igrid]->SetFillColor(kWhite);
-	
-	if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
-	  if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling ratiotot. "<<endl;	
-	  //set reference ratio scaling to the same as data's
-	  ScaleGraph(ratiotot[igrid], mydata[igrid]->GetScalex(), mydata[igrid]->GetScaley() ); //TODO
-	}
-	
-	ratiotot[igrid]->Draw("E1,same"); //no PDF ratio draw
+	//ratiotot[igrid]->SetFillColor(refhistlinecolor[igrid]);
+	//ratiotot[igrid]->SetFillStyle(3004+igrid);
+
+	// TODO - check problem with reference uncertainy seeming large?
+	ratiotot[igrid]->Draw("E2,same"); //no PDF ratio draw
       } 
     }
     
+
     //TODO - Move up into FIRST section for loop for each igrid?
     if (debug) cout<<" MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= "<<igrid<<endl;
     //draw the PDF ratio data
@@ -1712,8 +1651,9 @@ void MyCrossSection::DrawinFrame(int iframe) {
     if(debug) cout<<" MyCrossSection::DrawinFrame: computing (data/theory) ratio(s) for each pdf."<<endl;
     for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
       int igrid=gridinframe[iframe][i];
-      
+
       if(npdf<1) {
+	// when no pdfs, plot the data over reference histogram
 	TH1D *href=this->GetNormalisedReference(igrid);
 	TGraphAsymmErrors* gref=TH1TOTGraphAsymm(href);
 	
@@ -1724,8 +1664,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	ratiodata->SetMarkerSize(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
 
 	//ratiodata->SetLineColor(gref->GetMarkerColor()); 
-	ratiodata->SetLineColor(kBlack);  //errorbar color depends on data color
-
+	ratiodata->SetLineColor(kBlack);  //errorbar is black for a single pdf
 	
 	//draw the ratio of (data/theory) for each theory
 	if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
@@ -1733,6 +1672,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
       }
       
       for(int ipdf = 0; ipdf < npdf; ipdf++) {
+	// when there are pdfs, plot data over pdf band data
 	ratiodata=myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr()
 				       ,myband[igrid]->GetPdfBand(ipdf),2);
 		
@@ -1741,10 +1681,10 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
 	ratiodata->SetMarkerSize(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
 
-	// errorbar color is dependant on which PDF the data ratio is relative to
-	//ratiodata->SetLineColor(myband[igrid]->GetPdfBand(ipdf)->GetMarkerColor()); 
-	ratiodata->SetFillColor(kBlack);
-	
+	// color of ratio is chosen for most readability
+	if(npdf==1) ratiodata->SetLineColor(kBlack);  //errorbar is black for a single pdf
+	else        ratiodata->SetLineColor(myband[igrid]->GetPdfBand(ipdf)->GetMarkerColor());  //errorbar color depends on pdf band color	
+
 	//draw the ratio of (data/theory) for each theory
 	if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
 	ratiodata->Draw("P,same");
@@ -1755,7 +1695,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
   
   
 
-
+  //Always plot a line at 1, where the ratios are relative to
   TLine *myline= new TLine(myframe->GetXmin(),1.,myframe->GetXmax(),1.);
   myline->Draw(); 
 
@@ -1794,18 +1734,23 @@ TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
   href->SetLineColor(refhistlinecolor[igrid]);
 
   if (this->GetDataOk(igrid)) {
-    double xscale=mydata[igrid]->GetUnitGeVFactor();
-    double yscale=mydata[igrid]->GetUnitfbFactor();
+    //double xscale=mydata[igrid]->GetUnitGeVFactor(); //old scaling
+    //double yscale=mydata[igrid]->GetUnitfbFactor(); //old scaling
+   
+    //convert units from data to desired
+    double xscale = GetUnitScaleX(mydata[igrid]->GetXUnits(), this->GetXUnits()); //new scaling
+    double yscale = GetUnitScaleY(mydata[igrid]->GetYUnits(), this->GetYUnits()); //new scaling
+    
     bool  normtot=mydata[igrid]->isNormTot();
 
 
     if(mydata[igrid]->GetScalex() != 1.0) xscale += mydata[igrid]->GetScalex();
     if(mydata[igrid]->GetScaley() != 1.0) yscale += mydata[igrid]->GetScaley();
 
-    this->Normalise(href,yscale,xscale,normtot);
-  }
 
-  
+    this->Normalise(href,yscale,xscale,normtot);
+
+
     if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
       if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling reference histo. "
 		    <<"\n\txscale: "<<mydata[igrid]->GetScalex()
@@ -1814,6 +1759,10 @@ TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
       //set theory's scaling to the same as data's
       href->Scale( mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
     }
+  }
+
+  
+
   
 
   
@@ -2200,3 +2149,73 @@ void MyCrossSection::ScaleGraph(TGraphAsymmErrors *g1, double scalex, double sca
 
   return;
 };
+
+double MyCrossSection::GetUnitScaleX(std::string fromUnits, std::string toUnits) {
+  std:: string mn = "GetUnitScaleX"; //Name of method, for printing
+  int n = 1; //scale value to return based on fromUnits and toUnits
+
+  cout<<cn<<mn<<" Converting '"<<fromUnits<<"' to '"<<toUnits<<"'"<<endl;
+  
+  // Possible units to convert from and to
+  std::string MEV = "MEV", GEV = "GEV", TEV = "TEV";
+  
+  // Shift fromUnits and toUnits to be in same case as above
+  std::string from = stringToUpper(fromUnits), to = stringToUpper(toUnits);
+  
+
+  // Compute scaling
+  // scale down to electron volts
+  if      (from == MEV) n = -6; // n = -6; 
+  else if (from == GEV) n = -9;
+  else if (from == TEV) n = -12;
+  else    cerr<<cn<<mn<<" ERROR: Unexpected units from '"<<from<<"'"<<endl;
+
+  // scale up from electron volts to desired units
+  if      (to == MEV) n += 6; //n += 6;
+  else if (to == GEV) n += 9;
+  else if (to == TEV) n += 12;
+  else    cerr<<cn<<mn<<" ERROR: Unexpected units to '"<<to<<"'"<<endl;
+
+
+  if(debug) cout<<cn<<mn<<" Will scale by 1e"<<n<<endl;
+  
+  return pow(10, n);
+}
+
+
+double MyCrossSection::GetUnitScaleY(std::string fromUnits, std::string toUnits) {
+  std:: string mn = "GetUnitScaleY"; //Name of method, for printing
+  double n = 1.0; //scale value to return based on fromUnits and toUnits
+
+  cout<<cn<<mn<<" Converting '"<<fromUnits<<"' to '"<<toUnits<<"'"<<endl;
+
+  // Possible units to convert from and to
+  std::string FB = "FB", PB = "PB";
+    
+  // Shift fromUnits and toUnits to be in same case as above
+  std::string from = stringToUpper(fromUnits), to = stringToUpper(toUnits);
+  
+
+  // Compute scaling
+  // scale down to barns
+  if      (from == FB) n = -12;
+  else if (from == PB) n = -15;
+  else    cerr<<cn<<mn<<" ERROR: Unexpected units from '"<<from<<"'"<<endl;
+
+  // scale up from barns to desired units
+  if      (to == FB) n += 12;
+  else if (to == PB) n += 15;
+  else    cerr<<cn<<mn<<" ERROR: Unexpected units to '"<<to<<"'"<<endl;
+  
+
+  if(debug) cout<<cn<<mn<<" Will scale by 1e"<<n<<endl;
+
+  return pow(10, n);
+}
+
+string MyCrossSection::stringToUpper(std::string s) {
+  string upperString = s;
+  for (int i = 0; i < s.length(); i++) upperString[i]=toupper(s[i]);
+
+  return upperString;
+}

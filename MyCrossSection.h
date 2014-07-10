@@ -1,3 +1,4 @@
+
 /*
  * Title:    MyCrossSection
  * Author:   T. Carli, C. Embree
@@ -58,6 +59,9 @@ class MyCrossSection {
 
   double xlegend;
   double ylegend;
+
+  string xunits;
+  string yunits;
 
   double ymaxoverlay;
   double yminoverlay;
@@ -141,6 +145,10 @@ class MyCrossSection {
   MyCrossSection(char name[100]);
 
   generic_pdf * GetSubProcess() { return mypdf;};
+
+  double GetUnitScaleX(std::string fromUnits, std::string toUnits);
+  double GetUnitScaleY(std::string fromUnits, std::string toUnits);
+
   void SetSubProcess(generic_pdf *subpro) { mypdf=subpro; return;};
   void split_string(std::string str, std::vector<std::string>& split_results, std::string delimiters);
 
@@ -176,6 +184,9 @@ class MyCrossSection {
   void Normalise(TGraphAsymmErrors* g1, double yscale, double xscale, bool normtot, bool divwbinwidt);
 
   int GetNGrid(){return gridname.size();};
+
+  string GetXUnits(){ return xunits ;};
+  string GetYUnits(){ return yunits ;};
   
   //double CalcChi2(TGraphAsymmErrors *g_theory, TGraphAsymmErrors *g_data, TMatrixT<double> data_cov_matrix);
   double CalcChi2(TGraphAsymmErrors *g_theory, TGraphAsymmErrors *g_data, TMatrixT<double> *data_cov_matrix);
@@ -392,6 +403,9 @@ class MyCrossSection {
 
   void SetLegendX(double x) {xlegend=x; return;};
   void SetLegendY(double y) {ylegend=y; return;};
+
+
+  string stringToUpper(std::string s);
 
   void DrawReference(int igrid);
   TGraphAsymmErrors* GetReferenceRatio(int igrid);
