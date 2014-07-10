@@ -26,5 +26,10 @@
 ./plot atlas2012_top.txt
 
 
+# Atlas data cross various PDFs
+./plot atlas_mtt_ptt_top_1.txt
+./plot atlas_mtt_ptt_top_2.txt
+
+
 # compare Atlas new data to theory
 #./plot_old atlas2012_alphaS_top.txt
