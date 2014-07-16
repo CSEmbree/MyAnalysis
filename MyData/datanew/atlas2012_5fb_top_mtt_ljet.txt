@@ -13,11 +13,12 @@ label ATLAS 2011
 %unitxTeV
 %unitypb
 %
+overlaystyle data,reference
 xunits TeV
 yunits pb
 %
 normtot
-dividedbybinwidth
+%dividedbybinwidth
 %
 %
 plotsqrts
