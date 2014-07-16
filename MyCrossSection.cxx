@@ -43,6 +43,9 @@ MyCrossSection::MyCrossSection(char name[100])
   ploterrorticks=false;
   staggerpdfpoints=false;
   ratioTheoryOverData=true; //ratio default is (theory/data)
+  overlayData = true; //always display data by default
+  overlayTheory = false;
+  overlayReference = false;
 
   pdf_function="";
   subprocesssteername="";
@@ -62,6 +65,7 @@ MyCrossSection::MyCrossSection(char name[100])
         
   steername=name;
   if (debug) cout<<" MyCrossSection:: steering file= "<<steername<<endl;
+  overlaynames.clear();
   gridname.clear();
   vardesc.clear();
   dataname.clear();
@@ -118,12 +122,13 @@ void MyCrossSection::Initialize() {
     myband.push_back(mybandtmp);
 
 
-    if (debug) cout<<" MyCrossSection::Initialize: Data "<<this->GetDataName(igrid)<<endl;
+    //read in Data and prepare for it's use
+    if (debug) cout<<" MyCrossSection::Initialize: Prapare Data \""<<this->GetDataName(igrid)<<"\""<<endl;
     if (this->GetDataOk(igrid)) {
       MyData *mydatatmp= new MyData;
       if (debug)
-	cout<<" MyCrossSection::Initialize: dataname= "<<TString(this->GetDataName(igrid)).Data()
-	    <<" datadir= "<<TString(this->GetDataNameDir(igrid)).Data() <<endl;
+	cout<<" MyCrossSection::Initialize: DataName= "<<TString(this->GetDataName(igrid)).Data()
+	    <<" DataDir= "<<TString(this->GetDataNameDir(igrid)).Data() <<endl;
 
       mydatatmp->ReadData(this->GetDataName(igrid),this->GetDataNameDir(igrid));
 
@@ -131,8 +136,27 @@ void MyCrossSection::Initialize() {
       mydatatmp->SetMarkerColor(this->GetMarkerColor(igrid));
       mydata.push_back(mydatatmp);
     } else {
-      if (debug) cout<<" MyCrossSection::Initialize no data found "<<endl;
+      if (debug) cout<<" MyCrossSection::Initialize no data found "<<igrid<<endl;
     }
+
+    // Read in Grid data and prepare for it's use
+    if (debug) cout<<" MyCrossSection::Initialize: Prepare Grid \""<<this->GetDataName(igrid)<<"\""<<endl;
+    if (this->GetGridOk(igrid)) {
+      string gridSteeringPath = this->GetGridSteeringPath(igrid);
+      //      MyGrid *mygridtmp= new MyGrid(gridname.at(igrid));
+      MyGrid *mygridtmp= new MyGrid( gridSteeringPath );
+      
+      if (debug)
+	cout<<" MyCrossSection::Initialize:\n\t GridSteeringName=\""<<gridname.at(igrid)<<"\""
+	    <<"\n\t GridSteeringPath=\""<<this->GetGridSteeringPath(igrid)<<"\""
+	    <<"\n\t GridFilePath=\""<<mygridtmp->GetGridPath()<<"\""<<endl;
+
+      
+      mygrid.push_back(mygridtmp);
+    } else {
+      if (debug) cout<<" MyCrossSection::Initialize no grid found for igrid="<<igrid<<endl;
+    }
+    
 
     //container for mypdf instances per grid type. Each grid can have multiple pdfs
     //std::vector<MyPDF*> pdfStorage; 
@@ -152,8 +176,8 @@ void MyCrossSection::Initialize() {
 
       
       //mydata[igrid]->Scale(1.,yfac/xfac);
-      //mydata[igrid]->Normalise(yfac, xfac); //TODO - scale actual data now?
-      cout<<"TEST:: igrid:"<<igrid<<", xfac:"<<xfac<<", yfac:"<<yfac<<endl;
+      //mydata[igrid]->Normalise(yfac, xfac); //TODO - scale measurment data now?
+      cout<<" MyCrossSection::Initialize: FACs: igrid:"<<igrid<<", xfac:"<<xfac<<", yfac:"<<yfac<<endl;
 
 
       if (debug) cout<<" MyCrossSection::Initialize: yfac= "<<yfac<<" xfac= "<<xfac<<endl;
@@ -177,7 +201,14 @@ void MyCrossSection::Initialize() {
     for (int ipdf=0; ipdf<npdf; ipdf++){
       if (debug) cout<<" MyCrossSection::Initialize: load pdf= "<<pdfdata.at(ipdf).c_str()<<endl;
 
-      MyPDF *newpdf = new MyPDF(GetGridName(igrid), 
+      /*
+      MyPDF *newpdf = new MyPDF(GetGridName(igrid), //CHANGED
+				pdfdata.at(ipdf),
+                                do_PDFBand,
+                                do_AlphaS
+				);
+      */
+      MyPDF *newpdf = new MyPDF(mygrid.at(igrid)->GetGridPath(), 
 				pdfdata.at(ipdf),
                                 do_PDFBand,
                                 do_AlphaS
@@ -186,7 +217,7 @@ void MyCrossSection::Initialize() {
       if (debug) {
 	cout<<" MyCrossSection::Initialize: print pdf= "<<ipdf
 	    <<" name= "<<pdfdata.at(ipdf).c_str()
-	    <<" for grid: "<<GetGridName(igrid)<<endl;
+	    <<" for grid: "<<mygrid.at(igrid)->GetGridPath()<<endl;
 
 	cout<<" MyCrossSection::Initialize: ipdf= "<<ipdf<<" "<<newpdf->GetPDFtype().c_str()<<endl;
 	newpdf->h_PDFBand_results->Print("all");
@@ -206,7 +237,7 @@ void MyCrossSection::Initialize() {
 
       
       this->Normalise(gtmp,yfac,xfac,normtot,divbinwidth);
-      if (debug) {cout<<" MyCrossSection::Initialize: fill Band gtmp"<<endl; gtmp->Print();}
+      if (debug) {cout<<" MyCrossSection::Initialize: fill Band gtmp"<<endl; gtmp->Print("all");}
 
       // set my band info for displyaing later
       myband[igrid]->SetPdfBand(gtmp); 
@@ -239,7 +270,7 @@ void MyCrossSection::Initialize() {
 
       if (debug) {
 	cout<<" MyCrossSection::Initialize: print normalised default ipdf= "<<ipdf<<endl; 
-	gdefaulttmp->Print();
+	gdefaulttmp->Print("all");
       }
 
       if (newpdf->GetDoAlphaS() ) {
@@ -366,7 +397,7 @@ void MyCrossSection::Initialize() {
       
       if (debug) {
 	cout<<" MyCrossSection::Initialize: ratiotot["<<igrid<<"] called '"<<rationame.Data()<<"': "<<endl;
-	ratiotot[igrid]->Print();
+	ratiotot[igrid]->Print("all");
       }
     } else {
       //TH1D *href=this->GetNormalisedReference(igrid);
@@ -570,7 +601,14 @@ void MyCrossSection::ReadSteering(char fname[100]) {
       if (debug) cout<<" MyCrossSection::ReadSteering: "<<text<<" "<<name<<endl;
       string myname=name;
       if (debug) cout << "Push back " << myname << endl;
-      gridname.push_back(myname);
+      //MyGrid *tmpgrid = new MyGrid(myname);
+      gridname.push_back(myname); //CHANGED
+      //gridname.push_back(tmpgrid); //CHANGED
+
+      //MyGrid *test_mygrid = new MyGrid( myname ); //TEST
+      //test_mygrid->Print();
+      //test_mygrid->GetReference()->Print("all");
+      //exit( 0 ); //TEST
     }
   }
 
@@ -691,7 +729,27 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	  ntupname=string(name); 
 	}
 	break;
-      case 'O': break;
+      case 'O': 
+	if (strstr(line,"overlaystyle")!=0) {
+	  sscanf(line," %s %[^\n] ",text, name);
+	  if (debug) cout<<cn<<mn<<" Overlaystyle: "<<name<<endl;
+	  std::vector<string> *parsedNames;
+	  std::string allNames = name;
+	  char delimeter = ',';
+	  parsedNames = ParseString(allNames, delimeter);
+	  
+	  cout<<cn<<mn<<" overlay found '"<<parsedNames->size()<<"' to overlay"<<endl;
+	  for (int iname=0; iname<parsedNames->size(); iname++) {
+	    cout<<" \tname: \""<<parsedNames->at(iname)<<"\""<<endl;
+	    overlaynames.push_back(parsedNames->at(iname));
+	  }
+	  
+	  if( this->validateOverlayStyle(overlaynames) == false ) {
+	    cerr<<cn<<mn<<" Invalid overlay stye detected!"<<endl;
+	    exit(0);
+	  }
+	}
+	break;
       case 'P': 
 	if (strstr(line,"pdffunction")!=0) {
 	  sscanf(line," %s %[^\n] ",text, name);
@@ -823,7 +881,7 @@ void MyCrossSection::Print() {
       <<"\n"<<setw(w)<<"Dir of grids: "        <<setw(w)<<gridnamebasedir
       <<"\n"<<setw(w)<<"Dir of data: "         <<setw(w)<<datanamedir
       <<"\n"<<setw(w)<<"Num of grids: "        <<setw(w)<<gridname.size()
-      <<"\n"<<setw(w)<<"Ratio: "               <<(ratioTheoryOverData? "(theory/data)":"(data/theory)")<<endl;
+      <<"\n"<<setw(w)<<"Ratio: "               <<setw(w)<<(ratioTheoryOverData? "(theory/data)":"(data/theory)")<<endl;
 
   for (int  i = 0; i <   gridname.size(); i++) {
     if (this->GetDataOk(i)) {
@@ -832,8 +890,8 @@ void MyCrossSection::Print() {
 	//<<"\n"<<setw(w)<<"events.size(): "   <<setw(w)<<events.size()
 	  <<"\n"<<setw(w)<<"gridname.size(): " <<setw(w)<<gridname.size()
                 
-	  <<"\n"<<setw(w)<<"grid: "         <<setw(w)<<gridname[i]
-	  <<"\n"<<setw(w)<<"data: "         <<setw(w)<<dataname[i]
+	  <<"\n"<<setw(w)<<"grid steering: "<<setw(w)<<gridname[i]
+	  <<"\n"<<setw(w)<<"data steering: "<<setw(w)<<dataname[i]
 	//<<"\n"<<setw(w)<<"events: "       <<setw(w)<<events[i]
 	  <<"\n"<<setw(w)<<"style: "        <<setw(w)<<this->GetMarkerStyle(i)
 	  <<"\n"<<setw(w)<<"color:"         <<setw(w)<<this->GetMarkerColor(i)
@@ -864,29 +922,39 @@ bool MyCrossSection::file_exists(const string& s) {
 }
 
 
-void MyCrossSection::Normalise(TH1D* h1, double yscale, double xscale=1., bool normtot=false)
+void MyCrossSection::Normalise(TH1D* h1, double yscale, double xscale=1., bool normtot=false, bool divbinwidth=false)
 {
   //
-  // reference is divided by binwidth
+  // reference in ApplGrid is not divided by binwidth, by convention.
+  // We must divide it if asked because it is not already divided
   //
+
+  /*
+  string mn="Normalise:";
 
   double x, y, ey;
   double sigtot=0.;
 
   for (int i=0; i<=h1->GetNbinsX(); i++) {
     y=h1->GetBinContent(i)*yscale;
-    x=h1->GetBinWidth(i);
-    sigtot+=y*x;
+
+    double binw = 1.;
+    if (divbinwidth) binw = h1->GetBinWidth(i); 
+
+    //sigtot+=y;
+    sigtot+=y*binw;
   }
 
-  //
-  //if (debug) cout<<" MyCrossSection::Normalize: sigtot= "<<sigtot<<endl;
-
   for (int i=0; i<=h1->GetNbinsX(); i++) {
-    x =h1->GetBinWidth(i);
-    y =h1->GetBinContent(i)*yscale*x;
-    ey=h1->GetBinError(i)  *yscale*x;
-    x =h1->GetBinWidth(i)  *xscale;
+    
+    double binw = 1;
+    if(divbinwidth) binw = h1->GetBinWidth(i);
+
+    cout<<cn<<mn<<" divbinwidth ON, binwidth: "<<binw<<endl;
+
+    y =h1->GetBinContent(i)*yscale;
+    ey=h1->GetBinError(i)  *yscale;
+    x =binw                *xscale;
     if (x!=0) h1->SetBinContent(i,y/x);
     else      h1->SetBinContent(i,0.);
     //cout << "BinWidth: " << h1->GetBinWidth(i)  << ", xscale: " << xscale 
@@ -898,12 +966,14 @@ void MyCrossSection::Normalise(TH1D* h1, double yscale, double xscale=1., bool n
 
   if (normtot) {
     //if (debug) cout<<" MyCrossSection::Normalise: sigtot= "<<sigtot<<endl;
-    if (sigtot!=0.) {
-      //if (debug) std::cout << " MyCrossSection::Normalise: What is the name? " << h1->GetName() << std::endl;
-      //if (debug) std::cout << " MyCrossSection::Normalise: New norm = " << h1->Integral() << std::endl;
+    
+    if(sigtot!=0.) {
+      h1->Scale(1. / sigtot);
+    } else {
+      cerr<<cn<<mn<<" ERROR: Division by zero!! sigtot: "<<sigtot<<endl;
     }
-    h1->Scale(1. / sigtot);
   }
+  */
 
   /*
     for ( int ibin=1 ; ibin<=h->GetNbinsX() ; ibin++ )
@@ -914,16 +984,90 @@ void MyCrossSection::Normalise(TH1D* h1, double yscale, double xscale=1., bool n
   */
   //if (debug) std::cout << " MyCrossSection::Normalise: return" << std::endl;
   
+
+
+
+
+  string mn="Normalise:";
+
+  double x, y, ey;
+  double sigtot=0.;
+
+  if(debug){
+    cout<<cn<<mn<<" Origonal Histogram Print: "<<endl;
+    h1->Print("all");
+  }
+
+
+  //for (int i=0; i<=h1->GetNbinsX(); i++) {
+  for (int i=1; i<h1->GetNbinsX(); i++) {
+    y=h1->GetBinContent(i)*yscale;
+
+    double binw = 1.;
+    if (divbinwidth) binw = h1->GetBinWidth(i); 
+
+    //sigtot+=y;
+    sigtot+=y*binw;
+
+    if(debug) cout<<"MyCrossSection::Normalise: Hist sigtot="<<sigtot
+		  <<", content="<<h1->GetBinContent(i)
+		  <<", yscale="<<yscale
+		  <<", binw="<<binw<<endl;
+  }
+
+  if(debug) cout<<"MyCrossSection::Normalise: Hist sigtot final: "<<sigtot<<endl;
+
+  double scal=yscale;
+  //for (int i=0; i<=h1->GetNbinsX(); i++) {
+  for (int i=1; i<h1->GetNbinsX(); i++) {
+    //if (normtot) if(sigtot!=0.) scal=yscale/sigtot;
+    if (normtot) {
+      if(sigtot != 0.0) { 
+	scal=yscale/sigtot;
+      } else {
+	cerr<<"MyCrossSection::Normalise: WARN: Sigtot was ZERO, avoiding division by 0.";
+	scal = 0.;
+      }
+    }
+
+    double binw = 1;
+    if(divbinwidth)  binw = h1->GetBinWidth(i);
+    cout<<cn<<mn<<" Hist binwidth="<<binw<<" at bin "<<i<<endl;
+   
+    y =h1->GetBinContent(i)*scal;//*binw;
+    ey=h1->GetBinError(i)  *scal;//*binw;
+    x =binw                *xscale;
+    if (x!=0) h1->SetBinContent(i,y/x);
+    else      h1->SetBinContent(i,0.);
+    
+    if (x!=0) h1->SetBinError(i,ey/x);
+    else      h1->SetBinError(i,0.);
+  }
+  /*
+  if (normtot) {
+    if(sigtot!=0.) {
+      h1->Scale(1. / sigtot);
+    } else cerr<<cn<<mn<<" ERROR: Division by zero!! sigtot: "<<sigtot<<endl;
+  }
+  */
+
+  if(debug){
+    cout<<cn<<mn<<" Normalised Histogram Print: "<<endl;
+    h1->Print("all");
+  }
+
   return;
 }
 
 
 void MyCrossSection::Normalise(TGraphAsymmErrors* g1, double yscale, double xscale=1., bool normtot=false, bool divbinwidth=true) {
   //
-  // Normalise a graph
+  // ApplGrid convolute is already divided by binwidth, by convention
+  // We must NOT divide graph if divbinwidth is on because it is already divided
   //
 
-  // convolution is divided by binwidth
+  string mn="Normalise:";
+  // convolution is divide by binwidth
   Double_t x, y, ey;
   Double_t sigtot=0.;
 
@@ -944,37 +1088,58 @@ void MyCrossSection::Normalise(TGraphAsymmErrors* g1, double yscale, double xsca
     //cout<<" binw= "<<binw<<endl;
     if (divbinwidth) sigtot+=y*binw;
     else             sigtot+=y;
-    sigtot+=y;
+    //sigtot+=y; //TODO - should this be done twice here?
+
+
+    if(debug) cout<<"MyCrossSection::Normalise: Graph sigtot="<<sigtot
+		  <<", content="<<Y1[i]
+		  <<", yscale="<<yscale
+		  <<", binw="<<binw<<endl; 
   }
 
-  //if (debug) cout<<"MyCrossSection::Normalise: sigtot= "<<sigtot<<endl;
+  if(debug) cout<<"MyCrossSection::Normalise: Graph sigtot="<<sigtot<<endl;
 
   double scal=yscale;
   for (Int_t i=0; i<Nbin; i++) {
-    if (normtot) scal=yscale/sigtot;
-    double binw=1.;
-    if (divbinwidth) binw=EXhigh1[i]+EXlow1[i];
-    //if (debug) cout<<" MyCrossSection::Normalise: i= "<<i<<" scal= "<<scal<<endl;
+    if (normtot) {
+      if(sigtot != 0.0) { 
+	scal=yscale/sigtot;
+      } else {
+	cerr<<"MyCrossSection::Normalise: WARN: Sigtot was ZERO, avoiding division by 0.";
+	scal = 0.;
+      }
+    }
 
-    double y =Y1[i]*scal*binw;
-    double yl=EYlow1[i] *scal*binw;
-    double yh=EYhigh1[i]*scal*binw;
+    //double binw=1.;
+    //if (divbinwidth) 
+    double binw=EXhigh1[i]+EXlow1[i];
+    //if (debug) cout<<" MyCrossSection::Normalise: i= "<<i<<" scal= "<<scal<<endl;
+    cout<<cn<<mn<<" Graph binwidth="<<binw<<" at bin "<<i<<endl;
+
+
+    double y =Y1[i]*scal*binw/xscale;
+    double yl=EYlow1[i] *scal*binw/xscale;
+    double yh=EYhigh1[i]*scal*binw/xscale;
     if (divbinwidth) {
-      binw*=xscale;
+      //binw*=xscale;
       yl/=binw;  
       yh/=binw;
       y /=binw;
- 
     }
     g1->SetPoint(i, X1[i],y);
     g1->SetPointError(i,EXlow1[i],EXhigh1[i],yl,yh);
+  }
+
+  if(debug){
+    cout<<cn<<mn<<" Normalised Graph Print: "<<endl;
+    g1->Print("all");
   }
 
   //if (debug) std::cout << " MyCrossSection::Normalise: return" << std::endl;
   return;
 }
 
-
+/*
 TH1D *MyCrossSection::GetReference(int igrid) {
   //
   // get reference histogram from original grid
@@ -1012,6 +1177,25 @@ TH1D *MyCrossSection::GetReference(int igrid) {
   //if (debug) cout<<" MyCrossSection::GetReference ntot= "<<ntot << endl;
   href->Scale(1./ntot);
 
+  return href;
+}
+*/
+
+
+
+TH1D *MyCrossSection::GetReference(int igrid) {
+  //
+  // get reference histogram from original grid
+  // 
+
+  TH1D *href=(TH1D*)mygrid.at(igrid)->GetReference();
+
+  if (!href) {
+    cout<<" MyCrossSection::GetReference: reference histo not found igrid= "<<igrid<<endl;
+    cout<<" MyCrossSection::GetReference: grid name=" << mygrid.at(igrid)->GetGridPath() << endl;
+    exit(0); 
+  }
+  
   return href;
 }
 
@@ -1199,9 +1383,11 @@ void MyCrossSection::DrawinFrame(int iframe) {
     name=mydata[igrid]->GetDataName();
     name+=iframe;
   } else {
-    titx=this->GetGridName(igrid);
+    titx=mygrid[igrid]->GetGridPath(); //CHANGED
+    //titx=gridname.at(igrid)->GetGridName();
     //tity=this->GetGridName(igrid);
-    name+=this->GetGridName(igrid);
+    name+=mygrid[igrid]->GetGridName();//this->GetGridName(igrid); //CHANGED
+    //name+=gridname.at(igrid)->GetGridName();
     name+=iframe;
   }
 
@@ -1338,22 +1524,33 @@ void MyCrossSection::DrawinFrame(int iframe) {
     //cout << "Is data ok? " << this->GetDataOk(igrid) << endl;
 
 
+    //plot the overlay portion of graph
+    if(overlayReference) {
+      href=this->GetNormalisedReference(igrid);
+      if (!href) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
+      
+      //no PDF, plot reference histogram for overlay
+      href->Draw("same,hist"); //no PDF overlay draw
+      if (debug) {
+	cout<<" MyCrossSection::DrawinFrame: Print reference histogram TEST"<<endl;
+	href->Print("all");
+      }
+    }
+    if(overlayTheory) {
+      if (debug) cout<<" MyCrossSection::DrawinFrame: draw band igrid= "<<igrid<<endl;
+      
+      //draw each PDF band on top pad of plot for overlay
+      if(npdf>=1) myband.at(igrid)->DrawPDFBand();
+      else        cerr<<"MyCrossSection::DrawinFrame: ERROR: No PDFs listed so none overlayed."<<endl;
+    }
+    
 
+
+    /*
     //plot the overlay portion of graph
     if (npdf<1) { // NO PDFs
       href=this->GetNormalisedReference(igrid);
       if (!href) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
-      
-      /*
-      if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
-      	if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling reference histo. "
-		      <<"\n\txscale: "<<mydata[igrid]->GetScalex()
-		      <<"\n\tyscale: "<<mydata[igrid]->GetScaley()<<endl;
-      	
-      	//set theory's scaling to the same as data's
-      	href->Scale( mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
-      }
-      */
       
       //no PDF, plot reference histogram for overlay
       href->Draw("same,hist"); //no PDF overlay draw
@@ -1367,7 +1564,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
       //draw each PDF band on top pad of plot for overlay
       myband.at(igrid)->DrawPDFBand();
     }
-
+    */
 
     // Draw data to the frame and add data name to the legend
     if (this->GetDataOk(igrid)) {
@@ -1394,8 +1591,8 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	  double sqrtsval = mydata[igrid]->GetSQRTS() * GetUnitScaleX(mydata[igrid]->GetXUnits(), this->GetXUnits()); //new
 	  TString sqrtsunits = mydata[igrid]->GetXUnits();
 
-	  sqrtslabel.Form("#sqrt{s}= %0.0f %s", 
-			  sqrtsval, 
+	  sqrtslabel.Form("#sqrt{s}= %.2f %s", 
+			  double(sqrtsval), 
 			  sqrtsunits.Data() ); //TODO - too hardcoded? make generic
 	  leg->AddEntry((TObject*)0, sqrtslabel, "");
 	}
@@ -1418,9 +1615,24 @@ void MyCrossSection::DrawinFrame(int iframe) {
     if (debug) cout<<" MyCrossSection::DrawinFrame: vpdfchi2.at("<<igrid<<").size()= "<< vpdfchi2.at(igrid).size()<<endl;
 
 
+    // when no pdfs, provide reference histogram info after each data name in legend
+    //if (npdf<1) { 
+    if(overlayReference) {
+      cout<<" MyCrossSection::DrawinFrame: No PDF's requested: Adding references to legend."<<endl;
+      
+      // create a nice legend name for reference histos
+      TString curLegLable = "";
+      if (leglabel.size()>0) curLegLable = leglabel[igrid].c_str();
+      else                   curLegLable = "reference";
+      
+      if (debug) cout<<" MyCrossSection::DrawinFrame: Added '"<<curLegLable<<"' to legend."<<endl;	
+      leg->AddEntry(href, curLegLable, "l");
+    }	    
+    
+
     //All data names should be added to the legend before PDF names
     if(this->GetFrameID(igrid) != this->GetFrameID(igrid+1) ) {
-      for (int ipdf=0; ipdf<npdf; ipdf++) {
+      for (int ipdf=0; ipdf<npdf && overlayTheory; ipdf++) {
 	
 	//retrieve a PDF name
 	TString pdfname="";
@@ -1448,20 +1660,6 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	else            leg->AddEntry(myband.at(igrid)->GetPdfBand(ipdf),pdfname,"f");	
       }      
     }
-    
-
-    // when no pdfs, provide reference histogram info after each data name in legend
-    if (npdf<1) { 
-      cout<<" MyCrossSection::DrawinFrame: No PDF's requested: Adding references to legend."<<endl;
-      
-      // create a nice legend name for reference histos
-      TString curLegLable = "";
-      if (leglabel.size()>0) curLegLable = leglabel[igrid].c_str();
-      else                   curLegLable = "reference";
-      
-      if (debug) cout<<" MyCrossSection::DrawinFrame: Added '"<<curLegLable<<"' to legend."<<endl;	
-      leg->AddEntry(href, curLegLable, "l");
-    }	    
     
 
     // Draw the correctly filled legend
@@ -1734,29 +1932,29 @@ TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
   href->SetLineColor(refhistlinecolor[igrid]);
 
   if (this->GetDataOk(igrid)) {
-    //double xscale=mydata[igrid]->GetUnitGeVFactor(); //old scaling
-    //double yscale=mydata[igrid]->GetUnitfbFactor(); //old scaling
-   
     //convert units from data to desired
-    double xscale = GetUnitScaleX(mydata[igrid]->GetXUnits(), this->GetXUnits()); //new scaling
-    double yscale = GetUnitScaleY(mydata[igrid]->GetYUnits(), this->GetYUnits()); //new scaling
+    double xscale = GetUnitScaleX(mygrid[igrid]->GetXUnits(), this->GetXUnits()); //new scaling
+    double yscale = GetUnitScaleY(mygrid[igrid]->GetYUnits(), this->GetYUnits()); //new scaling
     
-    bool  normtot=mydata[igrid]->isNormTot();
-
 
     if(mydata[igrid]->GetScalex() != 1.0) xscale += mydata[igrid]->GetScalex();
     if(mydata[igrid]->GetScaley() != 1.0) yscale += mydata[igrid]->GetScaley();
 
+    bool normtot=mydata[igrid]->isNormTot();
+    bool divbinwidth=mydata[igrid]->DivideByBinWidth();
+    
+    //TODO - check here if data and reference have different normtot and divbinwidth
+    //  change normtot and divbinwidth accordingly for reference hist to be same as data
 
-    this->Normalise(href,yscale,xscale,normtot);
+    this->Normalise(href,yscale,xscale,normtot, divbinwidth);
 
-
+    
     if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
-      if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling reference histo. "
+      if(debug) cerr<<" MyCrosSection::GetNormalisedReference: WARN: Forcefully scaling reference histo. "
 		    <<"\n\txscale: "<<mydata[igrid]->GetScalex()
 		    <<"\n\tyscale: "<<mydata[igrid]->GetScaley()<<endl;
       
-      //set theory's scaling to the same as data's
+      //set theory's artificial scaling to the same as data's
       href->Scale( mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
     }
   }
@@ -2151,7 +2349,7 @@ void MyCrossSection::ScaleGraph(TGraphAsymmErrors *g1, double scalex, double sca
 };
 
 double MyCrossSection::GetUnitScaleX(std::string fromUnits, std::string toUnits) {
-  std:: string mn = "GetUnitScaleX"; //Name of method, for printing
+  std:: string mn = "GetUnitScaleX:"; //Name of method, for printing
   int n = 1; //scale value to return based on fromUnits and toUnits
 
   cout<<cn<<mn<<" Converting '"<<fromUnits<<"' to '"<<toUnits<<"'"<<endl;
@@ -2184,7 +2382,7 @@ double MyCrossSection::GetUnitScaleX(std::string fromUnits, std::string toUnits)
 
 
 double MyCrossSection::GetUnitScaleY(std::string fromUnits, std::string toUnits) {
-  std:: string mn = "GetUnitScaleY"; //Name of method, for printing
+  std:: string mn = "GetUnitScaleY:"; //Name of method, for printing
   double n = 1.0; //scale value to return based on fromUnits and toUnits
 
   cout<<cn<<mn<<" Converting '"<<fromUnits<<"' to '"<<toUnits<<"'"<<endl;
@@ -2218,4 +2416,43 @@ string MyCrossSection::stringToUpper(std::string s) {
   for (int i = 0; i < s.length(); i++) upperString[i]=toupper(s[i]);
 
   return upperString;
+}
+
+bool MyCrossSection::validateOverlayStyle(std::vector<std::string > names) {
+  string mn = "validateOverlayStyle: "; //method name, for printing
+  bool valid = true;
+
+  //Only these are valid overlay style options
+  string DATA = "data", THEORY = "theory", REFERENCE = "reference";
+  bool dataFlag = false, theoryFlag = false, referenceFlag = false;
+
+  if( names.size() >= 4 || names.size() <= 0 ) valid = false; //incorrect num of names
+  else {
+    for(int i = 0; i<names.size() && valid; ++i) {
+      string curName = names.at(i);
+
+      if(curName != DATA && curName != THEORY && curName != REFERENCE) {
+	valid = false;
+	cerr<<cn<<mn<<" Overlay name '"<<curName<<"' at position "<<i<<" is not valid"<<endl;
+      } else {
+
+	if      (curName == DATA)      dataFlag      = true;
+	else if (curName == THEORY)    theoryFlag    = true;
+	else if (curName == REFERENCE) referenceFlag = true;	
+      }
+    } //end for
+  } //end else
+
+
+  if(valid == false) { 
+    cerr<<cn<<mn<<" ERROR: Invalid overlaystyle found!"
+	<<"\n\t Should in form 'overlaystyle data,reference,theory'"<<endl;
+  }
+
+  //set global flags based on user overlay requests
+  overlayData      = dataFlag;
+  overlayTheory    = theoryFlag;
+  overlayReference = referenceFlag;
+  
+  return valid;
 }

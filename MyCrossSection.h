@@ -19,6 +19,7 @@ using std::string;
 #include "MyFrame.h"
 #include "MyPDF.h"
 #include "MyBand.h"
+#include "MyGrid.h"
 #include "appl_grid/appl_grid.h"
 
 
@@ -84,6 +85,7 @@ class MyCrossSection {
   std::vector<double> ymaxframe;
 
   // per grid
+  //std::vector<string> gridname;
   std::vector<string> gridname;
   std::vector<string> dataname;
   //std::vector<string> corrname;
@@ -99,7 +101,9 @@ class MyCrossSection {
   std::vector<int> refhistlinecolor; // line color of reference histogram
   std::vector<MyFrame*> framepointer; // pointer to MyFrame per frameid
 
-  std::vector<string> pdfdata;
+  std::vector<string> pdfdata; //names of each pdf to be used
+  std::vector<string> overlaynames; //names of each type to overlay (should only be "data","theory","reference")
+
   //std::vector<std::vector<string> > pdfdata;
   //std::vector<std::vector<MyPDF*> > t_mypdf; //first part of vec is grid id, second is pdf id
 
@@ -130,9 +134,12 @@ class MyCrossSection {
   string pdf_function;
  
   std::vector<MyData*> mydata;       // information about data from steering file
+  std::vector<MyGrid*> mygrid;       // information about data from steering file
   generic_pdf *mypdf;
   
   std::vector<string>* ParseString(std::string rawData, char delimeter); //For parsing steering input
+  bool validateOverlayStyle(std::vector<std::string > names); //For validating overlay names
+
 
  public:
 
@@ -141,6 +148,10 @@ class MyCrossSection {
   bool do_RenormalizationScale;
   bool do_FactorizationScale;
   bool do_TotError;
+
+  bool overlayData;
+  bool overlayTheory;
+  bool overlayReference;
 
   MyCrossSection(char name[100]);
 
@@ -180,7 +191,7 @@ class MyCrossSection {
   void SetLineColor(int igrid, int rl) {refhistlinecolor[igrid]=rl; return;};
   void SetLineStyle(int igrid, int rl) {refhistlinestyle[igrid]=rl; return;};
 
-  void Normalise(TH1D* h, double yscale, double xscale, bool normtot);
+  void Normalise(TH1D* h, double yscale, double xscale, bool normtot, bool divwbinwidt);
   void Normalise(TGraphAsymmErrors* g1, double yscale, double xscale, bool normtot, bool divwbinwidt);
 
   int GetNGrid(){return gridname.size();};
@@ -195,12 +206,20 @@ class MyCrossSection {
   //string GetNtupDirOutput(){ return ntupdiroutput;};
   string GetNtupName(){ return ntupname;};
 
+  //TODO - Is this function needed if the path is now gotten with "GetGridSteeringPath"
+  // Left for legacy code for now
   string GetGridName(int igrid){ 
+    
     if(gridnamebasedir.compare("")==0)
         return gridname[igrid];
     else
-        return gridnamebasedir+"/"+gridname[igrid];
+        return gridnamebasedir+"/"+gridname[igrid];    
   };
+
+  string GetGridSteeringPath(int igrid) {
+    if(gridnamebasedir.compare("")==0) return gridname[igrid];
+    else                               return gridnamebasedir+"/"+gridname[igrid];
+  }
   
 //  std::vector<string> *GetPDFData(int igrid) {
 //    if(igrid>pdfdata.size()) {
@@ -296,6 +315,15 @@ class MyCrossSection {
    //if (debug) cout<<" MyCrossSection::GetDataOk igrid= "<<igrid
    //               <<" dataname.size()= "<<dataname.size()<<endl;
    if (dataname.size()<=igrid) flag=false;
+   //if (debug) cout<<" MyCrossSection::GetDataOk flag= "<<flag<<endl;
+   return flag;
+  };
+
+  bool GetGridOk(int igrid){
+   bool flag=true;
+   //if (debug) cout<<" MyCrossSection::GetDataOk igrid= "<<igrid
+   //               <<" dataname.size()= "<<dataname.size()<<endl;
+   if (gridname.size()<=igrid) flag=false;
    //if (debug) cout<<" MyCrossSection::GetDataOk flag= "<<flag<<endl;
    return flag;
   };
@@ -406,7 +434,7 @@ class MyCrossSection {
 
 
   string stringToUpper(std::string s);
-
+  
   void DrawReference(int igrid);
   TGraphAsymmErrors* GetReferenceRatio(int igrid);
   TH1D* GetNormalisedReference(int igrid);
