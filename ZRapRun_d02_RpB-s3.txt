@@ -1,0 +1,13 @@
+%
+% steering file for MyGrid to test the example from MCGrid
+%
+debug
+%
+NAME MCgrid_example_B-like
+%
+gridpath MyGrids/top/sherpa/ZRapRun_d02_RpB-s3.root
+gridgeneratorid RIVET-APPLGRID
+gridntupleid SHERPA
+%
+xunits Gev
+yunits pb
