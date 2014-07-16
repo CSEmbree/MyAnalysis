@@ -40,14 +40,14 @@ CXXFLAGS += $(ROOTARCH) $(ROOTINCS) $(APPLCXXFLAGS) $(LHAPDFINCS) $(HOPPETINCS)
 CLIBS += $(APPLCLIBS) $(HOPPETLIBS) $(ROOTLIBS) $(FRTLIB) $(LHAPDFLIBS)
 FLIBS += $(LHAPDFLIBS) $(HOPPETLIBS) $(APPLFLIBS) $(ROOTLIBS) $(FRTLIB)
 
-OFILE= MyFrame.o MyFrameData.o MyData.o MyPDF.o MyBand.o MyCrossSection.o AtlasStyle.o lhapdf_string_interface.o 
+OFILE= MyFrame.o MyFrameData.o MyData.o MyPDF.o MyBand.o MyGrid.o MyCrossSection.o AtlasStyle.o lhapdf_string_interface.o 
 #
 
 install : all
 all : plot testmypdf
 
 plot: plot.o $(OFILE) 
-	$(CXX) $(LDFLAGS)  -o $@ $(OFILE) $<  $(CLIBS)
+	$(CXX) $(LDFLAGS) -g -o $@ $(OFILE) $<  $(CLIBS)
 
 testmypdf: testmypdf.o $(OFILE)
 	$(CXX) $(LDFLAGS) -o $@  $(OFILE) $< $(CLIBS) $(LHAPDFLIBS) 
