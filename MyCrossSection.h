@@ -14,6 +14,7 @@
 using std::string;
 #include <sys/time.h> 
 #include "root.h"
+#include "TMatrixT.h"
 //
 #include "MyData.h"
 #include "MyFrame.h"
@@ -100,6 +101,7 @@ class MyCrossSection {
   std::vector<int> refhistlinestyle; // line style of reference histogram
   std::vector<int> refhistlinecolor; // line color of reference histogram
   std::vector<MyFrame*> framepointer; // pointer to MyFrame per frameid
+  std::vector<std::string> rationames; // names of ratios (i-1) are numerators, last element is the denominator
 
   std::vector<string> pdfdata; //names of each pdf to be used
   std::vector<string> overlaynames; //names of each type to overlay (should only be "data","theory","reference")
@@ -137,8 +139,11 @@ class MyCrossSection {
   std::vector<MyGrid*> mygrid;       // information about data from steering file
   generic_pdf *mypdf;
   
-  std::vector<string>* ParseString(std::string rawData, char delimeter); //For parsing steering input
+  std::vector<std::string>* ParseString(std::string rawData, char delimeter); //For parsing steering input
+  std::vector<std::string>* ParseRatioStyle(string rawdata); //For parsing ratio style input
+  std::string trim(std::string s); //remove leading and trailing white space
   bool validateOverlayStyle(std::vector<std::string > names); //For validating overlay names
+  bool validateRatioStyle(std::vector<std::string > names);
 
 
  public:
@@ -198,6 +203,16 @@ class MyCrossSection {
 
   string GetXUnits(){ return xunits ;};
   string GetYUnits(){ return yunits ;};
+
+  std::vector<std::string > GetRatioNumerators() {
+    std::vector<std::string > ratioNumerators = rationames;
+    ratioNumerators.pop_back(); //last element is the denominator, remove it to get only numerators
+    return ratioNumerators;
+  }
+
+  std::string GetRatioDenominator() {
+    return rationames.back(); //last element is the denominator
+  }
   
   //double CalcChi2(TGraphAsymmErrors *g_theory, TGraphAsymmErrors *g_data, TMatrixT<double> data_cov_matrix);
   double CalcChi2(TGraphAsymmErrors *g_theory, TGraphAsymmErrors *g_data, TMatrixT<double> *data_cov_matrix);

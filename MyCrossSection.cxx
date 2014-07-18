@@ -4,6 +4,8 @@
 using namespace std;
 #include "appl_grid/generic_pdf.h"
 #include "MyCrossSection.h"
+#include "TMatrixTLazy.h" //TODO - move to an appropreate spot or delete
+#include "TMatrixT.h" //TODO - move to an appropreate spot or delete
 
 
 /******************************************************************
@@ -28,7 +30,14 @@ MyCrossSection::MyCrossSection(char name[100])
   framepointer.clear();
   vpdfchi2.clear();
 
-  xlegend=0.90;
+  rationames.clear();
+  rationames.push_back( "reference" ); // DEFAULT - Set reference as ratio  numerator
+  rationames.push_back( "data" );      // DEFAULT - Set data as ratio  denominator
+  overlaynames.clear();
+  overlaynames.push_back( "reference" ); // DEFAULT - Display reference in overlay
+  overlaynames.push_back( "data" );      // DEFAULT - Display data in overlay
+
+  xlegend=0.90; //default legend position is the top right of the frame
   ylegend=0.95;
 
   //default values for overloading ratio & overlay y-axes 
@@ -65,7 +74,6 @@ MyCrossSection::MyCrossSection(char name[100])
         
   steername=name;
   if (debug) cout<<" MyCrossSection:: steering file= "<<steername<<endl;
-  overlaynames.clear();
   gridname.clear();
   vardesc.clear();
   dataname.clear();
@@ -177,7 +185,7 @@ void MyCrossSection::Initialize() {
       
       //mydata[igrid]->Scale(1.,yfac/xfac);
       //mydata[igrid]->Normalise(yfac, xfac); //TODO - scale measurment data now?
-      cout<<" MyCrossSection::Initialize: FACs: igrid:"<<igrid<<", xfac:"<<xfac<<", yfac:"<<yfac<<endl;
+      cout<<" MyCrossSection::Initialize: data to this, FACs: igrid:"<<igrid<<", xfac:"<<xfac<<", yfac:"<<yfac<<endl;
 
 
       if (debug) cout<<" MyCrossSection::Initialize: yfac= "<<yfac<<" xfac= "<<xfac<<endl;
@@ -633,50 +641,66 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 
   int igrid=-1;
 
+
+  string curLine;
+  string optionName;
+  string optionValue;
+  int w = 20; //arbitrary width units that make formatting nice
+
   // read all options from text file
   while (infile.good()) {
-    infile.getline(line,sizeof(line),'\n');
-    std::string cpp_line(line);
-    std::vector<std::string> colon_split_cpp_line;  colon_split_cpp_line.clear();
-    split_string(cpp_line, colon_split_cpp_line, ":");
-    
-    if (debug) cout<< " MyCrossSection::ReadSteering: line= "<< line << "\n";
-    if(line[0] != '%' ) { //ignore lines beginning with comments - could be done better
+    getline(infile, curLine);
 
-      switch( toupper(line[0]) ) { //use first letter of option to find where to start
+    curLine = trim(curLine); //remove leading and trailing white space
+    int optionSep = curLine.find(' '); //optioname ends after first space
+
+    
+    optionName  = curLine.substr(0, optionSep);
+    optionValue = curLine.substr(optionSep+1, curLine.size()); //'optionValue' could be broken up further if needed
+
+
+    
+    if (debug) {
+      cout<<cn<<mn<<" Read in:>>>>>>>>>"
+	  <<"\n"<<setw(w)<<"currentLine: "<<curLine
+	  <<"\n"<<setw(w)<<" optionName: "<<optionName
+	  <<"\n"<<setw(w)<<"optionValue: "<<optionValue
+	  <<"\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"<<endl;
+    }
+    
+
+    if(curLine[0] != '%' && !curLine.empty() ) { //ignore lines beginning with comments - could be done better
+
+      switch( toupper(curLine[0]) ) { //use first letter of option to find where to start
       case 'A':	break;
       case 'B': break; 
       case 'C': break;
       case 'D':
-	if (strstr(line,"debug")!=0) {
+	if ( optionName == "debug" ) {
 	  debug=true;
 	  if (debug) cout<<cn<<mn<<" Debug turned on"<<endl;
-	} else if (strstr(line,"datanamedir")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  datanamedir = string(name);
-	} else if (strstr(line,"divideid")!=0) {
-	  sscanf(line," %s %d ",text, &intVal);
+	} else if ( optionName == "datanamedir" ) {
+	  datanamedir = optionValue;
+	} else if ( optionName == "divideid" ) {
+	  sscanf( optionValue.c_str(), "%d", &intVal );
 	  divideid[igrid]=intVal;
-	} else if (strstr(line,"dataname")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  dataname.push_back(string(name));  
+	} else if ( optionName == "dataname" ) {
+	  dataname.push_back(optionValue);
 	}
 	break;
       case 'E': break;
       case 'F': 
-	if (strstr(line,"frameid")!=0) {
-	  sscanf(line," %s %d ",text, &intVal);
+	if ( optionName == "frameid" ) {
+	  sscanf( optionValue.c_str(), "%d", &intVal);
 	  frameid[igrid]=intVal;
-	} else if (strstr(line,"facscale")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  if (debug) cout<<"text: "<<text<<"name: "<<name<<endl;
+	} else if ( optionName == "facscale" ) {
+	  if (debug) cout<<"TEST: OPTION: "<<optionName<<", VALUE: "<<optionValue<<endl;
 	  std::vector<string> *parsedNames;
-	  std::string facnames = name;
 	  char delimeter = ' ';
-	  parsedNames = ParseString(facnames, delimeter);
+	  parsedNames = ParseString( optionValue, delimeter);
 
 	  if (debug) cout<<cn<<mn<<" found '"<<parsedNames->size()<<"' fac scales "<<endl;
-	  if (debug) cout<<cn<<mn<<" fac for grid: '"<<facnames<<"'"<<endl;
+	  if (debug) cout<<cn<<mn<<" fac for grid: '"<<optionValue<<"'"<<endl;
 	  
 	  for (int i=0; i<parsedNames->size(); i++){
 	    facscale.push_back(atof( (parsedNames->at(i)).c_str()) );
@@ -686,20 +710,15 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	}
 	break;
       case 'G': 
-	if (strstr(line,"Gridnamedir")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  gridnamebasedir = string(name);
-	} else if (strstr(line,"gridnamebasedir")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  gridnamebasedir = string(name);
-	} else if (strstr(line,"gridnamesystbasedir")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  gridnamesystbasedir = string(name);
-	} else if (strstr(line,"gridnamedefaultdir")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  gridnamedefaultdir = string(name);
-	} else if (strstr(line,"gridname")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
+	if ( optionName == "Gridnamedir" ) {
+	  gridnamebasedir = optionValue;
+	} else if ( optionName == "gridnamebasedir" ) {
+	  gridnamebasedir = optionValue;
+	} else if ( optionName == "gridnamesystbasedir" ) {
+	  gridnamesystbasedir = optionValue;
+	} else if ( optionName == "gridnamedefaultdir" ) {
+	  gridnamedefaultdir = optionValue;
+	} else if ( optionName == "gridname" ) {
 	  igrid++;
 	}
 	break;
@@ -708,41 +727,42 @@ void MyCrossSection::ReadSteering(char fname[100]) {
       case 'J': break;
       case 'K': break;
       case 'L':
-	if (strstr(line,"leglabel")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  leglabel.push_back(string(name));
+	if ( optionName == "leglabel" ) {
+	  leglabel.push_back(optionValue);
 	} 
 	break;
       case 'M':
-	if (strstr(line,"markerstyledata")!=0) {
-	  sscanf(line," %s %d ",text, &intVal);
+	if ( optionName == "markerstyledata" ) {
+	  sscanf( optionValue.c_str(), "%d ", &intVal);
 	  if (igrid<0) cerr<<cn<<mn<<" Something wrong ! '"<<intVal<<"'"<<endl;
 	  markerstyle[igrid]=intVal;
-	} else if (strstr(line,"markercolordata")!=0) {
-	  sscanf(line," %s %d ",text, &intVal);
+	} else if ( optionName == "markercolordata" ) {
+	  sscanf( optionValue.c_str(), "%d", &intVal);
 	  markercolor[igrid]=intVal; 
 	}
 	break;
       case 'N':
-	if (strstr(line,"ntupname")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  ntupname=string(name); 
+	if ( optionName == "ntupname" ) {
+	  ntupname = optionValue; 
 	}
 	break;
       case 'O': 
-	if (strstr(line,"overlaystyle")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  if (debug) cout<<cn<<mn<<" Overlaystyle: "<<name<<endl;
+	if ( optionName == "overlaystyle" ) {
+	  overlaynames.clear(); //remove any defaults
+	  
+	  //sscanf(line," %s %[^\n] ",text, name);
+	  if (debug) cout<<cn<<mn<<" Overlaystyle: "<<optionValue<<endl;
 	  std::vector<string> *parsedNames;
-	  std::string allNames = name;
+	  //std::string allNames = name;
 	  char delimeter = ',';
-	  parsedNames = ParseString(allNames, delimeter);
+	  parsedNames = ParseString(optionValue, delimeter);
 	  
 	  cout<<cn<<mn<<" overlay found '"<<parsedNames->size()<<"' to overlay"<<endl;
 	  for (int iname=0; iname<parsedNames->size(); iname++) {
 	    cout<<" \tname: \""<<parsedNames->at(iname)<<"\""<<endl;
-	    overlaynames.push_back(parsedNames->at(iname));
+	  //  overlaynames.push_back(parsedNames->at(iname));
 	  }
+	  overlaynames = *parsedNames;
 	  
 	  if( this->validateOverlayStyle(overlaynames) == false ) {
 	    cerr<<cn<<mn<<" Invalid overlay stye detected!"<<endl;
@@ -751,57 +771,65 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	}
 	break;
       case 'P': 
-	if (strstr(line,"pdffunction")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  pdf_function=string(name);
-	} else if (strstr(line,"plotmarker")!=0) {
+	if ( optionName == "pdffunction" ) {
+	  pdf_function = optionValue;
+	} else if ( optionName == "plotmarker" ) {
 	  plotmarker=true;
-	} else if (strstr(line,"plotband")!=0) {
+	} else if ( optionName == "plotband" ) {
 	  plotband=true;
-	} else if (strstr(line,"ploterrorticks")!=0) {
+	} else if ( optionName == "ploterrorticks" ) {
 	  ploterrorticks=true;
-	} else if (strstr(line,"plotchi2")!=0) {
+	} else if ( optionName == "plotchi2" ) {
 	  plotchi2=true;
-	} else if (strstr(line,"pdfdata")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  if (debug) cout<<"text: "<<text<<"name: "<<name<<endl;
+	} else if ( optionName == "pdfdata" ) {
+	  //sscanf(line," %s %[^\n] ",text, name);
+	  if (debug) cout<<"TEST: pdfdata: "<<optionName<<", pdf(s): "<<optionValue<<endl;
 	  std::vector<string> *parsedNames;
-	  std::string pdfSteeringFileNames = name;
+	  //std::string pdfSteeringFileNames = name;
 	  char delimeter = ',';
-	  parsedNames = ParseString(pdfSteeringFileNames, delimeter);
+	  parsedNames = ParseString(optionValue, delimeter);
 	  	 	  
-	  for (int iname=0; iname<parsedNames->size(); iname++)
-	    pdfdata.push_back(parsedNames->at(iname));
+	  //for (int iname=0; iname<parsedNames->size(); iname++)
+	  //  pdfdata.push_back(parsedNames->at(iname));
+
+	  pdfdata = *parsedNames;
 	}
 	break;
       case 'Q': break;
       case 'R':
-	if (strstr(line,"ratiotitlelabel")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  ratiotitlelabel=name;
-	} else if (strstr(line,"reflinestyle")!=0) {
-	  sscanf(line," %s %d ",text, &intVal);
+	if ( optionName == "ratiotitlelabel" ) {
+	  ratiotitlelabel = optionValue;
+	} else if ( optionName == "reflinestyle" ) {
+	  sscanf( optionValue.c_str(), "%d", &intVal);
 	  refhistlinestyle[igrid]=intVal;
-	} else if (strstr(line,"reflinecolor")!=0) {
-	  sscanf(line," %s %d ",text, &intVal);
+	} else if ( optionName == "reflinecolor" ) {
+	  sscanf( optionValue.c_str(), "%d", &intVal);
 	  if (debug) cout<<cn<<mn<<" reflinecolor:  "<<intVal<<endl;
 	  refhistlinecolor[igrid]=intVal;
-	} else if (strstr(line,"ratio")!=0) {
-	  sscanf(line, "%s %s",text,name);
+	} else if ( optionName == "ratio" ) {
 	  
 	  //determine how ratio will be computed
-	  if (strstr(name,"theory/data")!=0)      ratioTheoryOverData = true; // ratio will be (theory/data)
-	  else if (strstr(name,"data/theory")!=0) ratioTheoryOverData = false; // ratio will be (data/theory)
+	  if ( optionValue == "theory/data")      ratioTheoryOverData = true; // ratio will be (theory/data)
+	  else if ( optionValue == "data/theory") ratioTheoryOverData = false; // ratio will be (data/theory)
 	  else                                    ratioTheoryOverData = true; //default - (theory/data) for legacy steering files
-	} else if (strstr(line,"renscale")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  if (debug) cout<<"text: "<<text<<"name: "<<name<<endl;
-	  std::vector<string> *parsedNames;
-	  std::string rennames = name;
+	} else if ( optionName == "ratiostyle" ) {
+	  rationames.clear(); //remove any defaults for overlay
+	  if (debug) cout<<cn<<mn<<" RatioStyle: "<<optionValue<<endl;
+	  
+	  std::vector<string> *parsedNames = this->ParseRatioStyle( optionValue );
+	  rationames = *parsedNames;
+
+	  for(int i = 0; i<rationames.size(); i++) cout<<"TEST: rationames at "<<i<<" : "<<rationames[i]<<endl; //TEST
+	  //exit(0); //TEST
+	
+	} else if ( optionName == "renscale" ) {
+	  if (debug) cout<<"TEST: RENSCALE: "<<optionName<<", value(s): "<<optionValue<<endl;
+
+	  std::vector<string> *parsedNames; //TODO - clean this up after use?
 	  char delimeter = ' ';
-	  parsedNames = ParseString(rennames, delimeter);
+	  parsedNames = ParseString(optionValue, delimeter);
 	  if (debug) cout<<cn<<mn<<" found '"<<parsedNames->size()<<"' ren scales"<<endl;
-	  if (debug) cout<<cn<<mn<<" pdfsteering for grid: "<<rennames<<"'"<<endl;
+	  if (debug) cout<<cn<<mn<<" pdfsteering for grid: "<<optionValue<<"'"<<endl;
 	  for (int i=0; i<parsedNames->size(); i++){
 	    renscale.push_back(atof( (parsedNames->at(i)).c_str()) );
 	  }
@@ -809,50 +837,46 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	}
 	break;
       case 'S': 
-	if (strstr(line,"subprocesssteername")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  subprocesssteername=string(name);
-	} else if (strstr(line,"staggerpdfpoints")!=0) {
+	if ( optionName == "subprocesssteername" ) {
+	  subprocesssteername = optionValue;
+	} else if ( optionName == "staggerpdfpoints" ) {
 	  staggerpdfpoints=true;
 	}
 	break;
       case 'T': break;
       case 'U': break;
       case 'V':
-	if (strstr(line,"vardesc")!=0) {
-	  sscanf(line," %s %[^\n] ",text, name);
-	  vardesc.push_back(string(name));
+	if ( optionName == "vardesc" ) {
+	  vardesc.push_back(optionValue);
 	} 
 	break;
       case 'W': break;
       case 'X': 
-	if (strstr(line,"xlegend")!=0) {
-	  sscanf(line," %s %f ",text, &xlegend);
-	} else if (strstr(line,"xunits")!=0) {
-	  sscanf(line," %s %s ",text, name);
-	  xunits = string(name);
+	if ( optionName == "xlegend" ) {
+	  sscanf( optionValue.c_str(), "%f", &xlegend);
+	} else if ( optionName == "xunits" ) {
+	  xunits = optionValue;
 	}
 	break;
       case 'Y': 
-	if (strstr(line,"ylegend")!=0) {
-	  sscanf(line," %s %f ",text, &ylegend);
-	} else if (strstr(line,"ymaxoverlay")!=0) {
-	  sscanf(line," %s %lf ",text, &ymaxoverlay);
-	} else if (strstr(line,"yminoverlay")!=0) {
-	  sscanf(line," %s %lf ",text, &yminoverlay);
-	} else if (strstr(line,"ymaxratio")!=0) {
-	  sscanf(line," %s %lf ",text, &ymaxratio);
-	} else if (strstr(line,"yminratio")!=0) {
-	  sscanf(line," %s %lf ",text, &yminratio);
-	} else if (strstr(line,"yunits")!=0) {
-	  sscanf(line," %s %s ",text, name);
-	  yunits = string(name);
-	}
+	if ( optionName == "ylegend" ) {
+	  sscanf( optionValue.c_str(), "%f", &ylegend);
+	} else if ( optionName == "ymaxoverlay" ) {
+	  sscanf( optionValue.c_str(), "%lf", &ymaxoverlay);
+	} else if ( optionName == "yminoverlay" ) {
+	  sscanf( optionValue.c_str(), "%lf", &yminoverlay);
+	} else if ( optionName == "ymaxratio" ) {
+	  sscanf( optionValue.c_str(), "%lf", &ymaxratio);
+	} else if ( optionName == "yminratio" ) {
+	  sscanf( optionValue.c_str(), "%lf", &yminratio);
+	} else if ( optionName == "yunits" ) {
+	  yunits = optionValue;
+	} 
 	break;
       case 'Z': break;
       default: 
 	cerr<<cn<<mn<<" WARN: Invalid steering option found '"<<line<<"'"<<endl;
-	//exit(0); //stop if an invalid option found, it's probably an error!
+	exit(0); //stop if an invalid option found, it's probably an error!
       } //end switch
     }; //end comment check
   }; //end file reading
@@ -994,7 +1018,7 @@ void MyCrossSection::Normalise(TH1D* h1, double yscale, double xscale=1., bool n
   double sigtot=0.;
 
   if(debug){
-    cout<<cn<<mn<<" Origonal Histogram Print: "<<endl;
+    cout<<cn<<mn<<" Hist ORIGIONAL Print: "<<endl;
     h1->Print("all");
   }
 
@@ -1009,23 +1033,25 @@ void MyCrossSection::Normalise(TH1D* h1, double yscale, double xscale=1., bool n
     //sigtot+=y;
     sigtot+=y*binw;
 
-    if(debug) cout<<"MyCrossSection::Normalise: Hist sigtot="<<sigtot
-		  <<", content="<<h1->GetBinContent(i)
+    if(debug) cout<<" MyCrossSection::Normalise: Hist calc: "
+		  <<"content="<<h1->GetBinContent(i)
 		  <<", yscale="<<yscale
-		  <<", binw="<<binw<<endl;
+		  <<", y="<<y
+		  <<", binw="<<binw
+		  <<", cumulative sigtot="<<sigtot<<endl;
   }
 
   if(debug) cout<<"MyCrossSection::Normalise: Hist sigtot final: "<<sigtot<<endl;
 
   double scal=yscale;
   //for (int i=0; i<=h1->GetNbinsX(); i++) {
-  for (int i=1; i<h1->GetNbinsX(); i++) {
+  for (int i=1; i<=h1->GetNbinsX(); i++) { //TODO - Need to exclude underflow but include overflow
     //if (normtot) if(sigtot!=0.) scal=yscale/sigtot;
     if (normtot) {
       if(sigtot != 0.0) { 
 	scal=yscale/sigtot;
       } else {
-	cerr<<"MyCrossSection::Normalise: WARN: Sigtot was ZERO, avoiding division by 0.";
+	cerr<<" MyCrossSection::Normalise: WARN: Sigtot was ZERO, avoiding division by 0.";
 	scal = 0.;
       }
     }
@@ -1037,6 +1063,10 @@ void MyCrossSection::Normalise(TH1D* h1, double yscale, double xscale=1., bool n
     y =h1->GetBinContent(i)*scal;//*binw;
     ey=h1->GetBinError(i)  *scal;//*binw;
     x =binw                *xscale;
+
+
+    cout<<" DATA:  Numerator: "<<y<<", Denominator: "<<x<<endl;
+    cout<<" ERROR: Numerator: "<<ey<<", Denominator: "<<x<<endl;
     if (x!=0) h1->SetBinContent(i,y/x);
     else      h1->SetBinContent(i,0.);
     
@@ -1052,7 +1082,7 @@ void MyCrossSection::Normalise(TH1D* h1, double yscale, double xscale=1., bool n
   */
 
   if(debug){
-    cout<<cn<<mn<<" Normalised Histogram Print: "<<endl;
+    cout<<cn<<mn<<" Hist NORMALISED Print: "<<endl;
     h1->Print("all");
   }
 
@@ -1800,6 +1830,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
       
       // no pdf means only need to display each set of ratios overlayed to the data
       if (npdf<1) {
+	//if ( overlayReference ) {
 	ratiotot[igrid]->SetMarkerStyle(0); //circle
 	ratiotot[igrid]->SetMarkerSize(0); //don't show the plotted point
 	
@@ -1808,7 +1839,8 @@ void MyCrossSection::DrawinFrame(int iframe) {
       } 
             
       //draw the PDF ratio data
-      myband[igrid]->DrawPDFBandRatio();
+      //if(overlayTheory) 
+	myband[igrid]->DrawPDFBandRatio();
     }
     // finished drawing ratio (theory/data)
 
@@ -1922,6 +1954,8 @@ TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
   // Get reference histograms for grid with index igrid
   // and normalise according to datascalex and scaley
   //
+  string mn = "GetNormalisedReference:";
+
   TH1D *href=this->GetReference(igrid);
   if (!href) {
     cout<<" MyCrossSection::GetNormalisedReference: reference histo not found igrid="<<igrid<<endl;
@@ -1932,10 +1966,11 @@ TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
   href->SetLineColor(refhistlinecolor[igrid]);
 
   if (this->GetDataOk(igrid)) {
-    //convert units from data to desired
+    //convert units from data to desire
     double xscale = GetUnitScaleX(mygrid[igrid]->GetXUnits(), this->GetXUnits()); //new scaling
     double yscale = GetUnitScaleY(mygrid[igrid]->GetYUnits(), this->GetYUnits()); //new scaling
     
+    if (debug) cout<<cn<<mn<<" xscale:"<<xscale<<", yscale:"<<yscale<<endl;
 
     if(mydata[igrid]->GetScalex() != 1.0) xscale += mydata[igrid]->GetScalex();
     if(mydata[igrid]->GetScaley() != 1.0) yscale += mydata[igrid]->GetScaley();
@@ -2198,6 +2233,79 @@ vector<string>* MyCrossSection::ParseString(string rawData, char delimeter) {
 }
 
 
+vector<string>* MyCrossSection::ParseRatioStyle(string rawdata) {
+  //
+  // retrive all data from a string representing what to display for ratio.
+  //  one or many strings left of the "/" are numerator(s)
+  //  the SINGLE string after "/" is te denominator 
+  //  PROPER SYNTAX: numerator/denominator
+  //
+  string mn = "ParseRatioStyle:";
+
+
+  // user can provide multiple numerators, so parse by numerator delimter, a comma, first
+  char delim = ','; 
+  std::vector<std::string> *ratioNames = ParseString(rawdata, delim);
+
+  if(ratioNames->size() == 0 ) {
+    cerr<<cn<<mn<<" ERROR: Ratio Style syntax problem! "
+	<<"\n\t Should be of the form \"ratiostyle numerator/denominator\" " 
+	<<"but found \"ratiostyle "<<rawdata<<"\""<<endl;
+    exit(0); // a particular ratio style was requested, but invalid
+  }
+  
+  if(debug) {
+    cout<<cn<<mn<<" Found "<<ratioNames->size()<<" element(s): "<<endl;
+    for(int i=0; i<ratioNames->size(); ++i) cout<<"\t"<<ratioNames->at(i)<<endl;
+  }
+
+
+  //last element of comma parsed must contain the last numerator and denominator
+  string denomDelim    = "/";
+  string lastElem      = ratioNames->back(); //last element needs denominator extraction
+  int    denomIndex    = lastElem.find( denomDelim );  
+  string lastNumerator = "";
+  string denominator   = "";
+
+  //ensure a denominator exists
+  // -1        -- does not exist
+  //  0        -- the slash was the first charcter, syntax error
+  //  size()-1 -- the last was the last character, synatx error
+  if( denomIndex != -1 && denomIndex != 0 && denomIndex != lastElem.size()-1 ) {
+    lastNumerator = lastElem.substr( 0, denomIndex );
+    denominator   = lastElem.substr( denomIndex+1, lastElem.size() );
+  } else {
+    cerr<<cn<<mn<<" ERROR: Ratio Style synatx problem!"
+	<<"\n\tShould be of the form \"ratiostyle numerator/denominator\"" 
+	<<"\n\tbut found \"ratiostyle "<<rawdata<<"\""<<endl;
+    exit(0); //a particular ratio style was requested, but no denominator
+  }
+
+  // update ratio's requested by user with last numerator and denominator
+  ratioNames->pop_back(); //kill the last element, which has now been parsed
+  ratioNames->push_back(lastNumerator);
+  ratioNames->push_back(denominator); //denominator is the LAST element in ratio's provided
+    
+
+
+  if(debug) {
+    cout<<cn<<mn<<" Parsed Ratio Style: \n\tNUMERATOR = ";
+    for(int i=0; i<ratioNames->size()-1; ++i) 
+      cout<<ratioNames->at(i)<<(i<(ratioNames->size()-2)? ", ":"");
+    cout<<"\n\tDENOMINATOR = "<<ratioNames->back()<<endl;
+  }
+
+  if ( validateRatioStyle(*ratioNames) == false ) { 
+    cerr<<cn<<mn<<" Ratio validation failed! - update steering file."<<endl; 
+    exit(0);
+  }
+  
+  //exit(0); //TEST
+
+  return ratioNames;
+}
+
+
 double MyCrossSection::CalcChi2(TGraphAsymmErrors *g_theory, TGraphAsymmErrors *g_data, TMatrixT<double> *data_cov_matrix) {
   // 
   // Calculate the Chi2 
@@ -2455,4 +2563,51 @@ bool MyCrossSection::validateOverlayStyle(std::vector<std::string > names) {
   overlayReference = referenceFlag;
   
   return valid;
+}
+
+
+bool MyCrossSection::validateRatioStyle(std::vector<std::string > names) {
+  string mn = "validateRatioStyle: "; //method name, for printing
+  bool valid = true;
+
+  //Only these are valid overlay style options
+  string DATA = "data", THEORY = "theory", REFERENCE = "reference";
+
+
+  if( names.size() >= 4 || names.size() <= 0 ) valid = false; //incorrect num of names
+  else {
+    for(int i = 0; i<names.size() && valid; ++i) {
+      string curName = names.at(i);
+
+      if(curName != DATA && curName != THEORY && curName != REFERENCE) { //valid names
+	valid = false;
+	cerr<<cn<<mn<<" Ratio name '"<<curName<<"' at position "<<i<<" is not valid"<<endl;
+      } 
+    } //end for
+  } //end else
+
+
+  if(valid == false) { 
+    cerr<<cn<<mn<<" ERROR: Invalid ratiostyle names found!"
+	<<"\n\tShould only include 1 or more of the following: \"data, theory, reference\""
+	<<"\n\tBut instead found: \"";
+    for(int i=0;i<names.size();++i) cerr<<names[i]<<((i<names.size()-1)? ", ":"");
+    cerr<<endl; //foramtting
+  }
+  
+  return valid;
+}
+
+
+std::string MyCrossSection::trim(std::string s) {
+  // credit to: http://www.toptip.ca/2010/03/trim-leading-or-trailing-white-spaces.html
+  std::string reducedS = s;
+
+  size_t p = reducedS.find_first_not_of(" \t");
+  reducedS.erase(0, p);
+  
+  p = reducedS.find_last_not_of(" \t");
+  if (string::npos != p) reducedS.erase(p+1);
+
+  return reducedS;
 }
