@@ -16,6 +16,7 @@ ylegend 0.9
 ratiotitlelabel Sherpa MCgrid/data
 ratio theory/data
 overlaystyle data,theory,reference
+ratiastyle thoery/data
 %
 yunits pb
 xunits GeV
@@ -36,38 +37,38 @@ frameid 0
 %
 % R-like
 %
-dataname  CDF2009_ZRap.txt
-gridname  ZRapRun_d02_R-s3.txt
-markerstyledata 20
-markercolordata 1
-reflinestyle 1
-reflinecolor 4
-leglabel SHERPA
-frameid 1
-%divideid 0
+%dataname  CDF2009_ZRap.txt
+%gridname  ZRapRun_d02_R-s3.txt
+%markerstyledata 20
+%markercolordata 1
+%reflinestyle 1
+%reflinecolor 4
+%leglabel SHERPA
+%frameid 1
+%%divideid 0
 %
 %
 % R+B
 %
-dataname  CDF2009_ZRap.txt
-gridname  ZRapRun_d02_RpB-s3.txt
-markerstyledata 20
-markercolordata 1
-reflinestyle 1
-reflinecolor 4
-leglabel SHERPA
-frameid 2
-%divideid 0
+%dataname  CDF2009_ZRap.txt
+%gridname  ZRapRun_d02_RpB-s3.txt
+%markerstyledata 20
+%markercolordata 1
+%reflinestyle 1
+%reflinecolor 4
+%leglabel SHERPA
+%frameid 2
+%%divideid 0
 %
 %
 % all (both R and B generated at the same time)
 %
-dataname  CDF2009_ZRap.txt
-gridname  ZRapRun_d02_all-s3.txt
-markerstyledata 20
-markercolordata 1
-reflinestyle 1
-reflinecolor 4
-leglabel SHERPA
-frameid 3
-%divideid 0
+%dataname  CDF2009_ZRap.txt
+%gridname  ZRapRun_d02_all-s3.txt
+%markerstyledata 20
+%markercolordata 1
+%reflinestyle 1
+%reflinecolor 4
+%leglabel SHERPA
+%frameid 3
+%%divideid 0
