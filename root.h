@@ -35,6 +35,8 @@
 #include "TMath.h"
 #include "THashList.h"
 #include "TRandom.h"
+#include "TMatrixTLazy.h"
+#include "TMatrixT.h"
 #include <iostream>
 #include <fstream>
 #include <string>
