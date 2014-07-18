@@ -208,11 +208,57 @@ class MyCrossSection {
     std::vector<std::string > ratioNumerators = rationames;
     ratioNumerators.pop_back(); //last element is the denominator, remove it to get only numerators
     return ratioNumerators;
-  }
+  };
 
   std::string GetRatioDenominator() {
     return rationames.back(); //last element is the denominator
-  }
+  };
+
+  bool IsRatioNumerator(std::string name) {
+    bool isNumerator = false;
+
+    //possible numerators are all elements before the last index
+    for(int i=0; i<rationames.size()-1 && isNumerator==false; i++) {
+      if(rationames[i] == name) isNumerator = true;
+    }
+
+    return isNumerator;
+  };
+
+  bool IsRatioDenominator(std::string name) {
+    return (rationames[rationames.size()-1]==name); //last element is the denominator, only check it
+  };
+
+
+  std::vector<std::string >GetOverlayStyle() { return overlaynames; };
+
+  
+  std::string GetOverlayStyleString() {
+
+    std::string style = "";
+    for(int i=0; i<overlaynames.size(); ++i) { 
+      style+=overlaynames[i];
+      style+=((i<overlaynames.size()-1)? ",":"");
+    }
+
+    return style;
+  };
+
+
+  std::vector<std::string >GetRatioStyle() { return rationames; };
+
+  std::string GetRatioStyleString() {
+    
+    std::string style = "";
+    for(int i=0; i<rationames.size()-1; ++i) { 
+      style+=rationames[i];
+      style+=((i<rationames.size()-2)? ",":"");
+    }
+
+    style+="/"+rationames[rationames.size()-1];
+    
+    return style;
+  };
   
   //double CalcChi2(TGraphAsymmErrors *g_theory, TGraphAsymmErrors *g_data, TMatrixT<double> data_cov_matrix);
   double CalcChi2(TGraphAsymmErrors *g_theory, TGraphAsymmErrors *g_data, TMatrixT<double> *data_cov_matrix);

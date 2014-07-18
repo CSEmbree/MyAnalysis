@@ -768,6 +768,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	    cerr<<cn<<mn<<" Invalid overlay stye detected!"<<endl;
 	    exit(0);
 	  }
+	  
 	}
 	break;
       case 'P': 
@@ -819,9 +820,32 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	  std::vector<string> *parsedNames = this->ParseRatioStyle( optionValue );
 	  rationames = *parsedNames;
 
-	  for(int i = 0; i<rationames.size(); i++) cout<<"TEST: rationames at "<<i<<" : "<<rationames[i]<<endl; //TEST
+	  
+	  cout<<"TEST0 - START"<<endl;
+
+	  cout<<"TEST1 - GetRatioNumerators"<<endl;
+	  std::vector<std::string > nums = GetRatioNumerators();
+	  for(int i=0; i<nums.size(); i++) cout<<"\t"<<nums[i]<<endl;
+
+	  cout<<"TEST2 - GetRatioDenominator"<<endl;
+	  cout<<"\t"<<GetRatioDenominator()<<endl;
+
+	  cout<<"TEST3 - IsRatioNumerator"<<endl;
+	  cout<<"\t Is 'data' a numerator? "<<(IsRatioNumerator("data")? "YES":"NO")<<endl;
+	  cout<<"\t Is 'reference' a numerator? "<<(IsRatioNumerator("reference")? "YES":"NO")<<endl;
+	  cout<<"\t Is 'theory' a numerator? "<<(IsRatioNumerator("theory")? "YES":"NO")<<endl;
+
+	  cout<<"TEST4 - IsRatioDenominator"<<endl;
+	  cout<<"\t Is 'data' a denom? "<<(IsRatioDenominator("data")? "YES":"NO")<<endl;
+	  cout<<"\t Is 'reference' a denom? "<<(IsRatioDenominator("reference")? "YES":"NO")<<endl;
+	  cout<<"\t Is 'theory' a denom? "<<(IsRatioDenominator("theory")? "YES":"NO")<<endl;
+
+	  cout<<"TEST5 - DONE"<<endl;
 	  //exit(0); //TEST
-	
+
+
+
+
 	} else if ( optionName == "renscale" ) {
 	  if (debug) cout<<"TEST: RENSCALE: "<<optionName<<", value(s): "<<optionValue<<endl;
 
@@ -884,6 +908,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
   if(debug) { 
     cout<<cn<<mn<<" Finished reading steering. REPORT:"<<endl;
     Print();
+    exit(0); //TEST
   }
 
   return;
@@ -898,34 +923,36 @@ void MyCrossSection::Print() {
   int w=30; //arbitrary spacing size that makes the formatting look pretty
 
   cout<<" MyCrossSection::Print: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-      <<"\n"<<setw(w)<<"steering: "            <<setw(w)<<steername
-      <<"\n"<<setw(w)<<"subprocesssteername: " <<setw(w)<<subprocesssteername
-      <<"\n"<<setw(w)<<"pdf_function: "        <<setw(w)<<pdf_function
+      <<"\n"<<setw(w)<<"steering:"            <<setw(w)<<steername
+      <<"\n"<<setw(w)<<"subprocesssteername:" <<setw(w)<<subprocesssteername
+      <<"\n"<<setw(w)<<"pdf_function:"        <<setw(w)<<pdf_function
     //<<"\n"<<setw(w)<<"ntupdir= "<<ntupdirinput<<" ntupoutput= "<<ntupdiroutput
-      <<"\n"<<setw(w)<<"Dir of grids: "        <<setw(w)<<gridnamebasedir
-      <<"\n"<<setw(w)<<"Dir of data: "         <<setw(w)<<datanamedir
-      <<"\n"<<setw(w)<<"Num of grids: "        <<setw(w)<<gridname.size()
-      <<"\n"<<setw(w)<<"Ratio: "               <<setw(w)<<(ratioTheoryOverData? "(theory/data)":"(data/theory)")<<endl;
+      <<"\n"<<setw(w)<<"Dir of grids:"        <<setw(w)<<gridnamebasedir
+      <<"\n"<<setw(w)<<"Dir of data:"         <<setw(w)<<datanamedir
+      <<"\n"<<setw(w)<<"Num of grids:"        <<setw(w)<<gridname.size()
+      <<"\n"<<setw(w)<<"Ratio:"               <<setw(w)<<(ratioTheoryOverData? "(theory/data)":"(data/theory)")
+      <<"\n"<<setw(w)<<"Overlay Style:"       <<setw(w)<<GetOverlayStyleString()
+      <<"\n"<<setw(w)<<"Ratio Style:"         <<setw(w)<<GetRatioStyleString()<<endl;
 
   for (int  i = 0; i <   gridname.size(); i++) {
     if (this->GetDataOk(i)) {
       cout<<"\n"<<setw(w)<<"INFO FOR GRID NUM:"<<setw(w)<<i
-	  <<"\n"<<setw(w)<<"dataname.size(): " <<setw(w)<<dataname.size()
-	//<<"\n"<<setw(w)<<"events.size(): "   <<setw(w)<<events.size()
-	  <<"\n"<<setw(w)<<"gridname.size(): " <<setw(w)<<gridname.size()
+	  <<"\n"<<setw(w)<<"dataname.size():"  <<setw(w)<<dataname.size()
+	//<<"\n"<<setw(w)<<"events.size():"    <<setw(w)<<events.size()
+	  <<"\n"<<setw(w)<<"gridname.size():"  <<setw(w)<<gridname.size()
                 
-	  <<"\n"<<setw(w)<<"grid steering: "<<setw(w)<<gridname[i]
-	  <<"\n"<<setw(w)<<"data steering: "<<setw(w)<<dataname[i]
-	//<<"\n"<<setw(w)<<"events: "       <<setw(w)<<events[i]
-	  <<"\n"<<setw(w)<<"style: "        <<setw(w)<<this->GetMarkerStyle(i)
-	  <<"\n"<<setw(w)<<"color:"         <<setw(w)<<this->GetMarkerColor(i)
-	  <<"\n"<<setw(w)<<"frameid:"       <<setw(w)<<this->GetFrameID(i)
-	  <<"\n"<<setw(w)<<"divideid:"      <<setw(w)<<this->GetDivideID(i)<<endl;
+	  <<"\n"<<setw(w)<<"grid steering:"<<setw(w)<<gridname[i]
+	  <<"\n"<<setw(w)<<"data steering:"<<setw(w)<<dataname[i]
+	//<<"\n"<<setw(w)<<"events:"       <<setw(w)<<events[i]
+	  <<"\n"<<setw(w)<<"style:"        <<setw(w)<<this->GetMarkerStyle(i)
+	  <<"\n"<<setw(w)<<"color:"        <<setw(w)<<this->GetMarkerColor(i)
+	  <<"\n"<<setw(w)<<"frameid:"      <<setw(w)<<this->GetFrameID(i)
+	  <<"\n"<<setw(w)<<"divideid:"     <<setw(w)<<this->GetDivideID(i)<<endl;
     } else {
       cout<<"\n"<<setw(w)<<"INFO FOR GRID NUM:"<<setw(w)<<i
 	  <<"\n"<<setw(w)<<"grid:"             <<setw(w)<<gridname[i]
-	  <<"\n"<<setw(w)<<"frameid: "         <<setw(w)<<this->GetFrameID(i)
-	  <<"\n"<<setw(w)<<"divideid: "        <<setw(w)<<this->GetDivideID(i)<<endl;
+	  <<"\n"<<setw(w)<<"frameid:"          <<setw(w)<<this->GetFrameID(i)
+	  <<"\n"<<setw(w)<<"divideid:"         <<setw(w)<<this->GetDivideID(i)<<endl;
     }
   }
     
