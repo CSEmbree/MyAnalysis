@@ -51,7 +51,6 @@ MyCrossSection::MyCrossSection(char name[100])
   plotband=false;
   ploterrorticks=false;
   staggerpdfpoints=false;
-  ratioTheoryOverData=true; //ratio default is (theory/data)
   overlayData = true; //always display data by default
   overlayTheory = false;
   overlayReference = false;
@@ -106,6 +105,7 @@ void MyCrossSection::Initialize() {
   //
   // Perform any initialization needed before plotting
   //
+  string mn = "Initialize:"; //method name, for debug printing
 
   if (debug) cout<<" MyCrossSection::Initialize()"<<endl;
   cout<<" MyCrossSection::Initialize: Number of grids to produce "<<gridname.size()<<endl;
@@ -124,8 +124,7 @@ void MyCrossSection::Initialize() {
       mybandtmp->MovePDFPoints(); //plot markers are more visible if data points are shifted slightly
     }
     if (staggerpdfpoints) mybandtmp->SetStaggerPDFPoints();
-    mybandtmp->SetRatioTheoryOverData(ratioTheoryOverData); //tell the band if this is theory/data for ratio
-
+    
 
     myband.push_back(mybandtmp);
 
@@ -347,100 +346,138 @@ void MyCrossSection::Initialize() {
 
     if (debug) cout<<" MyCrossSection::Initialize: finished chi2 calculation "<<endl;
 
-    if (pdfdata.size()<1) {
-      TH1D *href=this->GetNormalisedReference(igrid);
-      if (!href) cout<<" MyCrossSection::Initialize:  reference histo not found igrid= "<<igrid<<endl;
-      
-      TGraphAsymmErrors* gref=TH1TOTGraphAsymm(href);
-      if (!gref) cout<<" MyCrossSection::Initialize:  reference graph not created igrid= "<<igrid<<endl;
-      
-      if (debug) {
-	cout<<" MyCrossSection::Initialize: ComputePDFBandRatio  dividing gref and "<<mydata[igrid]->GetDataName()<<endl;
-      }
- 
 
-      /*
-      if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
-	cout<<"TEST: scaleit"<<endl;
-	ScaleGraph( gref, mydata[igrid]->GetScalex(), mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
-      }
-      */
-      
-
-      // Flip ratio calculations if steering asks for it
-      TGraphAsymmErrors* top;
-      TGraphAsymmErrors* bot;
-      int errorBarType;
-      TString rationame = "";
-      if(ratioTheoryOverData) {
-      	top = gref; //origonal - reference over the data
-      	bot = mydata[igrid]->GetTGraphTotErr();
-	bot = mydata[igrid]->GetTGraphTotErr(); //TEST
-
-
-	rationame += gref->GetName()+igrid;
-	rationame +="/";
-	rationame +=mydata[igrid]->GetDataName();
-	errorBarType = 0;
-      } else {
-	top = gref; //reference over itself
-	bot = gref;
-	
-	rationame += gref->GetName()+igrid;
-	rationame+="/";
-	rationame+=gref->GetName()+igrid;
-	errorBarType = 2;
-      }
-
-      
-      //ratiotot.push_back(myTGraphErrorsDivide(gref, mydata[igrid]->GetTGraphTotErr(), 0)); // origional
-      ratiotot.push_back(myTGraphErrorsDivide(top, bot, errorBarType)); //TODO - change error bar saving?
-      ratiotot[igrid]->SetName(rationame);
-      ratiotot[igrid]->SetMarkerStyle(this->GetMarkerStyle(igrid));
-      ratiotot[igrid]->SetMarkerColor(this->GetMarkerColor(igrid));
-      ratiotot[igrid]->SetLineColor(refhistlinecolor[igrid]);
-      ratiotot[igrid]->SetLineStyle(refhistlinestyle[igrid]);
-      ratiotot[igrid]->SetFillColor(refhistlinecolor[igrid]);
-      ratiotot[igrid]->SetFillStyle(3004+igrid);
-      
-      if (debug) {
-	cout<<" MyCrossSection::Initialize: ratiotot["<<igrid<<"] called '"<<rationame.Data()<<"': "<<endl;
-	ratiotot[igrid]->Print("all");
-      }
-    } else {
-      //TH1D *href=this->GetNormalisedReference(igrid);
-      //TGraphAsymmErrors* gref=TH1TOTGraphAsymm(href);
-      //myband[igrid]->ComputePDFBandRatio(gref); //should be same as origional
-
-      myband[igrid]->ComputePDFBandRatio(mydata[igrid]->GetTGraphTotErr()); //TEST - origonal
+    //COMPUTE DENOMINATOR
+    string denomName = "";
+    int denomMarkerStyle, denomMarkerColor, denomLineColor, denomLineStyle, denomFillColor=kGray, denomFillStyle, denomErrorBar;
+    TGraphAsymmErrors* denomTop, *denomBot;
+    
+    cout<<cn<<mn<<" Getting denominator settings..."<<endl;
+    if( IsRatioDenominator("data") ) {
+      cout<<"TEST1 data"<<endl;      
+      TGraphAsymmErrors* g = mydata[igrid]->GetTGraphTotErr();
+      cout<<"TEST2 data"<<endl;
+      denomName            += mydata[igrid]->GetDataName()+"/"+mydata[igrid]->GetDataName();
+      denomMarkerStyle     = g->GetMarkerStyle();
+      denomMarkerColor     = g->GetMarkerColor();
+      denomLineColor       = g->GetMarkerColor();
+      denomLineStyle       = g->GetLineStyle();
+      //denomFillColor       = kGray;//mydata[igrid]->GetDataMarkerStyle();
+      denomFillStyle       = g->GetFillStyle();
+      denomTop             = g;
+      denomBot             = g; //same as Top
+    } else if ( IsRatioDenominator("reference") ) {
+      cout<<"TEST1 ref"<<endl;
+      TGraphAsymmErrors* g = TH1TOTGraphAsymm(GetNormalisedReference(igrid));
+      cout<<"TEST2 ref"<<endl;      
+      g->GetName();
+      denomName            += g->GetName()+igrid;
+      denomName            +="/";
+      denomName            += g->GetName()+igrid;
+      denomMarkerStyle     = this->GetMarkerStyle(igrid);
+      denomMarkerColor     = this->GetMarkerColor(igrid);
+      denomLineColor       = refhistlinecolor[igrid];
+      denomLineStyle       = refhistlinestyle[igrid];
+      //denomFillColor       = refhistlinecolor[igrid];
+      denomFillStyle       = refhistlinecolor[igrid];
+      denomTop             = g;
+      denomBot             = g; //same as Top
+    } else if ( IsRatioDenominator("theory") ) {
+      //TODO - handle pdf case
+      cout<<"TEST1 theory"<<endl;
+      TGraphAsymmErrors* g = NULL;
+      myband[igrid]->ComputePDFBandRatio(g); //TEST - origonal    
+      denomBot = myband[igrid]->GetPdfBand(0); //TODO - make for all PDFs
+      cout<<"TEST2 thoery"<<endl;  
     }
-    /*
-    // move this to MyBand
-    std::vector<TGraphAsymmErrors*> gpdfbandratiotottmp;
-    std::vector<TGraphAsymmErrors*> gpdfdefaultratiotottmp;
-    //for (int ipdf=0; ipdf<myband[igrid]->GetNPDF(); ipdf++) {
-    for (int ipdf=0; ipdf<pdfdata.size(); ipdf++) {
-    TGraphAsymmErrors *pdftmp=myband[igrid]->GetPdfBand(ipdf);
-    if (debug)   cout<<" MyCrossSection::Initialize: Band for ipdf= "<<ipdf<<" divide "<<endl;
-    if (!pdftmp) cout<<" MyCrossSection::Initialize: pdf not found  "<<endl;
-
-    gpdfbandratiotottmp.push_back(myTGraphErrorsDivide(pdftmp,mydata[igrid]->GetTGraphTotErr(),2));
-    gpdfbandratiotottmp[ipdf]->SetFillStyle(pdftmp->GetFillStyle());
-    gpdfbandratiotottmp[ipdf]->SetFillColor(pdftmp->GetFillColor());
-
-    TGraphAsymmErrors *pdftmpdefault=myband[igrid]->GetPdfDefault(ipdf);
-    gpdfdefaultratiotottmp.push_back(myTGraphErrorsDivide(pdftmpdefault,mydata[igrid]->GetTGraphTotErr(),0));
-    gpdfdefaultratiotottmp[ipdf]->SetMarkerStyle(0);
-    gpdfdefaultratiotottmp[ipdf]->SetMarkerSize(0);
-    gpdfdefaultratiotottmp[ipdf]->SetLineColor(pdftmp->GetFillColor());
+     
+    if ( IsRatioDenominator("theory") == false ) {
+      cout<<cn<<mn<<" Computing denominator... "<<endl;
+      ratiodenom.push_back(myTGraphErrorsDivide(denomTop, 
+						denomBot, 2)); //TODO - change error bar saving?
+      ratiodenom[igrid]->SetName(TString(denomName));
+      ratiodenom[igrid]->SetMarkerStyle(denomMarkerStyle);
+      ratiodenom[igrid]->SetMarkerColor(denomMarkerColor);
+      ratiodenom[igrid]->SetLineColor(denomLineColor);
+      ratiodenom[igrid]->SetLineStyle(denomLineStyle);
+      ratiodenom[igrid]->SetFillColor(denomFillColor);
+      ratiodenom[igrid]->SetFillStyle(denomFillStyle);
+      
+      cout<<"TEST: ratiodenom Printing - START"<<endl;
+      ratiodenom[igrid]->Print("all"); //TEST
+      cout<<"TEST: ratiodenom Printing - STOP"<<endl;
+      //exit(0); //TEST
     }
-    gpdfbandratiotot.push_back(gpdfbandratiotottmp);
 
-    gpdfdefaultratiotot.push_back(gpdfdefaultratiotottmp);
-    */
+    //COMPUTE NUMERATOR(S)
+    if(debug) cout<<cn<<mn<<" Getting Ratio Numerator settings..."<<endl;
+    string name = "";
+    if( IsRatioNumerator("data") == true ) {
+      cout<<cn<<mn<<" Data is a ratio numerator, computing..."<<endl;
+
+      //TODO - impliment data over 
+      TGraphAsymmErrors* g = mydata[igrid]->GetTGraphTotErr();
+      ratiodata.push_back(myTGraphErrorsDivide(g,
+					       denomBot, 2));
+      name += g->GetName()+igrid;
+      name += "/";
+      name += denomBot->GetName()+igrid;
+      ratiodata[igrid]->SetName(TString(denomName));
+      ratiodata[igrid]->SetMarkerStyle(this->GetMarkerStyle(igrid));//g->GetMarkerStyle());
+      ratiodata[igrid]->SetMarkerColor(this->GetMarkerColor(igrid));//g->GetMarkerColor());
+      ratiodata[igrid]->SetMarkerSize(g->GetMarkerColor());
+      ratiodata[igrid]->SetLineColor(kBlack);
+      ratiodata[igrid]->SetLineStyle(g->GetLineStyle());
+      ratiodata[igrid]->SetFillColor(g->GetFillColor());
+      ratiodata[igrid]->SetFillStyle(g->GetFillStyle());    
+    
+      cout<<"TEST: ratiodata Printing - START"<<endl;
+      ratiodata[igrid]->Print("all");
+      cout<<"TEST: ratiodata Printing - STOP"<<endl;
+      //exit(0);//TEST
+    }
+    
+    if( IsRatioNumerator("reference") == true ) {
+      cout<<cn<<mn<<" Reference is a ratio numerator, computing..."<<endl;
+      cout<<"TEST: GetNPDF"<<myband[igrid]->GetNPDF()<<endl;
+      
+      //TODO - impliment data over 
+      TH1* href = GetNormalisedReference(igrid);
+      TGraphAsymmErrors* g = TH1TOTGraphAsymm(href);
+      ratioreference.push_back(myTGraphErrorsDivide(g,
+					       denomBot, 2));
+      name += g->GetName()+igrid;
+      name += "/";
+      name += denomBot->GetName()+igrid;
+      ratioreference[igrid]->SetName(TString(denomName));
+      ratioreference[igrid]->SetMarkerStyle(g->GetMarkerStyle());
+      ratioreference[igrid]->SetMarkerColor(g->GetMarkerColor());
+      ratioreference[igrid]->SetMarkerSize(0);
+      ratioreference[igrid]->SetLineColor(href->GetLineColor());//refhistlinestyle[igrid]);
+      ratioreference[igrid]->SetLineStyle(href->GetLineStyle());
+      ratioreference[igrid]->SetFillColor(g->GetFillColor());
+      ratioreference[igrid]->SetFillStyle(g->GetFillStyle());    
+    
+      cout<<"TEST: ratioreference Printing - START"<<endl;
+      ratioreference[igrid]->Print("all");
+      cout<<"TEST: ratioreference Printing - STOP"<<endl;
+      //exit(0);//TEST
+    }
+    
+    if( IsRatioNumerator("theory") ){
+      myband[igrid]->ComputePDFBandRatio(denomBot); //TEST - origonal
+    
+      cout<<"TEST: theory Printing - START"<<endl;
+      //ratioreference[igrid]->Print("all");
+      cout<<"TEST: theory Printing - STOP"<<endl;
+      //exit(0);//TEST
+    }
+
   } // igrid loop
 
   if (debug) cout<<" MyCrossSection::Initialize: end of igrid loop"<<endl;
+
+
 
   // grid in frames
   gridinframe.clear();
@@ -807,12 +844,6 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	  sscanf( optionValue.c_str(), "%d", &intVal);
 	  if (debug) cout<<cn<<mn<<" reflinecolor:  "<<intVal<<endl;
 	  refhistlinecolor[igrid]=intVal;
-	} else if ( optionName == "ratio" ) {
-	  
-	  //determine how ratio will be computed
-	  if ( optionValue == "theory/data")      ratioTheoryOverData = true; // ratio will be (theory/data)
-	  else if ( optionValue == "data/theory") ratioTheoryOverData = false; // ratio will be (data/theory)
-	  else                                    ratioTheoryOverData = true; //default - (theory/data) for legacy steering files
 	} else if ( optionName == "ratiostyle" ) {
 	  rationames.clear(); //remove any defaults for overlay
 	  if (debug) cout<<cn<<mn<<" RatioStyle: "<<optionValue<<endl;
@@ -908,7 +939,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
   if(debug) { 
     cout<<cn<<mn<<" Finished reading steering. REPORT:"<<endl;
     Print();
-    exit(0); //TEST
+    //exit(0); //TEST
   }
 
   return;
@@ -930,7 +961,6 @@ void MyCrossSection::Print() {
       <<"\n"<<setw(w)<<"Dir of grids:"        <<setw(w)<<gridnamebasedir
       <<"\n"<<setw(w)<<"Dir of data:"         <<setw(w)<<datanamedir
       <<"\n"<<setw(w)<<"Num of grids:"        <<setw(w)<<gridname.size()
-      <<"\n"<<setw(w)<<"Ratio:"               <<setw(w)<<(ratioTheoryOverData? "(theory/data)":"(data/theory)")
       <<"\n"<<setw(w)<<"Overlay Style:"       <<setw(w)<<GetOverlayStyleString()
       <<"\n"<<setw(w)<<"Ratio Style:"         <<setw(w)<<GetRatioStyleString()<<endl;
 
@@ -1731,16 +1761,15 @@ void MyCrossSection::DrawinFrame(int iframe) {
   myframe->GetSubPad2()->cd();
   myframe->SetSubPad2TitleOffsetX(0.8);
 
-  // setup ratio labels
-  TString titlename="";
-  if(ratioTheoryOverData) titlename="NLO QCD/Data";
-  else                    titlename="Data/NLO QCD";
+  // ratio label is the ratiostyle by default
+  TString titlename = GetRatioStyleString();
+ 
+  // user can overload default ratiotitle
+  if (ratiotitlelabel.size()>0) titlename=ratiotitlelabel; 
 
-  if (ratiotitlelabel.size()>0) titlename=ratiotitlelabel;
 
   if (!this->GetDataOk(igrid)) titlename="";
   myframe->GetYAxis2()->SetTitle(titlename.Data());
-
   if (debug) cout<<" MyCrossSection::DrawinFrame: npdf= "<<npdf<<endl;
 
 
@@ -1753,63 +1782,57 @@ void MyCrossSection::DrawinFrame(int iframe) {
     if (debug) cout<<" MyCrossSection::DrawinFrame: gridinframe["<<iframe<<"]["<<i<<"] = " 
 		   << gridinframe[iframe][i] 
 		   << " Draw reference for igrid= "<<igrid<<endl;
-    
-
-    /*
-    //plot just the data if no pdfs are to be overlayed
-    if (npdf<1) {
-      ratiotot[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
-      if (ymin<Ymin) Ymin=ymin;
-      if (ymax>Ymax) Ymax=ymax;	
-    } else {
-      myband[igrid]->ComputePDFBandRatioRange();
-      Ymin=myband[igrid]->GetYmin();
-      Ymax=myband[igrid]->GetYmax();
-    }
-    */
-
-    
-    if(ratioTheoryOverData) {
-      if (npdf<1) {
-	ratiotot[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
-	if (ymin<Ymin) Ymin=ymin;
-	if (ymax>Ymax) Ymax=ymax;	
-      } else {
-	myband[igrid]->ComputePDFBandRatioRange();
-	Ymin=myband[igrid]->GetYmin();
-	Ymax=myband[igrid]->GetYmax();
-      }
-    } else {
-	TH1D *href=this->GetNormalisedReference(igrid);
-	TGraphAsymmErrors* gref=TH1TOTGraphAsymm(href);
-	TGraphAsymmErrors *tmp = myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr()
-						     ,gref,2);
-	tmp->ComputeRange(xmin,ymin,xmax,ymax);
-	if (ymin<Ymin) Ymin=ymin;
-	if (ymax>Ymax) Ymax=ymax;
+  
+    //COMPUTE RATIO WINDOW
+    // check denominator window size
+    if( IsRatioDenominator("data") == true ) {
+      cout<<"TEST1"<<endl;
+      ratiodenom[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
+    } else if (IsRatioDenominator("reference") == true) {
+      cout<<"TEST2"<<endl;      
+      ratiodenom[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
+    } else if (IsRatioDenominator("theory") == true) {
+      //denom = mydata[igrid]->->GetTGraphTotErr();
+      cout<<"TEST3"<<endl;      
+      ymin=myband[igrid]->GetYmin();
+      ymax=myband[igrid]->GetYmax();
     }
     
+    if (ymin<Ymin) Ymin=ymin;
+    if (ymax>Ymax) Ymax=ymax;
 
 
-
-    if (debug) cout<<" MyCrossSection::DrawinFrame: Ymin= "<<Ymin<<" Ymax= "<<Ymax<<endl;
-    /*
-      for (int ipdf=0; ipdf<npdf; ipdf++) {
-      gpdfbandratiotot[igrid][ipdf]->ComputeRange(xmin,Ymin,xmax,Ymax);
+    //check numerator(s) window size
+    if( IsRatioNumerator("data") == true ) {
+      ratiodata[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
       if (ymin<Ymin) Ymin=ymin;
       if (ymax>Ymax) Ymax=ymax;
-      }
-    */
+    }
+
+    if( IsRatioNumerator("reference") == true ) {
+      ratioreference[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
+      if (ymin<Ymin) Ymin=ymin;
+      if (ymax>Ymax) Ymax=ymax; 
+    }
+    
+    if( IsRatioNumerator("thoery") == true ) {
+      ymin=myband[igrid]->GetYmin();
+      ymax=myband[igrid]->GetYmax();
+      if (ymin<Ymin) Ymin=ymin;
+      if (ymax>Ymax) Ymax=ymax;
+    }
+    
+    if (debug) cout<<" MyCrossSection::DrawinFrame: Ymin= "<<Ymin<<" Ymax= "<<Ymax<<endl;
   }
 
     
 
 
-  //allow for explicit fixed Y-axis min/max for ratio pad if steering file provided them
+  // user can explicitly fix Y-axis min/max for ratio pad if steering file provided them
   if( yminratio != DEFAULT_DOUBLE ) Ymin = yminratio;
   if( ymaxratio != DEFAULT_DOUBLE ) Ymax = ymaxratio;
   
-  //ensure user provided appropreate bounds (ymax must be > ymin)
+  //ensure ratio window size is an appropreate bounds (ymax > ymin)
   if( Ymin > Ymax ) { 
     cerr<<" MyCrossSection::DrawinFrame: ERROR: Invalid ratio max and minimums set!"
 	<<" Ymin = '"<<Ymin<<"'"
@@ -1823,132 +1846,43 @@ void MyCrossSection::DrawinFrame(int iframe) {
   myframe->GetYAxis2()->SetRangeUser(Ymin*0.9,Ymax*1.1); //<--Do this per each because each run is chaning the min and max??
 
 
+
+
   // Draw ratio onto plots
-  TGraphAsymmErrors* ratiodata;  
-  if(ratioTheoryOverData) { // (THEORY / DATA)
-    // draw data ratio (background bands) before pdf ratio (relative to bands)
+  // draw data ratio (background bands) before pdf ratio (relative to bands)
 
-
-    //FIRST - draw data ratio to itself in background    
-    for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
-      int igrid=gridinframe[iframe][i];
-      if(debug) cout<<" MyCrossSection::DrawinFrame: computing (theory/data) ratio."<<endl;
-      
-      ratiodata=myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr()
-				     ,mydata[igrid]->GetTGraphTotErr(),2);
-      if (!ratiodata) cout<<" MyCrossSection::DrawinFrame: ratiodata not found ! "<<endl;
-      ratiodata->SetMarkerStyle(mydata[igrid]->GetTGraphTotErr()->GetMarkerStyle());
-      ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
-      ratiodata->SetMarkerSize(0);
-            
-      // provide different data in ratio section should have different color
-      ratiodata->SetFillColor(kGray); //TODO - Choose a more predictable color based on data color?
-      
-      //draw the ratio of (theory/data)
-      if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
-      ratiodata->Draw("E2,same");
-    } 
-
-
-    //SECOND - Draw the reference or pdf ratio over the data ratio in forground
-    for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
-      int igrid=gridinframe[iframe][i];
-      if (debug) cout<<" MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= "<<igrid<<endl;
-      
-      // no pdf means only need to display each set of ratios overlayed to the data
-      if (npdf<1) {
-	//if ( overlayReference ) {
-	ratiotot[igrid]->SetMarkerStyle(0); //circle
-	ratiotot[igrid]->SetMarkerSize(0); //don't show the plotted point
-	
-	//PDF ratio drawing needs no scaling because it was generated from scaled data
-	ratiotot[igrid]->Draw("p,same"); 
-      } 
-            
-      //draw the PDF ratio data
-      //if(overlayTheory) 
-	myband[igrid]->DrawPDFBandRatio();
+  //FIRST - draw data ratio to itself in background    
+  for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
+    int igrid=gridinframe[iframe][i];
+    if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;          
+    if(IsRatioDenominator("theory") == true)   {
+      cout<<" THEORY DENOM PLOT"<<endl;
+      myband[igrid]->DrawPDFBandRatio();      
+    } else {
+      cout<<" REGULAR DENOM PLOT"<<endl;
+      ratiodenom[igrid]->Draw("E2,same");
     }
-    // finished drawing ratio (theory/data)
+  } 
 
-  } else { // (DATA / THEORY)
-    // draw pdf ratio (background bands) before data ratio (relative to bands)
-
-    //FIRST - Draw the reference or pdf ratio to itself in the background 
-    for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
-      int igrid=gridinframe[iframe][i];
-      
-      // no pdf means only need to display each set of ratios overlayed to the data
-      if (npdf<1) {
-		
-	//if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
-	//  if(debug) cerr<<" MyCrosSection::DrawinFrame: WARN: Forcefully scaling ratiotot. "<<endl;	
-	//  //set reference ratio scaling to the same as data's
-	//  ScaleGraph(ratiotot[igrid], mydata[igrid]->GetScalex(), mydata[igrid]->GetScaley() ); //TODO
-	//}
-	
-	ratiotot[igrid]->SetMarkerStyle(0); //circle
-	ratiotot[igrid]->SetMarkerSize(0); //don't show the plotted point
-	//ratiotot[igrid]->SetFillColor(refhistlinecolor[igrid]);
-	//ratiotot[igrid]->SetFillStyle(3004+igrid);
-
-	// TODO - check problem with reference uncertainy seeming large?
-	ratiotot[igrid]->Draw("E2,same"); //no PDF ratio draw
-      } 
-    }
-    
-
-    //TODO - Move up into FIRST section for loop for each igrid?
+  //SECOND - Draw the reference or pdf ratio over the data ratio in forground
+  for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
+    int igrid=gridinframe[iframe][i];
     if (debug) cout<<" MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= "<<igrid<<endl;
-    //draw the PDF ratio data
-    myband[igrid]->DrawPDFBandRatio();
     
-    
-    //SECOND - Draw the data ratio over the pdf or reference histo ratio in the forground
-    if(debug) cout<<" MyCrossSection::DrawinFrame: computing (data/theory) ratio(s) for each pdf."<<endl;
-    for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
-      int igrid=gridinframe[iframe][i];
-
-      if(npdf<1) {
-	// when no pdfs, plot the data over reference histogram
-	TH1D *href=this->GetNormalisedReference(igrid);
-	TGraphAsymmErrors* gref=TH1TOTGraphAsymm(href);
-	
-	ratiodata=myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr(),gref,0);
-	if (!ratiodata) cout<<" MyCrossSection::DrawinFrame: ratiodata not found ! "<<endl;
-	ratiodata->SetMarkerStyle(mydata[igrid]->GetTGraphTotErr()->GetMarkerStyle());
-	ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
-	ratiodata->SetMarkerSize(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
-
-	//ratiodata->SetLineColor(gref->GetMarkerColor()); 
-	ratiodata->SetLineColor(kBlack);  //errorbar is black for a single pdf
-	
-	//draw the ratio of (data/theory) for each theory
-	if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
-	ratiodata->Draw("P,same");      
-      }
-      
-      for(int ipdf = 0; ipdf < npdf; ipdf++) {
-	// when there are pdfs, plot data over pdf band data
-	ratiodata=myTGraphErrorsDivide(mydata[igrid]->GetTGraphTotErr()
-				       ,myband[igrid]->GetPdfBand(ipdf),2);
-		
-	if (!ratiodata) cout<<" MyCrossSection::DrawinFrame: ratiodata not found ! "<<endl;
-	ratiodata->SetMarkerStyle(mydata[igrid]->GetTGraphTotErr()->GetMarkerStyle());
-	ratiodata->SetMarkerColor(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
-	ratiodata->SetMarkerSize(mydata[igrid]->GetTGraphTotErr()->GetMarkerColor());
-
-	// color of ratio is chosen for most readability
-	if(npdf==1) ratiodata->SetLineColor(kBlack);  //errorbar is black for a single pdf
-	else        ratiodata->SetLineColor(myband[igrid]->GetPdfBand(ipdf)->GetMarkerColor());  //errorbar color depends on pdf band color	
-
-	//draw the ratio of (data/theory) for each theory
-	if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;      
-	ratiodata->Draw("P,same");
-      }
+    if( IsRatioNumerator("data")      == true ) {
+      cout<<" RATIO DATA PLOT"<<endl;
+      ratiodata[igrid]->Draw("p,same");
     }
-    // finished drawing ratio (data/theory)
+    if( IsRatioNumerator("reference") == true ) {
+      cout<<" RATIO REFERENCE PLOT"<<endl;
+      ratioreference[igrid]->Draw("p,same");
+    }
+    if( IsRatioNumerator("theory")    == true ) {
+      cout<<" RATIO THEORY PLOT"<<endl;
+      myband[igrid]->DrawPDFBandRatio();
+    }
   }
+  // finished drawing ratio (theory/data)
   
   
 
@@ -2024,7 +1958,7 @@ TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
   
 
   
-
+  if(debug) cout<<cn<<mn<<" Returning normalised reference histogram"<<endl;
   
   return href;
 }
@@ -2085,8 +2019,8 @@ TGraphAsymmErrors* MyCrossSection::myTGraphErrorsDivide(TGraphAsymmErrors* g1,TG
   const bool debug=false;
   const char *name="**myTGraphErrorsDivide:";
 
-  if (!g1) cout << name<<" g1 does not exist ! " << endl;
-  if (!g2) cout << name<<" g2 does not exist ! " << endl;
+  if (!g1) cout << name<<" MyCrossSection::myTGraphErrorsDivide: g1 does not exist ! " << endl;
+  if (!g2) cout << name<<" MyCrossSection::myTGraphErrorsDivide: g2 does not exist ! " << endl;
 
   Int_t n1=g1->GetN();
   Int_t n2=g2->GetN();
@@ -2601,7 +2535,7 @@ bool MyCrossSection::validateRatioStyle(std::vector<std::string > names) {
   string DATA = "data", THEORY = "theory", REFERENCE = "reference";
 
 
-  if( names.size() >= 4 || names.size() <= 0 ) valid = false; //incorrect num of names
+  if( names.size() > 4 || names.size() <= 0 ) valid = false; //incorrect num of names
   else {
     for(int i = 0; i<names.size() && valid; ++i) {
       string curName = names.at(i);
