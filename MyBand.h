@@ -148,6 +148,7 @@ class MyBand {
   bool ploterrorticks;
   bool staggerpdfpoints;
   bool ratioTheoryOverData;
+  bool ratioitself;
 
   std::vector<TGraphAsymmErrors *> gpdfband ; // per pdftype
   std::vector<TGraphAsymmErrors *> gpdfbandratio; // per pdftype

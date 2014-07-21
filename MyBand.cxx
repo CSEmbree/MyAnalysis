@@ -17,12 +17,13 @@ MyBand::MyBand()
  plotmarker=false;
  ploterrorticks=false;
  staggerpdfpoints=false;
- ratioTheoryOverData=true;
+ //ratioTheoryOverData=true;
 
  gpdfbandratio.clear();
  gpdfband.clear(); 
  gpdfdefault.clear();;
  gscaleband.clear();
+ ratioitself = false;
 
  yminratio = 0.0;
  ymaxratio = 0.0;
@@ -73,12 +74,12 @@ void MyBand::DrawPDFBandRatio()
    // always print a default error for each PDF
    // colors and settings set in 'ComputePDFBandRatio(TGraphAsymmErrors *gref) 
    gpdfdefaultratio.at(ipdf)->SetMarkerSize(0);
+   // allow small perpednicular lines at end of error bar to be on or off on default
+   if (ploterrorticks) gpdfdefaultratio.at(ipdf)->Draw("P,same");
+   else                gpdfdefaultratio.at(ipdf)->Draw("PZ,same");   
    
-   if(ratioTheoryOverData) { //(THEORY/DATA)
-     // allow small perpednicular lines at end of error bar to be on or off on default
-     if (ploterrorticks) gpdfdefaultratio.at(ipdf)->Draw("P,same");
-     else                gpdfdefaultratio.at(ipdf)->Draw("PZ,same");
-     
+   
+   if(ratioitself == false) { //(THEORY/DATA)  
 
      //Part 2 of 2) draw additional data lines based on steering parameters
      // ensure sure band ratio data was provided
@@ -258,7 +259,7 @@ TString MyBand::GetBandRatioStyle() {
    TString bandstyle = "";
     if ( plotmarker == true )      bandstyle+="P";
     if ( ploterrorticks == false ) bandstyle+="Z";
-    if ( plotband == true )        bandstyle+="E1";    
+    if ( plotband == true )        bandstyle+="E1"; //TEST - E2 for     
     bandstyle+=",same";
     
 
@@ -270,16 +271,23 @@ TString MyBand::GetBandRatioStyle() {
 
 void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref) 
 {
-
-  //if data was asked to be artificially scaled, then theory must be equally scaled before visual ranges can be determined
+ 
+  if(!gref) {
+    cout<<" MyBand::ComputePDFBandRatio: WARN: No ratio graph provided!"
+	<< "\n\t Will perform (pdf/pdf) for ratio.";
+    ratioitself = true;
+  } else {
+    if (debug) {
+      cout <<" MyBand::ComputePDFBandRatio: gpdfband.size()= " << gpdfband.size()<<endl;
+      cout <<" MyBand::ComputePDFBandRatio: gref name: " << gref->GetName()<<endl;
+    }
+  }
+  
+  //if data was artificially scaled, then scale theory equally before visual ranges can be determined
   if(scalex != 1.0 || scaley != 1.0 ) {
     this->ScaleOverlayGraphs(scalex, scaley);
   }
-  
- if (debug) {
-  cout <<" MyBand::ComputePDFBandRatio: gpdfband.size()= " << gpdfband.size()<<endl;
-  cout <<" MyBand::ComputePDFBandRatio: gref name: " << gref->GetName()<<endl;
- }
+ 
 
  // compute PDF band ratio for each PDF
  for (int ipdf = 0; ipdf <  gpdfband.size(); ipdf++) {
@@ -287,34 +295,29 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
 
    // set ratio data visual settings for printing later
    //TGraphAsymmErrors *gratio=myTGraphErrorsDivide(gpdfband.at(ipdf),gref,2); //origonal
-   TGraphAsymmErrors *g1, *g2, *g;
-   if(ratioTheoryOverData) {
-     //(THEORY/DATA) - pdf band is relative to the reference
-     g1 = gpdfband.at(ipdf);
-     g2 = gref;
-     //g  = gpdfband.at(ipdf); //how visual settings will be defined
-   } else {
-     //(DATA/THEORY) - pdf band is relative to itself, around 1.
-     g1 = gpdfband.at(ipdf);
-     g2 = gpdfband.at(ipdf);
-     //g  = gref; //how visual settings will be defined 
-   }
-   
+   TGraphAsymmErrors *g1, *g2;
+
    //set visuals for the ratio
-   g = gpdfband.at(ipdf);
-   
+   g1 = gpdfband.at(ipdf);
+   if(ratioitself) { 
+     g2 = gpdfband.at(ipdf);
+     ratioitself = true;
+   } else {
+     g2 = gref;
+   }
+
    TGraphAsymmErrors *gratio=myTGraphErrorsDivide(g1,g2,2);
    TString rationame=g1->GetName();
    rationame+="/";
    rationame+=g2->GetName();
    if (debug) cout<<" MyBand::ComputePDFBandRatio: rationame= "<<rationame.Data()<<endl;
    gratio->SetName(rationame);
-   gratio->SetMarkerStyle(g->GetMarkerStyle());
-   gratio->SetMarkerColor(g->GetMarkerColor());
-   gratio->SetLineColor(g->GetLineColor());
-   gratio->SetLineStyle(g->GetLineStyle());
-   gratio->SetFillStyle(g->GetFillStyle());
-   gratio->SetFillColor(g->GetFillColor());
+   gratio->SetMarkerStyle(g1->GetMarkerStyle());
+   gratio->SetMarkerColor(g1->GetMarkerColor());
+   gratio->SetLineColor(g1->GetLineColor());
+   gratio->SetLineStyle(g1->GetLineStyle());
+   gratio->SetFillStyle(g1->GetFillStyle());
+   gratio->SetFillColor(g1->GetFillColor());
 
    gpdfbandratio.push_back(gratio);
 
@@ -332,7 +335,7 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
    TGraphAsymmErrors *gratiodefault=myTGraphErrorsDivide(gpdfdefault.at(ipdf),gpdfdefault.at(ipdf),0);
    TString rationamedefault=gpdfdefault.at(ipdf)->GetName();
    rationame+="/";
-   rationame+=gref->GetName();
+   rationame+=g2->GetName();
    if (debug) cout<<" MyBand::ComputePDFBandRatio: rationamedefault= "<<rationamedefault.Data()<<endl;
    gratiodefault->SetName(rationamedefault);
    gratiodefault->SetMarkerStyle(gpdfband.at(ipdf)->GetMarkerStyle());
