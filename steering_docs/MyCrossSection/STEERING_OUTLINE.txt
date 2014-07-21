@@ -1,85 +1,97 @@
-% THE FOLLOWING IS AN EXAMPLE OF A STEERING FILE for MyCrossSection.cxx
-% WITH ALL THE OPTIONAL AND NECESSARY STEERING OPTIONS LISTED WITH 
-% EXPLAINATIONS
-%   WARN: WARNINGS FOR AN OPTION IN THE STEERING WILL START WITH "WARN:".
-%   COMMENDTS IN STEERING START WITH "%".
+% THE FOLLOWING IS AN EXAMPLE OF A STEERING FILE for 
+%   MyCrossSection.cxx
+% WITH ALL THE OPTIONAL AND NECESSARY STEERING SETTINGS LISTED WITH 
+% EXPLAINATIONS. NOTE THE FOLLOWING:
+%   [NEC]   -- NECESSARY SETTING
+%   [OPT]   -- OPTIONAL SETTING
+%   [WARN]  -- WARNINGS FOR AN OPTION IN THE STEERING WILL START WITH "WARN:".
+%   %       -- COMMENTS IN STEERING START WITH "%".
 %
 %
 %
-% TURN ON DEBUG STATEMENTS
+%
+% [OPT] TURN ON DEBUG STATEMENTS
 debug
 %
 %
-%
-% PLOT AN OPTIONAL MARKER ON DATA POINTS
+% [OPT] SPECIFY THIS IF YOU WANT TO PLOT A MARKER ON DATA POINTS (off by default)
 plotmarker
 %
-% PLOT AN OPTIONAL ERROR BAND ON TOP OF DATA POINTS
+%
+% [OPT] SPECIFY THIS IF YOU WANT TO PLOT AN ERROR BAND ON TOP OF DATA POINTS (off by default)
 plotband
 %
-% PLOT OPTIONAL SMALL PERPENDICUALR ERROR TICKS AT END OF ERROR BARS
+%
+% [OPT] SPECIFY THIS IF YOU WANT TO PLOT SMALL PERPENDICUALR ERROR TICKS AT END OF ERROR BARS (off by default)
 ploterrorticks
 %
-% PLOT POINTS SLIGHTLY STAGGERED HORIZONTALLY FOR READABILITY
+%
+% [OPT] SPECIFY THIS IF YOU WANT TO PLOT POINTS SLIGHTLY STAGGERED HORIZONTALLY FOR READABILITY (off by default)
 staggerpdfpoints
 %
 %
-%
-% CHOOSE LEGEND POSITION BASED ON TOP AND RIGHT SIDES OF LEGEND
-% RIGHT POSITION
+% [OPT] CHOOSE LEGEND POSITION BASED ON TOP AND RIGHT SIDES OF LEGEND
+% [WARN] RIGHT POSITION
 xlegend 0.9
-% TOP POSITION
+% [WARN] TOP POSITION
 ylegend 0.9
 %
 %
-%
-% THE RATIO LABEL CAN BE OPTIONALLY OVERLOADED TO BE WHAT YOU WANT
-ratiotitlelabel test
-%
-% RATIO CAN BE IN THE FORM theory/data OR data/theory
-ratio theory/data
-%ratio data/theory
+% [OPT] THE RATIO LABEL CAN BE OPTIONALLY OVERLOADED TO BE SAY YOU WANT
+ratiotitlelabel labelnamegoeshere
 %
 %
+% [NEC] RATIO IS IN THE FORM numerator/denominator (default is reference/data)
+% [WARN] numerator can be one or many of the following options: reference,theory,data
+% [WARN] denominator can be ONLY ONE of the following options: refererence,theory,data
+% [WARN] If "theory" is set as denominator, only the first PDF provided will be used as the relative ratio
+% FOR EXAMPLE: theory,reference/data
+ratiostyle numerator/denominator
 %
-% OPTIONALLY FORCE Y-AXIS ON OVERLAY TO BE IN A RANGE
-% WARN: DATA PLOTTED OUT OF RANGE WILL NOT BE VISIBLE
-% WARN: A FORCED MIN OR MAX OF ZERO MAY CAUSE ISSUES WITH LOG-SCALES
-% WARN: MIN VALUE MUST BE SMALLER THAN MAX VALUE
+%
+% [NEC] OVERLAY IS IN THE FORM option,option,option (default is data,reference)
+% [WARN] overlay can be one or many of the following options: reference,theory,data
+% FOR EXAMPLE: theory,reference,data
+overlaystyle option,option,option
+%
+%
+% [OPT] FORCE Y-AXIS ON OVERLAY AND/OR THE RATIO TO BE IN A PARTICULAR RANGE
+% [WARN] DATA PLOTTED OUT OF WINDOW RANGE WILL NOT BE VISIBLE
+% [WARN] A FORCED MIN OR MAX OF ZERO MAY CAUSE ISSUES WITH LOG-SCALES
+% [WARN] MIN VALUE MUST BE SMALLER THAN MAX VALUE
 yminoverlay 0.01
 ymaxoverlay 10 
-% OPTIONALLY FORCE Y-AXIS ON RATIO TO BE IN A RANGE
 yminratio 0.8
 ymaxratio 1.5
 %
 %
-%
-% LIST PDFs TO BE PLOTTED WITH DATA (seperated by commas)
-%pdfdata MyPDF/CT10.txt,MyPDF/HERAPDF15NLO.txt,MyPDF/MSTW2008nlo.txt
+% [OPT/NEC] LIST PDFs TO BE PLOTTED WITH DATA (seperated by commas)
+%           NECESSARY IF "theory" IS REQUESTED TO BE PLOTTED (theory not plotted by default)
+%           SUPPORTED PDFS: CT10, CTEQ6M, HERAPDF15NLO, MSTW2008nlo, NNPDF23nlo (refer to MyPDF/ directory)
 pdfdata MyPDF/CT10.txt,MyPDF/NNPDF23nlo.txt,MyPDF/HERAPDF15NLO.txt,MyPDF/MSTW2008nlo.txt
-%
 % OPTIONALLY, LIST PDFS INDIVIDUALLY WITH THE FOLLOWING:
-%pdfdata MyPDF/CT10.txt
-%pdfdata MyPDF/NNPDF23nlo.txt
-%pdfdata MyPDF/MSTW2008nlo.txt
-%pdfdata MyPDF/HERAPDF15NLO.txt
-%pdfdata MyPDF/ATLASepWZNLO.txt
-%pdfdata MyPDF/ATLAS3jet.txt
+pdfdata MyPDF/CT10.txt
+pdfdata MyPDF/NNPDF23nlo.txt
+pdfdata MyPDF/MSTW2008nlo.txt
+pdfdata MyPDF/HERAPDF15NLO.txt
+pdfdata MyPDF/ATLASepWZNLO.txt
+pdfdata MyPDF/ATLAS3jet.txt
 %
 %
-%
-% OPTIONALLY, SPECIFIY A PATH FORA  GRID, IS CONCATINATED TO FOLLOWING dataname AND gridname
+% [OPT] SPECIFIY A PATH FOR GRIDS or DATA. PATH IS CONCATINATED TO HEAD OF EACH dataname AND gridname
+%       USEFUL IF ALL OF YOUR GRIDS OR DATA ARE IN A SINGLE LOCATION THAT IS NOT THE LOCAL DIRECTORY
 Gridnamedir path/to/a/gridfile/
 datanamedir path/to/a/datasteering/
 %
 %
 %
 %
-% LIST THE DATA TO BE PLOTTED
-% WARN: MUST ALWAYS HAVE dataname, gridname, markerstyle, markercolor one after the other
-% WARN: frameid's WITH SAME VALUE WILL BE OVERLAYED
-% WARN: frameid's WITH DIFFERENT VALUES (0,1,2,...) WILL GENERATE THEIR OWN PLOTS
-% WARN: THE FIRST frameid MUST START WITH A '0' 
+% [NEC] LIST THE DATA TO BE PLOTTED
+% [WARN] MUST ALWAYS HAVE dataname, gridname, markerstyle, markercolor one after the other
+% [WARN] frameid's WITH SAME VALUE WILL BE OVERLAYED
+% [WARN] frameid's WITH DIFFERENT VALUES (0,1,2,...) WILL GENERATE THEIR OWN PLOTS
+% [WARN] THE FIRST frameid MUST START WITH A '0'
+% [OPT] SETTING vardesc PROVIDES A PLACE FOR A DISCRIPTION OF THIS PLOT 
 dataname MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
 gridname MyGrids/top/mcfm/grid--TTbar_mttatlas.root
 markerstyle 20
@@ -96,6 +108,9 @@ frameid 1
 %
 %
 %
+%
+%
+% TODO - finish this documentation
 %
 % PDFErrorBand, AlphaS, RenormalizationScale, FactorizationScale
 %AlphaS

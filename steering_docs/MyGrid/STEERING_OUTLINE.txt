@@ -1,0 +1,50 @@
+% THE FOLLOWING IS AN EXAMPLE OF A STEERING FILE for 
+%   MyGrid.cxx
+% WITH ALL THE OPTIONAL AND NECESSARY STEERING SETTINGS LISTED WITH 
+% EXPLAINATIONS. NOTE THE FOLLOWING:
+%   [NEC]   -- NECESSARY SETTING
+%   [OPT]   -- OPTIONAL SETTING
+%   [WARN]  -- WARNINGS FOR AN OPTION IN THE STEERING WILL START WITH "WARN:".
+%   %       -- COMMENTS IN STEERING START WITH "%".
+%
+%
+%
+%
+% [OPT] SET THE DEBUG FLAG TO MAKE MyGrid PRINT DEBUG INFO AT RUN-TIME
+debug
+%
+%
+% [OPT] SPECIFY THE IDENTIFYING NAME FOR THIS GRID 
+NAME MCgrid_example_B-like
+%
+%
+% [NEC] PROVIDE THE PATH TO THE GRID
+gridpath MyGrids/top/sherpa/ZRapRun_d02_B-s3.root 
+%
+%
+% [OPT] IDENTIFY WHO GENERATED THE GRID, FOR INFO
+gridgeneratorid RIVET-APPLGRID
+%
+%
+% [OPT] SPECIFY THE NTuple GENERATOR, OPTIONAL NOW, BUT COULD BE USED TO DETERMINE UNITS IF THEY ARE NOT SPECIFIED IN THIS STEERING
+gridntupleid SHERPA
+%
+%
+% [OPT] SET THE LOWEST ORDER OF WHAT IS IN THIS GRID
+% [WARN] This functionality is not implimented yet, but the value can be set and retrieved.
+lowestorder 2
+%
+%
+% [OPT] NOTE IF THIS GRID's REFERENCE HISTO HAS BEEN divided by bin width ALREADY
+% [WARN] This functionality is not implimented yet, but the flag can be set and retrieved.
+dividedbybinwidth
+%
+%
+% [OPT] NOTE THE LOWEST ORDER OF WHAT IS IN THIS GRID
+% [WARN] This functionality is not implimented yet, but the flag can be set and retrieved.
+normtot
+%
+%
+% [NEC] PROVIDE x AND y UNITS FOR SCALING
+xunits Gev
+yunits pb

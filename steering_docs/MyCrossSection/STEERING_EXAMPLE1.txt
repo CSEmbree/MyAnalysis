@@ -1,30 +1,15 @@
-%subprocesssteername topsubprocesses.dat
-%datanamedir data
-%gridnamedir /afs/cern.ch/user/t/tcarli/scratch1/applgrid/mcfm/Bin/
 %
-%Gridnamedir mcfm/
 debug
+%
+%
 plotmarker
-%xlegend is the RIGHT position of the Legend
 xlegend 0.95
-%ylegend is the TOP position of the legend
 ylegend 0.9
-%ratiotitlelabel test
 %
-% example PDF together
+overlaystyle theory,data
+ratiostyle thoery/data
 %
-%pdfdata MyPDF/CT10.txt,MyPDF/NNPDF23nlo.txt,MyPDF/HERAPDF15NLO.txt,MYPDF/mypdf_MSTW2008nlo.txt
-%
-%pdfdata MyPDF/ATLASepWZNLO.txt,MyPDF/CT10.txt,MyPDF/HERAPDF15NLO.txt
 pdfdata MyPDF/CT10.txt,MyPDF/HERAPDF15NLO.txt
-%pdfdata MyPDF/ATLAS.txt,MyPDF/CT10.txt
-% single pdf:
-%pdfdata MyPDF/CT10.txt
-%pdfdata MyPDF/NNPDF23nlo.txt
-%pdfdata MyPDF/MSTW2008nlo.txt
-%pdfdata MyPDF/HERAPDF15NLO.txt
-%pdfdata MyPDF/ATLASepWZNLO.txt
-%pdfdata MyPDF/ATLAS3jet.txt
 %
 %
 % need always dataname, gridname, markerstyle, markercolor one after the other
@@ -48,25 +33,3 @@ markerstyle 20
 markercolor 1
 vardesc atlas_pttt_5fb
 frameid 2
-%%
-%%
-% 
-%dataname MyData/datanew/atlas2012_5fb_top_ytt_ljet.txt
-%gridname MyGrids/top/mcfm/grid--TTbar_yttatlas.root
-%markerstyle 20
-%markercolor 1
-%vardesc atlas_ytt_5fb
-%frameid 3
-%
-% PDFErrorBand, AlphaS, RenormalizationScale, FactorizationScale
-%AlphaS
-%PDFErrorBand
-%RenormalizationScale
-%FactorizationScale
-%Mtop:grids1-sqrts7000-topmass171.5-scale171.5:grids1-sqrts7000-topmass173.5-scale173.5
-%Ebeam:grids1-sqrts6860-topmass172.5-scale172.5:grids1-sqrts7140-topmass172.5-scale172.5
-%
-% How should the error band be defined? 
-% Choose *either* "OneSigma" or "90Percent"
-%OneSigma
-%

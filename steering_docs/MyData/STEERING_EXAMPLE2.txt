@@ -8,8 +8,9 @@ EXP CMS
 framelogy
 framelogx
 %
-%unitypb
-%unitxGeV
+yunits fb
+xunits GeV
+%
 normtot
 ERRORINPERCENT
 dividedbybinwidth

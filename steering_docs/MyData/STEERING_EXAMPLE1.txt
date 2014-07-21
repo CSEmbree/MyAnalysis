@@ -9,13 +9,11 @@ EXP ATLAS
 ERRORINPERCENT
 NAME ATLAS_2012_diffcross_mtt
 label ATLAS 2011
-% default units are GeV and fb
-unitxTeV
-unitypb
+%
 normtot
 dividedbybinwidth
 %
-%
+%% default units are GeV and fb
 xunits TeV
 yunits pb
 %
