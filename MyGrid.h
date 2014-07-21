@@ -42,6 +42,8 @@ class MyGrid {
   
   std::string xunits;
   std::string yunits;
+
+  int lowestorder;
  
  public:
 
@@ -53,7 +55,8 @@ class MyGrid {
   void ScaleGraph(TGraphAsymmErrors *g1, double scalex, double scaley);
   void NormaliseGraph(TGraphAsymmErrors* g1, double yscale, double xscale, bool normtot, bool divbinwidth);
   void split_string(std::string str, std::vector<std::string>& split_results, std::string delimiters);
-  bool file_exists(const string& s);
+  bool file_exists(const string& s); //helper
+  string trim(std::string s); //helper
 
   string GetSteeringName() { return steername; };
   string GetGridPath() { return gridpath; };
@@ -66,6 +69,7 @@ class MyGrid {
   double GetScaleY() { return scaley; };
   string GetXUnits() { return xunits; };
   string GetYUnits() { return yunits; };
+  int GetLowestOrder() { return lowestorder; };
   TH1D *GetReference();
 
 };

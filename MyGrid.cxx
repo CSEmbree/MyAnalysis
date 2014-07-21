@@ -26,6 +26,7 @@ MyGrid::MyGrid(std::string fname)
   xunits=""; //TODO - make default more generic? empty to force user to specify
   yunits=""; //TODO - make default more generic?
 
+  lowestorder=-1; //default
 
   this->ReadSteering( steername );
   this->ValidateSettings();
@@ -40,106 +41,87 @@ void MyGrid::ReadSteering(string fname) {
 
   steername = fname;
   cout<<cn<<mn<<" steering = \""<<steername<<"\""<<endl;
+  
 
-  ifstream infiletmp(steername.c_str(), ios::in);
-  if(!infiletmp){ // Check open
+  //ensure steering provided is readable
+  ifstream infile(steername.c_str(), ios::in);
+  if(!infile){ // Check open
     cerr<<cn<<mn<<" ERROR: Can't open \""<<steername<<"\""<<endl;
-    infiletmp.close();
-    exit (1);
+    infile.close();
+    exit(1);
   } else {
     if (debug) cout<<cn<<mn<<" Reading data file: \""<<steername<<"\""<<endl;
   }
 
+  
+  // prepare to read
+  string curLine;
+  string optionName;
+  string optionValue;
+  int w = 20; //arbitrary width units that make formatting nice
 
-  //prep for reading option info
-  int iline=0;
-  int nsyst=1;
-  char line[1024]; char option[256]; char val[256];  int intVal; double doubleVal;
-  ifstream infile(steername.c_str(), ios::in);
 
-
-  // read all grid details/options from steering file
+  // read all options from text file
   while (infile.good()) {
-    infile.getline(line,sizeof(line),'\n');
+    getline(infile, curLine);
+
+    curLine = trim(curLine); //remove leading and trailing white space
+    int optionSep = curLine.find(' '); //optioname ends after first space
+
+
+    // retrieve the option name and it's value seperatly for further parsing
+    optionName  = curLine.substr(0, optionSep);
+    optionValue = trim(curLine.substr(optionSep+1, curLine.size())); //'optionValue' could be broken up further if needed
+
+
     
-    if (debug) cout<<cn<<mn<<" line= \""<<line<<"\""<<endl;
-    if(line[0] != '%' ) { //ignore lines beginning with comments - could be done better
-
-      switch( toupper(line[0]) ) { //use first letter of option to find where to start
-      case 'A':	break;
-      case 'B': break; 
-      case 'C': break;
-      case 'D': 
-	if (strstr(line,"debug")!=0) {
-	  debug=true;
-	  if (debug) cout<<cn<<mn<<" Debug turned on!"<<endl;
-	} else if (strstr(line,"dividedbybinwidth")!=0) {
-	  dividedbybinwidth=true;
-	  if (debug) cout<<cn<<mn<<" Divided by bin width is ON"<<endl; 
-	}
-	break;
-      case 'E': break;
-      case 'F': break;
-      case 'G': 
-	if (strstr(line,"gridpath")!=0) {
-	  sscanf(line," %s %[^\n] ", option, val);
-	  gridpath = string(val);
-	} else if (strstr(line,"gridgeneratorid")!=0) {
-	  sscanf(line," %s %[^\n] ", option, val);
-	  gridgeneratorid = string(val);
-	} else if (strstr(line,"gridntupleid")!=0) {
-	  sscanf(line," %s %[^\n] ", option, val);
-	  gridntupleid = string(val);
-	}
-	break;
-      case 'H': break;
-      case 'I': break;
-      case 'J': break;
-      case 'K': break;
-      case 'L': break;
-      case 'M': break;
-      case 'N': 
-	if (strstr(line,"NAME")!=0) {
-	  sscanf(line," %s %[^\n] ", option, val);
-	  gridname = string( val );
-	} else if (strstr(line,"normtot")!=0) {
-	  normtot=true;
-	  if (debug) cout<<cn<<mn<<" Divide by bin width is ON"<<endl; 
-	} 
-	break;
-      case 'O': break;
-      case 'P': break;
-      case 'Q': break;
-      case 'R': break;
-      case 'S': break;
-      case 'T': break;
-      case 'U': break;
-      case 'V': break;
-      case 'W': break;
-      case 'X': 
-	if (strstr(line,"xunits")!=0) {
-	  sscanf(line," %s %s ", option, val);
-	  xunits = string( val );
-	}
-	break;
-      case 'Y': 
-	if (strstr(line,"yunits")!=0) {
-	  sscanf(line," %s %s ", option, val);
-	  yunits = string( val ); 
-	}
-	break;
-      case 'Z': break;
-      default: 
-	cerr<<cn<<mn<<" WARN: Invalid steering option found '"<<line<<"'"<<endl;
+    if (debug) {
+      cout<<cn<<mn<<" Read in:>>>>>>>>>>>>>>>>>>"
+	  <<"\n"<<setw(w)<<"currentLine: \""<<curLine<<"\""
+	  <<"\n"<<setw(w)<<" optionName: \""<<optionName<<"\""
+	  <<"\n"<<setw(w)<<"optionValue: \""<<optionValue<<"\""
+	  <<"\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"<<endl;
+    }
+    
+    
+    if(curLine[0] != '%' && !curLine.empty() ) { //ignore lines beginning with comments - could be done better
+      
+      if ( optionName == "debug" ) {
+	debug=true;
+	cout<<cn<<mn<<" Debug turned on!"<<endl;
+      } else if ( optionName == "dividedbybinwidth" ) {
+	dividedbybinwidth=true;
+      } else if ( optionName == "gridpath" ) {
+	gridpath = optionValue;
+      } else if ( optionName == "gridgeneratorid" ) {
+	gridgeneratorid = optionValue;
+      } else if ( optionName == "gridntupleid" ) {
+	gridntupleid = optionValue;
+      } else if ( optionName == "NAME" ) {
+	gridname = optionValue;
+      } else if ( optionName == "normtot" ) {
+	normtot=true;
+      } else if ( optionName == "xunits" ) {
+	xunits = optionValue;
+      } else if ( optionName == "yunits" ) {
+	yunits = optionValue; 
+      } else if ( optionName == "lowestorder" ) {
+	sscanf( optionValue.c_str(), "%d ", &lowestorder);
+      } else {
+	cerr<<cn<<mn<<" WARN: Invalid steering option found '"<<curLine<<"'"<<endl;
 	//exit(0); //stop if an invalid option found, it's probably an error!
-      } //end switch
-    }; //end comment check
-  }; //end file reading
+      }
 
+    } //end if, comment check
+  }  
+  
+  
   if(debug) { 
     cout<<cn<<mn<<" Finished reading steering. REPORT:"<<endl;
     this->Print();
   }
+  
+  infile.close(); //cleanup
 
   return;
 }
@@ -238,7 +220,8 @@ void MyGrid::Print() {
       <<"\n"<<setw(w1)<<"normtot: "          <<setw(w2)<<(normtot? "YES":"NO")
       <<"\n"<<setw(w1)<<"dividedbybinwidth: "<<setw(w2)<<(dividedbybinwidth? "YES":"NO")
       <<"\n"
-      <<"\n"<<setw(w1)<<"NAME: "             <<setw(w2)<<gridname<<endl;
+      <<"\n"<<setw(w1)<<"NAME: "             <<setw(w2)<<gridname
+      <<"\n"<<setw(w1)<<"Lowest Order: "     <<setw(w2)<<lowestorder<<endl;
     cout<<cn<<mn<<" <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"<<endl;            
   
     return;
@@ -362,4 +345,21 @@ bool MyGrid::file_exists(const string& s) {
     return true;
   }
   else return false;
+}
+
+
+std::string MyGrid::trim(std::string s) {
+  // 
+  // Helper to remove leading and trailing white space from steering file reading
+  //  credit to: http://www.toptip.ca/2010/03/trim-leading-or-trailing-white-spaces.html
+  //
+  std::string reducedS = s;
+
+  size_t p = reducedS.find_first_not_of(" \t");
+  reducedS.erase(0, p);
+  
+  p = reducedS.find_last_not_of(" \t");
+  if (string::npos != p) reducedS.erase(p+1);
+
+  return reducedS;
 }
