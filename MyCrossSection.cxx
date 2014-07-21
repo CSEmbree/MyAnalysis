@@ -13,7 +13,7 @@ using namespace std;
  ******************************************************************/
 
 //HARDCODED default value for an unused double - how to choose a better number?
-const double DEFAULT_DOUBLE = -999;\
+const double DEFAULT_DOUBLE = -999;
 const string cn = " MyCrossSection::"; //class name, used for print statemants
 
 MyCrossSection::MyCrossSection(char name[100])
@@ -352,11 +352,10 @@ void MyCrossSection::Initialize() {
     int denomMarkerStyle, denomMarkerColor, denomLineColor, denomLineStyle, denomFillColor=kGray, denomFillStyle, denomErrorBar;
     TGraphAsymmErrors* denomTop, *denomBot;
     
-    cout<<cn<<mn<<" Getting denominator settings..."<<endl;
+    if(debug) cout<<cn<<mn<<" Getting ratio denominator settings..."<<endl;
     if( IsRatioDenominator("data") ) {
-      cout<<"TEST1 data"<<endl;      
+      if(debug) cout<<cn<<mn<<" Denominator is DATA"<<endl;      
       TGraphAsymmErrors* g = mydata[igrid]->GetTGraphTotErr();
-      cout<<"TEST2 data"<<endl;
       denomName            += mydata[igrid]->GetDataName()+"/"+mydata[igrid]->GetDataName();
       denomMarkerStyle     = g->GetMarkerStyle();
       denomMarkerColor     = g->GetMarkerColor();
@@ -367,9 +366,8 @@ void MyCrossSection::Initialize() {
       denomTop             = g;
       denomBot             = g; //same as Top
     } else if ( IsRatioDenominator("reference") ) {
-      cout<<"TEST1 ref"<<endl;
+      if(debug) cout<<cn<<mn<<" Denominator is REFERENCE"<<endl;      
       TGraphAsymmErrors* g = TH1TOTGraphAsymm(GetNormalisedReference(igrid));
-      cout<<"TEST2 ref"<<endl;      
       g->GetName();
       denomName            += g->GetName()+igrid;
       denomName            +="/";
@@ -383,15 +381,15 @@ void MyCrossSection::Initialize() {
       denomTop             = g;
       denomBot             = g; //same as Top
     } else if ( IsRatioDenominator("theory") ) {
-      //TODO - handle pdf case
-      cout<<"TEST1 theory"<<endl;
+      //TODO - handle multiple pdfs case
+      if(debug) cout<<cn<<mn<<" Denominator is THEORY"<<endl;      
       TGraphAsymmErrors* g = NULL;
-      myband[igrid]->ComputePDFBandRatio(g); //TEST - origonal    
+      myband[igrid]->ComputePDFBandRatio(g);
       denomBot = myband[igrid]->GetPdfBand(0); //TODO - make for all PDFs
-      cout<<"TEST2 thoery"<<endl;  
     }
      
-    if ( IsRatioDenominator("theory") == false ) {
+    //normal process if denom was data or reference; myband handles the theory case
+    if ( IsRatioDenominator("theory") == false ) { 
       cout<<cn<<mn<<" Computing denominator... "<<endl;
       ratiodenom.push_back(myTGraphErrorsDivide(denomTop, 
 						denomBot, 2)); //TODO - change error bar saving?
@@ -403,19 +401,19 @@ void MyCrossSection::Initialize() {
       ratiodenom[igrid]->SetFillColor(denomFillColor);
       ratiodenom[igrid]->SetFillStyle(denomFillStyle);
       
-      cout<<"TEST: ratiodenom Printing - START"<<endl;
-      ratiodenom[igrid]->Print("all"); //TEST
-      cout<<"TEST: ratiodenom Printing - STOP"<<endl;
-      //exit(0); //TEST
+      if(debug) {
+	cout<<cn<<mn<<" Reporting ratio denominator Print:"<<endl;
+	ratiodenom[igrid]->Print("all"); //TEST
+      }
     }
 
-    //COMPUTE NUMERATOR(S)
+
+    // COMPUTE NUMERATOR(S)
     if(debug) cout<<cn<<mn<<" Getting Ratio Numerator settings..."<<endl;
     string name = "";
     if( IsRatioNumerator("data") == true ) {
-      cout<<cn<<mn<<" Data is a ratio numerator, computing..."<<endl;
+      if(debug) cout<<cn<<mn<<" DATA is a ratio numerator, computing..."<<endl;
 
-      //TODO - impliment data over 
       TGraphAsymmErrors* g = mydata[igrid]->GetTGraphTotErr();
       ratiodata.push_back(myTGraphErrorsDivide(g,
 					       denomBot, 2));
@@ -431,17 +429,15 @@ void MyCrossSection::Initialize() {
       ratiodata[igrid]->SetFillColor(g->GetFillColor());
       ratiodata[igrid]->SetFillStyle(g->GetFillStyle());    
     
-      cout<<"TEST: ratiodata Printing - START"<<endl;
-      ratiodata[igrid]->Print("all");
-      cout<<"TEST: ratiodata Printing - STOP"<<endl;
-      //exit(0);//TEST
+      if(debug) {
+	cout<<cn<<mn<<" Reporting ratio numerator DATA Print"<<endl;
+	ratiodata[igrid]->Print("all");
+      }
     }
     
     if( IsRatioNumerator("reference") == true ) {
-      cout<<cn<<mn<<" Reference is a ratio numerator, computing..."<<endl;
-      cout<<"TEST: GetNPDF"<<myband[igrid]->GetNPDF()<<endl;
-      
-      //TODO - impliment data over 
+      if(debug) cout<<cn<<mn<<" REFERENCE is a ratio numerator, computing..."<<endl;
+             
       TH1* href = GetNormalisedReference(igrid);
       TGraphAsymmErrors* g = TH1TOTGraphAsymm(href);
       ratioreference.push_back(myTGraphErrorsDivide(g,
@@ -458,21 +454,17 @@ void MyCrossSection::Initialize() {
       ratioreference[igrid]->SetFillColor(g->GetFillColor());
       ratioreference[igrid]->SetFillStyle(g->GetFillStyle());    
     
-      cout<<"TEST: ratioreference Printing - START"<<endl;
-      ratioreference[igrid]->Print("all");
-      cout<<"TEST: ratioreference Printing - STOP"<<endl;
-      //exit(0);//TEST
+      if(debug) {
+	cout<<cn<<mn<<" Reporting ratio numerator REFERENCE Print"<<endl;
+	ratioreference[igrid]->Print("all");
+      }
     }
     
     if( IsRatioNumerator("theory") ){
-      myband[igrid]->ComputePDFBandRatio(denomBot); //TEST - origonal
-    
-      cout<<"TEST: theory Printing - START"<<endl;
-      //ratioreference[igrid]->Print("all");
-      cout<<"TEST: theory Printing - STOP"<<endl;
-      //exit(0);//TEST
-    }
+      if(debug) cout<<cn<<mn<<" THEORY is a ratio numerator, computing..."<<endl;
 
+      myband[igrid]->ComputePDFBandRatio(denomBot); //TEST - origonal
+    }
   } // igrid loop
 
   if (debug) cout<<" MyCrossSection::Initialize: end of igrid loop"<<endl;
@@ -611,7 +603,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
   //
   // read steering from file fname
   //
-  string mn = "ReadSteering: "; //Method name, for printing
+  string mn = "ReadSteering:"; //Method name, for printing
 
   steername=fname; 
   if (debug) cout<<" MyCrossSection::ReadSteering: steering "<<steername<<endl;
@@ -647,7 +639,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
       string myname=name;
       if (debug) cout << "Push back " << myname << endl;
       //MyGrid *tmpgrid = new MyGrid(myname);
-      gridname.push_back(myname); //CHANGED
+      gridname.push_back(trim(myname)); //CHANGED
       //gridname.push_back(tmpgrid); //CHANGED
 
       //MyGrid *test_mygrid = new MyGrid( myname ); //TEST
@@ -693,15 +685,15 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 
     
     optionName  = curLine.substr(0, optionSep);
-    optionValue = curLine.substr(optionSep+1, curLine.size()); //'optionValue' could be broken up further if needed
+    optionValue = trim(curLine.substr(optionSep+1, curLine.size())); //'optionValue' could be broken up further if needed
 
 
     
     if (debug) {
-      cout<<cn<<mn<<" Read in:>>>>>>>>>"
-	  <<"\n"<<setw(w)<<"currentLine: "<<curLine
-	  <<"\n"<<setw(w)<<" optionName: "<<optionName
-	  <<"\n"<<setw(w)<<"optionValue: "<<optionValue
+      cout<<cn<<mn<<" Read in:>>>>>>>>>>>"
+	  <<"\n"<<setw(w)<<"currentLine: \""<<curLine<<"\""
+	  <<"\n"<<setw(w)<<" optionName: \""<<optionName<<"\""
+	  <<"\n"<<setw(w)<<"optionValue: \""<<optionValue<<"\""
 	  <<"\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"<<endl;
     }
     
@@ -731,7 +723,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	  sscanf( optionValue.c_str(), "%d", &intVal);
 	  frameid[igrid]=intVal;
 	} else if ( optionName == "facscale" ) {
-	  if (debug) cout<<"TEST: OPTION: "<<optionName<<", VALUE: "<<optionValue<<endl;
+	  if (debug) cout<<cn<<mn<<" OPTION: "<<optionName<<", VALUE: "<<optionValue<<endl;
 	  std::vector<string> *parsedNames;
 	  char delimeter = ' ';
 	  parsedNames = ParseString( optionValue, delimeter);
@@ -821,7 +813,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	  plotchi2=true;
 	} else if ( optionName == "pdfdata" ) {
 	  //sscanf(line," %s %[^\n] ",text, name);
-	  if (debug) cout<<"TEST: pdfdata: "<<optionName<<", pdf(s): "<<optionValue<<endl;
+	  if (debug) cout<<cn<<mn<<" pdfdata: "<<optionName<<", pdf(s): "<<optionValue<<endl;
 	  std::vector<string> *parsedNames;
 	  //std::string pdfSteeringFileNames = name;
 	  char delimeter = ',';
@@ -851,7 +843,9 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	  std::vector<string> *parsedNames = this->ParseRatioStyle( optionValue );
 	  rationames = *parsedNames;
 
-	  
+	  if(debug) cout<<cn<<mn<<" Computed ratiostyle to be: "<<GetRatioStyleString()<<endl;
+
+	  /*	  
 	  cout<<"TEST0 - START"<<endl;
 
 	  cout<<"TEST1 - GetRatioNumerators"<<endl;
@@ -873,12 +867,12 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 
 	  cout<<"TEST5 - DONE"<<endl;
 	  //exit(0); //TEST
-
+	  */
 
 
 
 	} else if ( optionName == "renscale" ) {
-	  if (debug) cout<<"TEST: RENSCALE: "<<optionName<<", value(s): "<<optionValue<<endl;
+	  if (debug) cout<<cn<<mn<<" RENSCALE: "<<optionName<<", value(s): "<<optionValue<<endl;
 
 	  std::vector<string> *parsedNames; //TODO - clean this up after use?
 	  char delimeter = ' ';
@@ -941,6 +935,8 @@ void MyCrossSection::ReadSteering(char fname[100]) {
     Print();
     //exit(0); //TEST
   }
+
+  infile.close(); //cleanup
 
   return;
 };
@@ -1081,11 +1077,12 @@ void MyCrossSection::Normalise(TH1D* h1, double yscale, double xscale=1., bool n
 
 
   //for (int i=0; i<=h1->GetNbinsX(); i++) {
-  for (int i=1; i<h1->GetNbinsX(); i++) {
+  for (int i=1; i<=h1->GetNbinsX(); i++) {
     y=h1->GetBinContent(i)*yscale;
 
-    double binw = 1.;
-    if (divbinwidth) binw = h1->GetBinWidth(i); 
+    //double binw = 1.;
+    //if (divbinwidth) binw = h1->GetBinWidth(i); 
+    double binw = binw = h1->GetBinWidth(i); //<---changed that fixed everything...
 
     //sigtot+=y;
     sigtot+=y*binw;
@@ -1119,11 +1116,11 @@ void MyCrossSection::Normalise(TH1D* h1, double yscale, double xscale=1., bool n
    
     y =h1->GetBinContent(i)*scal;//*binw;
     ey=h1->GetBinError(i)  *scal;//*binw;
-    x =binw                *xscale;
+    x =binw                *xscale;//*h1->GetBinWidth(i);
 
-
-    cout<<" DATA:  Numerator: "<<y<<", Denominator: "<<x<<endl;
-    cout<<" ERROR: Numerator: "<<ey<<", Denominator: "<<x<<endl;
+    cout<<"\t DATA:  content: "<<h1->GetBinContent(i)<<", scal: "<<scal<<endl; 
+    cout<<"\t DATA:  Numerator: "<<y<<", Denominator: "<<x<<", RES: "<<(y/x)<<endl;
+    cout<<"\t ERROR: Numerator: "<<ey<<", Denominator: "<<x<<", RES: "<<(ey/x)<<endl;
     if (x!=0) h1->SetBinContent(i,y/x);
     else      h1->SetBinContent(i,0.);
     
@@ -1478,7 +1475,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
     name+=iframe;
   }
 
-  myframe->SetFrameName(name); //TEST
+  myframe->SetFrameName(name);
   myframe->SetSubPad2TitleX(titx);
   myframe->SetSubPad1TitleY(tity);
 
@@ -1633,26 +1630,6 @@ void MyCrossSection::DrawinFrame(int iframe) {
     
 
 
-    /*
-    //plot the overlay portion of graph
-    if (npdf<1) { // NO PDFs
-      href=this->GetNormalisedReference(igrid);
-      if (!href) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
-      
-      //no PDF, plot reference histogram for overlay
-      href->Draw("same,hist"); //no PDF overlay draw
-      if (debug) {
-	cout<<" MyCrossSection::DrawinFrame: print reference histogram"<<endl;
-	href->Print("all");
-      }
-    } else { //PDFs provided
-      if (debug) cout<<" MyCrossSection::DrawinFrame: draw band igrid= "<<igrid<<endl;
-      
-      //draw each PDF band on top pad of plot for overlay
-      myband.at(igrid)->DrawPDFBand();
-    }
-    */
-
     // Draw data to the frame and add data name to the legend
     if (this->GetDataOk(igrid)) {
       if (!mydata[igrid]) cout<<" MyCrossSection::DrawinFrame: mydata["<<igrid<<"] not found "<<endl;
@@ -1773,6 +1750,10 @@ void MyCrossSection::DrawinFrame(int iframe) {
   if (debug) cout<<" MyCrossSection::DrawinFrame: npdf= "<<npdf<<endl;
 
 
+
+  
+  
+
   // determine ratio view size
   for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
     int igrid=gridinframe[iframe][i];
@@ -1783,6 +1764,10 @@ void MyCrossSection::DrawinFrame(int iframe) {
 		   << gridinframe[iframe][i] 
 		   << " Draw reference for igrid= "<<igrid<<endl;
   
+
+    ComputeRatioRange(&Ymin, &Ymax, igrid);
+    
+    /*
     //COMPUTE RATIO WINDOW
     // check denominator window size
     if( IsRatioDenominator("data") == true ) {
@@ -1821,6 +1806,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
       if (ymin<Ymin) Ymin=ymin;
       if (ymax>Ymax) Ymax=ymax;
     }
+    */
     
     if (debug) cout<<" MyCrossSection::DrawinFrame: Ymin= "<<Ymin<<" Ymax= "<<Ymax<<endl;
   }
@@ -2261,8 +2247,6 @@ vector<string>* MyCrossSection::ParseRatioStyle(string rawdata) {
     exit(0);
   }
   
-  //exit(0); //TEST
-
   return ratioNames;
 }
 
@@ -2561,7 +2545,10 @@ bool MyCrossSection::validateRatioStyle(std::vector<std::string > names) {
 
 
 std::string MyCrossSection::trim(std::string s) {
-  // credit to: http://www.toptip.ca/2010/03/trim-leading-or-trailing-white-spaces.html
+  // 
+  // Helper to remove leading and trailing white space from steering file reading
+  //  credit to: http://www.toptip.ca/2010/03/trim-leading-or-trailing-white-spaces.html
+  //
   std::string reducedS = s;
 
   size_t p = reducedS.find_first_not_of(" \t");
@@ -2571,4 +2558,59 @@ std::string MyCrossSection::trim(std::string s) {
   if (string::npos != p) reducedS.erase(p+1);
 
   return reducedS;
+}
+
+
+void MyCrossSection::ComputeRatioRange(double *_Ymin, double *_Ymax, int igrid) {
+  //
+  // Determines the max and min of the ratio range based on all possible ratio styles
+  //
+  string mn="ComputeRatioRange:";
+
+  const double BIG=1.e30; //arbitrary size that changes when computing size
+  double xmin=BIG, xmax=-BIG, ymin=BIG, ymax=-BIG;
+  double Ymin=BIG, Ymax=-BIG;
+  
+  
+  //COMPUTE RATIO WINDOW
+  // check denominator window size needed
+  if( IsRatioDenominator("data") == true ) {
+    ratiodenom[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
+  } else if (IsRatioDenominator("reference") == true) {
+    ratiodenom[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
+  } else if (IsRatioDenominator("theory") == true) {
+    ymin=myband[igrid]->GetYmin();
+    ymax=myband[igrid]->GetYmax();
+  }
+  
+  if (ymin<Ymin) Ymin=ymin;
+  if (ymax>Ymax) Ymax=ymax;
+  
+  
+  // check numerator(s) window size needed
+  if( IsRatioNumerator("data") == true ) {
+    ratiodata[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
+    if (ymin<Ymin) Ymin=ymin;
+    if (ymax>Ymax) Ymax=ymax;
+  }
+  
+  if( IsRatioNumerator("reference") == true ) {
+    ratioreference[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
+    if (ymin<Ymin) Ymin=ymin;
+    if (ymax>Ymax) Ymax=ymax; 
+  }
+  
+  if( IsRatioNumerator("thoery") == true ) {
+    ymin=myband[igrid]->GetYmin();
+    ymax=myband[igrid]->GetYmax();
+    if (ymin<Ymin) Ymin=ymin;
+    if (ymax>Ymax) Ymax=ymax;
+  }
+  
+  *_Ymin = Ymin;
+  *_Ymax = Ymax;
+
+  if (debug) cout<<cn<<mn<<" Ymin= "<<Ymin<<" Ymax= "<<Ymax<<endl;
+  
+  return;
 }

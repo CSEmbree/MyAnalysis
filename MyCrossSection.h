@@ -152,6 +152,8 @@ class MyCrossSection {
   std::string trim(std::string s); //remove leading and trailing white space
   bool validateOverlayStyle(std::vector<std::string > names); //For validating overlay names
   bool validateRatioStyle(std::vector<std::string > names);
+  void ComputeRatioRange(double *Ymin, double *Ymax, int igrid);
+  
 
 
  public:
@@ -286,8 +288,17 @@ class MyCrossSection {
   };
 
   string GetGridSteeringPath(int igrid) {
-    if(gridnamebasedir.compare("")==0) return gridname[igrid];
-    else                               return gridnamebasedir+"/"+gridname[igrid];
+    string slash = "";
+    string gridsteerpath = "";
+
+    if(gridnamebasedir.compare("")==0) gridsteerpath = gridname[igrid];
+    else {
+      //add slash to grid directory path, if needed
+      if( gridnamebasedir[gridnamebasedir.size()-1] != '/' ) slash = "/"; 
+      gridsteerpath = gridnamebasedir+slash+gridname[igrid];
+    }
+
+    return gridsteerpath;
   }
   
 //  std::vector<string> *GetPDFData(int igrid) {
@@ -538,6 +549,7 @@ class MyCrossSection {
   void Print();
 
   void ScaleGraph(TGraphAsymmErrors *g, double scalex, double scaley); //TODO - remove this?
+  
 };
 
 
