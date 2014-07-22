@@ -199,7 +199,7 @@ void MyData::ReadData(string fname, string dir, double myscale){
  //if (debug) 
  cout<< " MyData::ReadData read file fname= "<<fnametmp.Data()<<endl;
 
- cout<<"TEST: Before"<<endl;
+ 
  ifstream infile(fnametmp.Data(), ios::in);
  if(!infile){ // Check open
   cerr << " MyData::ReadData: Can't open " << fnametmp.Data() <<"\n";
@@ -208,7 +208,7 @@ void MyData::ReadData(string fname, string dir, double myscale){
  } else {
    if (debug) cout <<" MyData::ReadData: read data file: " << fnametmp.Data() << endl;
  }
- cout<<"TEST: After"<<endl;
+ 
 
  //int iline=0;
  int nsyst=0;
