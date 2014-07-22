@@ -17,6 +17,8 @@ xunits GeV
 yunits pb
 %
 normtot
+%dividedbybinwidth
+%
 framelogy
 framelinx
 label ATLAS 2012

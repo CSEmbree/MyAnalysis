@@ -20,6 +20,7 @@ normtot
 %framexmax  3.
 framelogy
 framelinx
+label ATLAS 2013
 titlex |y_{t, #bar{t}}| 
 titley 1/#sigma d#sigma/d|y_{t,#bar{t}}|
 %

@@ -17,6 +17,7 @@ xunits TeV
 yunits pb
 %
 normtot
+%dividedbybinwidth
 %
 label ATLAS 2012
 titlex p_{T, t, #bar{t}} [GeV]
