@@ -1,11 +1,12 @@
 
 CXX = g++
 F77 = gfortran
+DEBUG = -g
 
 FFLAGS   += -O3 -fPIC 
 CXXFLAGS += -O3 -fPIC -fpermissive -std=c++0x
 #CXXFLAGS += -O3 -fPIC -fpermissive 
-LDFLAGS +=  -fno-automatic -fno-f2c -O3 -g  # -I./src/Inc -Iobj
+LDFLAGS +=  -fno-automatic -fno-f2c -O3  # -I./src/Inc -Iobj
 
 # root
 ROOTINCS = $(shell root-config --cflags) 
@@ -21,6 +22,7 @@ LHAPDFLIBS = -L$(LHAPDFDIR) -lLHAPDF
 APPLCXXFLAGS = $(shell applgrid-config --cxxflags)
 APPLCLIBS    = $(shell applgrid-config --ldcflags)
 APPLFLIBS    = $(shell applgrid-config --ldflags)
+#APPLCLIBS    = -L/afs/cern.ch/user/c/cembree/public/progs/lib -lAPPLgrid -m64
 
 # hoppet
 HOPPETLIBS =  $(shell hoppet-config --libs)
@@ -47,7 +49,7 @@ install : all
 all : plot testmypdf
 
 plot: plot.o $(OFILE) 
-	$(CXX) $(LDFLAGS) -g -o $@ $(OFILE) $<  $(CLIBS)
+	$(CXX) $(LDFLAGS) $(DEBUG) -o $@ $(OFILE) $<  $(CLIBS)
 
 testmypdf: testmypdf.o $(OFILE)
 	$(CXX) $(LDFLAGS) -o $@  $(OFILE) $< $(CLIBS) $(LHAPDFLIBS) 
