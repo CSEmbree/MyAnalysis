@@ -16,6 +16,7 @@ ylegend 0.9
 %
 ratio theory/data
 %ratio data/theory
+overlaystyle data,reference
 %
 xunits GeV
 yunits fb

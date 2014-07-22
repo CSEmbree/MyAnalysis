@@ -5,14 +5,20 @@ debug
 %
 datanamedir MyData/top/
 Gridnamedir MyGrids/top/mcfm/
+%
 xlegend 0.9
 ylegend 0.9
+overlaystyle data,reference
+ratiostyle reference/data
+xunits GeV
+yunits fb
 %
 %
 % Mtt
+%
 % need always dataname, gridname, markerstyle, markercolor one after the other
 dataname atlas2012_top_mtt_ljet.txt
-gridname grid--TTbar_mttatlas.root
+gridname grid--TTbar_mttatlas.txt
 markerstyledata 20
 markercolordata 1
 reflinecolor 2
@@ -20,19 +26,20 @@ frameid 0
 divideid 0
 %
 dataname cms2012_top_mtt_ljet.txt
-gridname grid--TTbar_mttcms.root
+gridname grid--TTbar_mttcms.txt
 markerstyledata 24
 markercolordata 1
 reflinecolor 4
 reflinestyle 2
-% scalex 1.0 %unsupported
-% scaley 1000. %unsupported
 frameid 0
 divideid 0
 %
+%
+%
 % pt recoil
+%
 dataname atlas2012_top_pttt_ljet.txt
-gridname grid--TTbar_ptttatlas.root
+gridname grid--TTbar_ptttatlas.txt
 markerstyledata 20
 markercolordata 1
 reflinecolor 2
@@ -40,21 +47,20 @@ frameid 1
 divideid 1
 %
 dataname cms2012_top_ptt_ljet.txt
-gridname grid--TTbar_ptttcms.root
+gridname grid--TTbar_ptttcms.txt
 markerstyledata 24
 markercolordata 1
 reflinecolor 4
 reflinestyle 2
-%scalex 1000.
-% scaley 1000. %unsupported
 frameid 1
 divideid 1
+%
 %
 %
 % rapidity of ttbar system
 %
 dataname atlas2012_top_ytt_ljet.txt
-gridname grid--TTbar_yttatlas.root
+gridname grid--TTbar_yttatlas.txt
 markerstyledata 20
 markercolordata 1
 reflinecolor 2
@@ -62,7 +68,7 @@ frameid 2
 divideid 2
 %
 dataname cms2012_top_ytt_ljet.txt
-gridname grid--TTbar_yttcms.root
+gridname grid--TTbar_yttcms.txt
 markerstyledata 24
 markercolordata 1
 reflinecolor 4

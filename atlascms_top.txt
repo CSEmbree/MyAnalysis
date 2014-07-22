@@ -6,50 +6,48 @@ debug
 plotband
 %ploterrorticks
 %ymaxratio 2
-ymaxoverlay 8
-xlegend 0.9
-ylegend 0.9
+%ymaxoverlay 8
+%xlegend 0.9
+%ylegend 0.9
 %
-%yminoverlay 0.00001
-%yminratio -50.0
-%ymaxratio 50.0
 %
 %ratio theory/data
 ratio data/theory
+overlaystyle data,theory
+xunits GeV
+yunits fb
 %
-%datanamedir MyData/datanew/
 %pdfdata MyPDF/HERAPDF15NLO.txt
 pdfdata MyPDF/CT10.txt
 %pdfdata MyPDF/MSTW2008nlo.txt
 %pdfdata MyPDF/NNPDF23nlo.txt
 %
-% need always dataname, gridname, markerstyle, markercolor one after the other
-%Gridnamedir MyGrids/top/mcfm
 %
-dataname  MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
-gridname MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+%
+% need always dataname, gridname, markerstyle, markercolor one after the other
+%
+dataname MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+gridname MyGrids/top/mcfm/grid--TTbar_mttatlas.txt
 markerstyledata 20
 markercolordata 1
 vardesc atlas_mtt_5fb
 reflinecolor 4
 leglabel atlas-reference
-%mcscalex 1000
-%mcscalex 0.001 
-frameid 0
-divideid 0
-%
-dataname MyData/top/cms2012_top_mtt_ljet-SCALED-TO-ATLAS.txt
-gridname MyGrids/top/mcfm/topq-2012-08/nominal/grid--TTbar_mttcms.root
-markerstyledata 24
-markercolordata 1
-vardesc atlas_mtt_5fb
-reflinecolor 2
-leglabel cms-reference
-reflinestyle 2
-%mcscalex 1000
-%scaley 1000.
 frameid 0
 %divideid 0
+%
+%dataname MyData/top/cms2012_top_mtt_ljet-SCALED-TO-ATLAS.txt
+%gridname MyGrids/top/mcfm/topq-2012-08/nominal/grid--TTbar_mttcms.txt
+%markerstyledata 24
+%markercolordata 1
+%vardesc atlas_mtt_5fb
+%reflinecolor 2
+%leglabel cms-reference
+%reflinestyle 2
+%frameid 0
+%
+%
+%
 %
 %dataname MyData/datanew/atlas2012_5fb_top_pttt_ljet.txt
 %gridname grid--TTbar_ptttatlas5fb.root

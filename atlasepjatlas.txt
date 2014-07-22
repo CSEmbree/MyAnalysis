@@ -1,21 +1,25 @@
 %
 % steering file to compare old and new ATLAS data
 %
-%datanamedir data
 debug
-%Gridnamedir /home/tcarli/topdiffxsection/
 %
 %datanamedir MyData/datanew
 Gridnamedir MyGrids/top/mcfm/
+%Gridnamedir /home/tcarli/topdiffxsection/
 %
 xlegend 0.9
 ylegend 0.9
+overlaystyle data,reference
+ratiostyle reference/data
+xunits GeV
+yunits fb
+%
 %
 % Mtt
 %
 % need always dataname, gridname, markerstyle, markercolor one after the other
 dataname MyData/top/atlas2012_top_mtt_ljet.txt
-gridname grid--TTbar_mttatlas.root
+gridname grid--TTbar_mttatlas.txt
 markerstyledata 20
 markercolordata 1
 reflinecolor 2
@@ -23,7 +27,7 @@ frameid 0
 divideid 0
 %
 dataname MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
-gridname grid--TTbar_mttatlas.root
+gridname grid--TTbar_mttatlas.txt
 markerstyledata 24
 markercolordata 1
 reflinecolor 4
@@ -35,7 +39,7 @@ divideid 0
 % pt recoil
 %
 dataname MyData/top/atlas2012_top_pttt_ljet.txt
-gridname grid--TTbar_ptttatlas.root
+gridname grid--TTbar_ptttatlas.txt
 markerstyledata 20
 markercolordata 1
 reflinecolor 2
@@ -43,7 +47,7 @@ frameid 1
 divideid 1
 %
 dataname MyData/datanew/atlas2012_5fb_top_pttt_ljet.txt
-gridname grid--TTbar_ptttatlas5fb.root
+gridname grid--TTbar_ptttatlas5fb.txt
 markerstyledata 24
 markercolordata 1
 reflinecolor 4
@@ -55,7 +59,7 @@ divideid 1
 % rapidity of ttbar system
 %
 dataname MyData/top/atlas2012_top_ytt_ljet.txt
-gridname grid--TTbar_yttatlas.root
+gridname grid--TTbar_yttatlas.txt
 markerstyledata 20
 markercolordata 1
 reflinecolor 2
@@ -63,9 +67,9 @@ frameid 2
 divideid 2
 %
 dataname MyData/datanew/atlas2012_5fb_top_ytt_ljet.txt
-gridname grid--TTbar_yttatlas.root
-markerstyle 24
-markercolor 1
+gridname grid--TTbar_yttatlas.txt
+markerstyledata 24
+markercolordata 1
 reflinecolor 4
 reflinestyle 2
 frameid 2
