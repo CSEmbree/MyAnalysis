@@ -367,7 +367,8 @@ void MyCrossSection::Initialize() {
       denomBot             = g; //same as Top
     } else if ( IsRatioDenominator("reference") ) {
       if(debug) cout<<cn<<mn<<" Denominator is REFERENCE"<<endl;      
-      TGraphAsymmErrors* g = TH1TOTGraphAsymm(GetNormalisedReference(igrid));
+      TGraphAsymmErrors* g = TH1TOTGraphAsymm(GetNormalisedReference(igrid)); //old
+      //TGraphAsymmErrors* g = GetNormalisedReferenceAsGraph(igrid, true); //new
       g->GetName();
       denomName            += g->GetName()+igrid;
       denomName            +="/";
@@ -424,7 +425,8 @@ void MyCrossSection::Initialize() {
       ratiodata[igrid]->SetMarkerStyle(this->GetMarkerStyle(igrid));//g->GetMarkerStyle());
       ratiodata[igrid]->SetMarkerColor(this->GetMarkerColor(igrid));//g->GetMarkerColor());
       ratiodata[igrid]->SetMarkerSize(g->GetMarkerColor());
-      ratiodata[igrid]->SetLineColor(kBlack);
+      ratiodata[igrid]->SetLineColor(kBlack); //TODO - set color depending on occurances per frame?
+      cout<<"TEST: grid num: "<<igrid<<", frameID: "<<GetFrameID(igrid)<<endl;
       ratiodata[igrid]->SetLineStyle(g->GetLineStyle());
       ratiodata[igrid]->SetFillColor(g->GetFillColor());
       ratiodata[igrid]->SetFillStyle(g->GetFillStyle());    
@@ -439,9 +441,11 @@ void MyCrossSection::Initialize() {
       if(debug) cout<<cn<<mn<<" REFERENCE is a ratio numerator, computing..."<<endl;
              
       TH1* href = GetNormalisedReference(igrid);
-      TGraphAsymmErrors* g = TH1TOTGraphAsymm(href);
+      TGraphAsymmErrors* g = TH1TOTGraphAsymm(href); // old
+      //TGraphAsymmErrors* g = GetNormalisedReferenceAsGraph(igrid, true); // new
       ratioreference.push_back(myTGraphErrorsDivide(g,
-					       denomBot, 2));
+						    denomBot, 0)); 
+      //error bars were not meaninful here, so set to zero
       name += g->GetName()+igrid;
       name += "/";
       name += denomBot->GetName()+igrid;
@@ -1610,6 +1614,8 @@ void MyCrossSection::DrawinFrame(int iframe) {
 
     //plot the overlay portion of graph
     if(overlayReference) {
+      
+      //old
       href=this->GetNormalisedReference(igrid);
       if (!href) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
       
@@ -1619,6 +1625,22 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	cout<<" MyCrossSection::DrawinFrame: Print reference histogram TEST"<<endl;
 	href->Print("all");
       }
+      //old
+      
+      /*
+      //new
+      TGraphAsymmErrors* gref=this->GetNormalisedReferenceAsGraph(igrid, false); //TEST
+      if (!gref) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
+      
+      //no PDF, plot reference histogram for overlay
+      gref->Draw("P,same"); //no PDF overlay draw
+      if (debug) {
+	cout<<" MyCrossSection::DrawinFrame: Print reference histogram TEST"<<endl;
+	gref->Print("all");
+      }
+      //new
+      */
+
     }
     if(overlayTheory) {
       if (debug) cout<<" MyCrossSection::DrawinFrame: draw band igrid= "<<igrid<<endl;
@@ -1861,7 +1883,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
     }
     if( IsRatioNumerator("reference") == true ) {
       cout<<" RATIO REFERENCE PLOT"<<endl;
-      ratioreference[igrid]->Draw("p,same");
+      ratioreference[igrid]->Draw("P,same");
     }
     if( IsRatioNumerator("theory")    == true ) {
       cout<<" RATIO THEORY PLOT"<<endl;
@@ -1896,6 +1918,61 @@ void MyCrossSection::DrawReference(int igrid) {
   return;
 }
 
+TGraphAsymmErrors* MyCrossSection::GetNormalisedReferenceAsGraph(int igrid, bool ebars) {
+  //
+  // Get reference histograms for grid with index igrid
+  // and normalise according to datascalex and scaley and return as a TGraph
+  // 
+  string mn = "GetNormalisedReferenceAsGraph:";
+
+  TH1D *href=this->GetReference(igrid);
+  if (!href) {
+    cout<<cn<<mn<<" Reference histo not found igrid="<<igrid<<endl;
+    return 0;
+  }
+
+  double binw, y, ey;
+  for (int i=0; i<=href->GetNbinsX(); i++) {
+    binw = href->GetBinWidth(i);
+    y    = href->GetBinContent(i);
+    ey   = href->GetBinError(i);
+    if (binw!=0) href->SetBinContent(i, y/binw);
+    else         href->SetBinContent(i, 0.);
+
+    if(ebars) {
+      if (binw!=0) href->SetBinError(i, ey/binw);
+      else         href->SetBinError(i, 0.);
+    } else {
+      href->SetBinError(i, 0.); //turn error bars off
+    }
+  }
+
+
+  TGraphAsymmErrors *gref = TH1TOTGraphAsymm(href);
+
+  if (this->GetDataOk(igrid)) {
+    //convert units from data to desire
+    double xscale = GetUnitScaleX(mygrid[igrid]->GetXUnits(), this->GetXUnits()); //new scaling
+    double yscale = GetUnitScaleY(mygrid[igrid]->GetYUnits(), this->GetYUnits()); //new scaling
+    
+    if (debug) cout<<cn<<mn<<" xscale:"<<xscale<<", yscale:"<<yscale<<endl;
+
+    bool normtot=mydata[igrid]->isNormTot();
+    bool divbinwidth=mydata[igrid]->DivideByBinWidth();
+    
+
+    //  change normtot and divbinwidth accordingly for reference hist to be same as data
+    this->Normalise(gref,yscale,xscale,normtot, divbinwidth);    
+  }
+
+  gref->SetLineStyle(refhistlinestyle[igrid]);
+  gref->SetLineColor(refhistlinecolor[igrid]);
+  gref->SetMarkerSize(0);
+  
+  return gref;
+}
+
+
 TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
   //
   // Get reference histograms for grid with index igrid
@@ -1919,8 +1996,10 @@ TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
     
     if (debug) cout<<cn<<mn<<" xscale:"<<xscale<<", yscale:"<<yscale<<endl;
 
-    if(mydata[igrid]->GetScalex() != 1.0) xscale += mydata[igrid]->GetScalex();
-    if(mydata[igrid]->GetScaley() != 1.0) yscale += mydata[igrid]->GetScaley();
+    //   if(mydata[igrid]->GetScalex() != 1.0) xscale += mydata[igrid]->GetScalex();
+    //   if(mydata[igrid]->GetScaley() != 1.0) yscale += mydata[igrid]->GetScaley();
+
+    if (debug) cout<<cn<<mn<<" After checking data: xscale:"<<xscale<<", yscale:"<<yscale<<endl;
 
     bool normtot=mydata[igrid]->isNormTot();
     bool divbinwidth=mydata[igrid]->DivideByBinWidth();
@@ -1932,12 +2011,18 @@ TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
 
     
     if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
-      if(debug) cerr<<" MyCrosSection::GetNormalisedReference: WARN: Forcefully scaling reference histo. "
+      if(debug) cerr<<cn<<mn<<" WARN: Forcefully scaling reference histo. "
 		    <<"\n\txscale: "<<mydata[igrid]->GetScalex()
 		    <<"\n\tyscale: "<<mydata[igrid]->GetScaley()<<endl;
       
+      cout<<"TEST1"<<endl;
+      href->Print("all");
+      
       //set theory's artificial scaling to the same as data's
       href->Scale( mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
+      
+      href->Print("all");
+      cout<<"TEST1"<<endl;    
     }
   }
 

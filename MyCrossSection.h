@@ -518,6 +518,7 @@ class MyCrossSection {
   void DrawReference(int igrid);
   TGraphAsymmErrors* GetReferenceRatio(int igrid);
   TH1D* GetNormalisedReference(int igrid);
+  TGraphAsymmErrors* GetNormalisedReferenceAsGraph(int igrid, bool ebars);
 
   void DrawinFrame(int iframe);
 
