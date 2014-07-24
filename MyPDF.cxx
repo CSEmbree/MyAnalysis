@@ -44,7 +44,8 @@ MyPDF::MyPDF(string _steeringFile, int iflpdf, double Q2value, TH1D* h1)
  //steeringFilePath="steering/";
  //steeringFileDir="steering/";
  steeringFileName=_steeringFile;
-
+ nLoops = 1; //default is NLO, steering will overwrite
+ 
  if (FileExists(steeringFileName)==true) {
   ReadSteering(steeringFileName);
 
@@ -137,7 +138,7 @@ void MyPDF::Initialize()
 
  if (applgridok) my_grid->trim();
 
- nLoops    = 1;
+ //nLoops    = 1; //nLoops now set by constructor
  static const int nFlavours = 5;
  h_errors_PDFBand.clear();
  h_errors_AlphaS.clear();

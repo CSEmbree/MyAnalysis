@@ -146,12 +146,12 @@ class MyPDF {
 
         string default_pdf_set_name;
 
-        int nLoops;
+        int nLoops;                 // order of the theory prediction. L0=0, NLO=1, NNLO=2
         //string steeringFilePath;
         //string steeringFileDir;
-        string steeringFileName;    //name of steering file
-        string PDFtype;             //general name for PDF, used for printing. EX: "MSTW2008nlo"
-        string PDFname;             //specific name for PDF, used for looking up a particular PDF. EX: "MSTW2008nlo68cl"
+        string steeringFileName;    // name of steering file
+        string PDFtype;             // general name for PDF, used for printing. EX: "MSTW2008nlo"
+        string PDFname;             // specific name for PDF, used for looking up a particular PDF. EX: "MSTW2008nlo68cl"
         string PDFnamevar;          // for variation files like HERAPDF
         int n_PDFMembers;
         int defaultpdfid;           // set number of default PDF
