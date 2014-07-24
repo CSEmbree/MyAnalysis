@@ -11,14 +11,18 @@ debug
 datanamedir MyData/datanew/
 Gridnamedir MyGrids/top/mcfm/
 %
+pdfdata MyPDF/CT10.txt
+plotband
+%
 % xlegend, ylabel is lower edge of legen 
 xlegend 0.9
 ylegend 0.9
 %
 yunits fb
 xunits GeV
-overlaystyle data,reference
-ratiostyle reference/data
+overlaystyle data,reference,theory
+ratiostyle reference,theory/data
+%ratiostyle theory/reference
 ratiotitlelabel MCFM,Sherpa/Data
 %
 %

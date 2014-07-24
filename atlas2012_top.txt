@@ -7,11 +7,13 @@ debug
 plotmarker
 xlegend 0.9
 ylegend 0.9
+overlaystyle theory,data
+ratiostyle theory/data
 %ratiotitlelabel test
 %
 % example PDF together
 %
-%pdfdata MyPDF/CT10.txt,MyPDF/NNPDF23nlo.txt,MyPDF/HERAPDF15NLO.txt,MYPDF/mypdf_MSTW2008nlo.txt
+%pdfdata MyPDF/CT10.txt,MyPDF/NNPDF23nlo.txt,MyPDF/HERAPDF15NLO.txt,MyPDF/MSTW2008nlo.txt
 %
 %pdfdata MyPDF/ATLASepWZNLO.txt,MyPDF/CT10.txt,MyPDF/HERAPDF15NLO.txt
 pdfdata MyPDF/CT10.txt,MyPDF/HERAPDF15NLO.txt
@@ -27,21 +29,21 @@ pdfdata MyPDF/CT10.txt,MyPDF/HERAPDF15NLO.txt
 %
 % need always dataname, gridname, markerstyle, markercolor one after the other
 dataname MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
-gridname MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+gridname MyGrids/top/mcfm/grid--TTbar_mttatlas.txt
 markerstyle 20
 markercolor 1
 vardesc atlas_mtt_5fb
 frameid 0 
 %
 dataname MyData/datanew/atlas2012_5fb_top_ptt_ljet.txt
-gridname MyGrids/top/mcfm/grid--TTbar_ptatlas.root
+gridname MyGrids/top/mcfm/grid--TTbar_ptatlas.txt
 markerstyle 20
 markercolor 1
 vardesc atlas_ptt_5fb
 frameid 1
 %
 dataname MyData/datanew/atlas2012_5fb_top_pttt_ljet.txt
-gridname MyGrids/top/mcfm/grid--TTbar_ptttatlas5fb.root
+gridname MyGrids/top/mcfm/grid--TTbar_ptttatlas5fb.txt
 markerstyle 20
 markercolor 1
 vardesc atlas_pttt_5fb

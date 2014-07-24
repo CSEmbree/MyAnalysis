@@ -10,6 +10,8 @@ debug
 % xlegend, ylabel is lower edge of legen 
 xlegend 0.9
 ylegend 0.9
+ratiostyle reference/data
+overlaystyle reference,data
 ratiotitlelabel MCFM,Sherpa/Data
 %
 dataname  /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
