@@ -259,7 +259,7 @@ TString MyBand::GetBandRatioStyle() {
    TString bandstyle = "";
     if ( plotmarker == true )      bandstyle+="P";
     if ( ploterrorticks == false ) bandstyle+="Z";
-    if ( plotband == true )        bandstyle+="E1"; //TEST - E2 for     
+    if ( plotband == true )        bandstyle+="E2"; //TEST - E2 for     
     bandstyle+=",same";
     
 
