@@ -17,7 +17,7 @@ xunits GeV
 yunits pb
 %
 normtot
-%dividedbybinwidth
+dividedbybinwidth
 %
 framelogy
 framelinx

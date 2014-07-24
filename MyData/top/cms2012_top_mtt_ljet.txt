@@ -14,15 +14,13 @@ framelogx
 %unitxGeV
 %
 xunits GeV
-yunits fb
+yunits pb
 %
 normtot
-%dividedbybinwidth
+dividedbybinwidth
+scaley 1000.0
 %
 ERRORINPERCENT
-scaley 1000.0
-%scaley 40.0
-scalex 1.0
 %
 label CMS 2012
 titlex m_{t, #bar{t}} [GeV]

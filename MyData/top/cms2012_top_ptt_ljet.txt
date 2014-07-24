@@ -14,7 +14,7 @@ xunits GeV
 yunits pb
 %
 normtot
-%dividedbybinwidth
+dividedbybinwidth
 scaley 1000.0
 %
 ERRORINPERCENT
