@@ -22,8 +22,9 @@ MyCrossSection::MyCrossSection(char name[100])
   crosssectionname="";
   ratiotitlelabel="";
 
-  xunits="GeV"; //TODO - default, make generic
-  yunits="fb"; //TODO - default, make generic
+  xunits="GeV"; //TODO - default, make more generic?
+  yunits="fb"; //TODO - default, make more generic?
+  //order="NLO"; //TODO - default, make more generic?
 
   frameid.clear();
   divideid.clear();
@@ -183,7 +184,7 @@ void MyCrossSection::Initialize() {
 
       
       //mydata[igrid]->Scale(1.,yfac/xfac);
-      //mydata[igrid]->Normalise(yfac, xfac); //TODO - scale measurment data now?
+      //mydata[igrid]->Normalis(yfac, xfac); //TODO - scale measurment data now?
       cout<<" MyCrossSection::Initialize: data to this, FACs: igrid:"<<igrid<<", xfac:"<<xfac<<", yfac:"<<yfac<<endl;
 
 
@@ -215,6 +216,7 @@ void MyCrossSection::Initialize() {
                                 do_AlphaS
 				);
       */
+
       MyPDF *newpdf = new MyPDF(mygrid.at(igrid)->GetGridPath(), 
 				pdfdata.at(ipdf),
                                 do_PDFBand,
@@ -231,6 +233,8 @@ void MyCrossSection::Initialize() {
 
 	cout<<" MyCrossSection::Initialize: npoint= "<<newpdf->h_PDFBand_results->GetN()<<endl;
       }
+
+      newpdf->Print(); //display pdf info
 
       // get myband information for each pdf
       TGraphAsymmErrors* gtmp= (TGraphAsymmErrors*) newpdf->h_PDFBand_results->Clone((TString) (newpdf->GetPDFtype() + "_pdfband"));
@@ -367,8 +371,8 @@ void MyCrossSection::Initialize() {
       denomBot             = g; //same as Top
     } else if ( IsRatioDenominator("reference") ) {
       if(debug) cout<<cn<<mn<<" Denominator is REFERENCE"<<endl;      
-      TGraphAsymmErrors* g = TH1TOTGraphAsymm(GetNormalisedReference(igrid)); //old
-      //TGraphAsymmErrors* g = GetNormalisedReferenceAsGraph(igrid, true); //new
+      //TGraphAsymmErrors* g = TH1TOTGraphAsymm(GetNormalisedReference(igrid)); //old
+      TGraphAsymmErrors* g = GetNormalisedReferenceAsGraph(igrid, true); //new
       g->GetName();
       denomName            += g->GetName()+igrid;
       denomName            +="/";
@@ -441,8 +445,8 @@ void MyCrossSection::Initialize() {
       if(debug) cout<<cn<<mn<<" REFERENCE is a ratio numerator, computing..."<<endl;
              
       TH1* href = GetNormalisedReference(igrid);
-      TGraphAsymmErrors* g = TH1TOTGraphAsymm(href); // old
-      //TGraphAsymmErrors* g = GetNormalisedReferenceAsGraph(igrid, true); // new
+      //TGraphAsymmErrors* g = TH1TOTGraphAsymm(href); // old
+      TGraphAsymmErrors* g = GetNormalisedReferenceAsGraph(igrid, true); // new
       ratioreference.push_back(myTGraphErrorsDivide(g,
 						    denomBot, 0)); 
       //error bars were not meaninful here, so set to zero
@@ -799,9 +803,20 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	  
 	  if( this->validateOverlayStyle(overlaynames) == false ) {
 	    cerr<<cn<<mn<<" Invalid overlay stye detected!"<<endl;
-	    exit(0);
-	  }
-	  
+	    exit(1);
+	  } 
+	  /*
+	  else if (optionName == "order" ) {
+	    cout<<cn<<mn<<" Order is: "<<optionValue<<endl;
+	    
+	    if( SetOrder( optionValue ) == false ) {
+	      cerr<<cn<<mn<<" ERROR: Order name \""<<optionValue<<"\" was not valid, please fix steering"<<endl;
+	      exit(1);
+	    }
+
+	    cout<<cn<<mn<<" 2 Order is: "<<optionValue<<endl;
+	  }	
+	  */  
 	}
 	break;
       case 'P': 
@@ -1614,7 +1629,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 
     //plot the overlay portion of graph
     if(overlayReference) {
-      
+      /*
       //old
       href=this->GetNormalisedReference(igrid);
       if (!href) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
@@ -1626,11 +1641,15 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	href->Print("all");
       }
       //old
+      */
       
-      /*
       //new
       TGraphAsymmErrors* gref=this->GetNormalisedReferenceAsGraph(igrid, false); //TEST
       if (!gref) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
+      
+      gref->SetLineColor(refhistlinecolor[igrid]);
+      gref->SetLineStyle(refhistlinestyle[igrid]);
+      
       
       //no PDF, plot reference histogram for overlay
       gref->Draw("P,same"); //no PDF overlay draw
@@ -1639,7 +1658,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	gref->Print("all");
       }
       //new
-      */
+      
 
     }
     if(overlayTheory) {
@@ -1689,6 +1708,8 @@ void MyCrossSection::DrawinFrame(int iframe) {
       }
     } else { //Data not OK
       href=this->GetReference(igrid);
+      href->SetLineColor(refhistlinecolor[igrid]);
+      //TGraphAsymmErrors * gref = GetNormalisedReferenceAsGraph(igrid,false);
       if (debug) cout<<" MyCrossSection::DrawinFrame: Data not ok igrid= "<<igrid<<endl;
       if (debug) cout<<" MyCrossSection::DrawinFrame: now draw reference igrid= "<<igrid<<endl;
       if (!href){cout<<" MyCrossSection::DrawinFrame: hreference not found "<<endl; exit;}
@@ -1712,7 +1733,9 @@ void MyCrossSection::DrawinFrame(int iframe) {
       else                   curLegLable = "reference";
       
       if (debug) cout<<" MyCrossSection::DrawinFrame: Added '"<<curLegLable<<"' to legend."<<endl;	
-      leg->AddEntry(href, curLegLable, "l");
+      TGraphAsymmErrors *gref = GetNormalisedReferenceAsGraph(igrid,false);
+      leg->AddEntry(gref, curLegLable, "l");
+      //leg->AddEntry(href, curLegLable, "l");
     }	    
     
 
@@ -1931,21 +1954,35 @@ TGraphAsymmErrors* MyCrossSection::GetNormalisedReferenceAsGraph(int igrid, bool
     return 0;
   }
 
+  href->SetLineStyle(refhistlinestyle[igrid]);
+  href->SetLineColor(refhistlinecolor[igrid]);
+
+
+  
+
+  // Divide reference by bin width before doing anything else, because the Convolute is always
   double binw, y, ey;
   for (int i=0; i<=href->GetNbinsX(); i++) {
-    binw = href->GetBinWidth(i);
-    y    = href->GetBinContent(i);
-    ey   = href->GetBinError(i);
-    if (binw!=0) href->SetBinContent(i, y/binw);
-    else         href->SetBinContent(i, 0.);
-
-    if(ebars) {
-      if (binw!=0) href->SetBinError(i, ey/binw);
-      else         href->SetBinError(i, 0.);
-    } else {
-      href->SetBinError(i, 0.); //turn error bars off
+    if(mygrid[igrid]->GetDividedByBinWidth() == false) {
+      binw = href->GetBinWidth(i);
+      y    = href->GetBinContent(i);
+      ey   = href->GetBinError(i);
+      if (binw!=0) href->SetBinContent(i, y/binw);
+      else         href->SetBinContent(i, 0.);
+      
+      if(ebars) {
+	if (binw!=0) href->SetBinError(i, ey/binw);
+	else         href->SetBinError(i, 0.);
+      } else {
+	href->SetBinError(i, 0.); //turn error bars off
+      }
     }
+
+    if(ebars == false)  href->SetBinError(i, 0.); //TODO - make more generic - turn error bars off
   }
+
+  cout<<cn<<mn<<" Reference is divided by binwidth? "
+      <<(mygrid[igrid]->GetDividedByBinWidth()? "Y":"N");
 
 
   TGraphAsymmErrors *gref = TH1TOTGraphAsymm(href);
@@ -1964,6 +2001,22 @@ TGraphAsymmErrors* MyCrossSection::GetNormalisedReferenceAsGraph(int igrid, bool
     //  change normtot and divbinwidth accordingly for reference hist to be same as data
     this->Normalise(gref,yscale,xscale,normtot, divbinwidth);    
   }
+
+
+  if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
+      if(debug) cerr<<cn<<mn<<" WARN: Forcefully scaling reference histo. "
+		    <<"\n\txscale: "<<mydata[igrid]->GetScalex()
+		    <<"\n\tyscale: "<<mydata[igrid]->GetScaley()<<endl;
+      
+      cout<<"TEST1"<<endl;
+      gref->Print("all");
+      
+      //set reference's artificial scaling to the same as data's
+      ScaleGraph( gref, 1.0, mydata[igrid]->GetScaley() ); 
+      
+      gref->Print("all");
+      cout<<"TEST1"<<endl;    
+    }
 
   gref->SetLineStyle(refhistlinestyle[igrid]);
   gref->SetLineColor(refhistlinecolor[igrid]);

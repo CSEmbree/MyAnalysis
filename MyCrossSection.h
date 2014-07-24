@@ -64,6 +64,7 @@ class MyCrossSection {
 
   string xunits;
   string yunits;
+  //string order;
 
   double ymaxoverlay;
   double yminoverlay;
@@ -171,7 +172,34 @@ class MyCrossSection {
   MyCrossSection(char name[100]);
 
   generic_pdf * GetSubProcess() { return mypdf;};
+  /*
+  bool SetOrder( std::string orderID ) {
+    bool valid = false;
 
+    if( orderID == "LO" || orderID == "NLO" || orderID == "NNLO" ) {
+      order = orderID;
+    } else {
+      cerr<<" MyCrossSection::SetOrder: WARN: Invalid ordername found!"
+	  <<"\t Found \""<<orderID<<"\" but expected LO, NLO, or NNLO"<<endl;
+    }
+
+    return valid;
+  };
+
+  int GetOrderNLoops() {
+    int nLoops = -1;
+
+    if      ( order == "LO"  )   nLoops = 0;
+    else if ( order == "NLO"  )  nLoops = 1;
+    else if ( order == "NNLO"  ) nLoops = 2;
+    else
+      cerr<<" MyCrossSection::GetOrderNLoops: WARN: Valid nLoops order not found!"
+	  <<"\t Found \""<<orderID<<"\" but expected LO, NLO, or NNLO"<<endl;
+
+    return nLoops;
+  }
+  */
+  
   double GetUnitScaleX(std::string fromUnits, std::string toUnits);
   double GetUnitScaleY(std::string fromUnits, std::string toUnits);
 
