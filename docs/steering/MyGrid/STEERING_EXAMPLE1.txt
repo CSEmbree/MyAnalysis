@@ -1,0 +1,24 @@
+% THE FOLLOWING IS AN EXAMPLE OF A STEERING FILE for 
+%   MyGrid.cxx
+% WITH ALL THE OPTIONAL AND NECESSARY STEERING SETTINGS LISTED WITH 
+% EXPLAINATIONS. NOTE THE FOLLOWING:
+%   [NEC]   -- NECESSARY SETTING
+%   [OPT]   -- OPTIONAL SETTING
+%   [WARN]  -- WARNINGS FOR AN OPTION IN THE STEERING WILL START WITH "WARN:".
+%   %       -- COMMENTS IN STEERING START WITH "%".
+%
+%
+%
+%
+debug
+%
+NAME MCgrid_example_B-like
+gridpath MyGrids/top/sherpa/ZRapRun_d02_B-s3.root 
+gridgeneratorid RIVET-APPLGRID
+gridntupleid SHERPA
+%
+lowestorder 2
+%
+% [NEC] PROVIDE x AND y UNITS FOR SCALING
+xunits Gev
+yunits pb

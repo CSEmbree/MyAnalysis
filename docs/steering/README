@@ -1,0 +1,48 @@
+STEERING DOCUMENTATION:
+1. INTRO
+2. RUNNING CODE
+3. SUGGESTIONS
+4. EXAMPLE(S)
+
+======================================================
+1. INTRO
+======================================================
+In this directory is are directories containg examples 
+of steering files used by:
+
+  MyCrossSection
+  MyData
+  MyGrid
+  MyPDF
+
+
+======================================================
+2. RUNNING CODE
+======================================================
+In general, to run the code:
+
+  ./plot MyCrossSectionSteeringFile.txt
+
+where MyCrossSectionSteeringFile.txt contains paths to
+a MyData Steering file, a MyGrid steering file, and any
+option MyPDF steering files for theory convolutes.
+
+
+======================================================
+3. SUGGESTIONS
+======================================================
+Please explore these direcotires in this order:
+
+  MyCrossSection -> MyData -> MyGrid -> MyPDF
+
+then try the example in the home project directory
+
+
+======================================================
+4. EXAMPLE(S)
+======================================================
+Try running the code with the steering files and grid
+in the home project directory.
+
+  ./plot example/atlastest.txt
+

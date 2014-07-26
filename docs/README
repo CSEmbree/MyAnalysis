@@ -1,0 +1,62 @@
+DOCUMENTATION:
+1. INTRO
+2. HOW TO MAKE A PLOT
+3. SUGGESTIONS
+4. EXAMPLE(S)
+
+======================================================
+1. INTRO
+======================================================
+In this directory contains documentation for how to 
+use this code. This directory currently only houses 
+documentation for the steering files you will need.
+
+The steering files can documentation can be found in
+
+  steering/
+
+
+======================================================
+2. HOW TO MAKE A PLOT
+======================================================
+In general, to run the code to plot, run:
+
+  ./plot MyCrossSectionSteeringFile.txt
+
+where MyCrossSectionSteeringFile.txt contains paths to
+a MyData Steering file, a MyGrid steering file, and any
+option MyPDF steering files for theory convolutes.
+
+An example of such a MyCrossSection steering file can
+be found in the home project directory in the 'example'
+directory and is called 'atlastest.txt'.
+
+Run this example with
+
+  ./plot example/atlastest.txt
+
+
+======================================================
+3. SUGGESTIONS
+======================================================
+Please read through all of the steering file documents
+in the 'steering' directory.
+
+
+======================================================
+4. EXAMPLE(S)
+======================================================
+Try running the code with the steering files and grid
+in the home project directory.
+
+  ./plot example/atlastest.txt
+
+
+======================================================
+5. HELP
+======================================================
+Questions? Contact:
+
+  Tancredi Carli <tancredi.carli@cern.ch>
+  Cameron Embree <csembree@gmail.com>
+
