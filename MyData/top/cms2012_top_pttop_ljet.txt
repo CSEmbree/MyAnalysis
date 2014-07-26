@@ -15,6 +15,7 @@ titley 1/#sigma d#sigma/dp_{T, top} [pb/GeV]
 %
 xunits GeV
 yunits pb
+scaley 1000.0
 %
 normtot
 ERRORINPERCENT
