@@ -180,7 +180,11 @@ void MyPDF::Initialize()
     h_qqbar_frac->Divide(h_tot);
 */
 
+ cout<<" MyPDF::Initialize: checking for do_AlphaS.."<<endl;
+
  if (do_AlphaS) {
+   cout<<" MyPDF::Initalize: do_AlphaS is ON"<<endl;
+   
   //check for necessary names before continuing
   if(AlphaSmemberNumDown==DEFAULT) {
    cout<<" MyPDF::Initialize: ERROR: 'AlphaSmemberNumDown' not provided in steer file: "<<steeringFileName<<endl;
@@ -212,10 +216,12 @@ void MyPDF::Initialize()
    exit(0);
   }
 
-  if (debug) cout<<" MyPDF::Initialize looking up: "<<default_pdf_set_name<<endl;
+  cout<<" MyPDF::Initialize looking up: "<<default_pdf_set_name<<endl;
 
   //LHAPDF::initPDFSet(default_pdf_set_name.c_str(), 0);
   LHAPDF::initPDFSet(default_pdf_set_name.c_str(), defaultpdfid);
+
+  cout<<" MyPDF::Initialize finshed looking up: "<<default_pdf_set_name<<endl;
 
   if (applgridok) {
    temp_hist= (TH1D*) my_grid->convolute( getPDF, alphasPDF, nLoops);
@@ -273,12 +279,18 @@ void MyPDF::Initialize()
 
  }
 
+ cout<<" MyPDF::Initalize: Checking for do_PDFBand..."<<endl;
+
  // Calculate PDF errors using standard PDF error band
  if (do_PDFBand) {
   if (debug) cout<<" MyPDF::Initialize: Calc PDF errors"<<endl;
+  cout<<" MyPDF::Initialize: Calc PDF errors for: "<<default_pdf_set_name
+      <<" w/ defaultpdfid: "<<defaultpdfid<<endl; //TEST
 
   // LHAPDF::initPDFSet(default_pdf_set_name.c_str(), 0);
   LHAPDF::initPDFSet(default_pdf_set_name.c_str(), defaultpdfid);
+
+  cout<<" MyPDF::Initialize: initPDFSet finished for PDFBand"<<endl; //TEST
 
   // update this to put into steering
   TH1D *hdefault=0;
@@ -374,6 +386,7 @@ void MyPDF::Initialize()
  }  /// do_PDFBand
 
  if (debug) cout<<" MyPDF::Initialize: End of PDF errors loop"<<endl;
+ cout<<" MyPDF::Initialize: End of PDF errors loop"<<endl; //TEST
 
  if (debug) cout<<" MyPDF now calling CalcSystErrors "<<endl;
 
@@ -481,7 +494,7 @@ void MyPDF::CalcPDFBandErrors()
   double diff_central        = 0.;    // needed for HERAPDF
   double mod_val             = 0.;    // needed for MSTW2008nlo
  
-  if (PDFtype.compare("NNPDF23nlo")==0) {
+  if (TString(PDFtype).Contains("NNPDF") ) {
    for (int pdferri = 0; pdferri < (int) h_errors_PDFBand.size(); pdferri++) {
     average += h_errors_PDFBand.at(pdferri)->GetBinContent(bi);
    }
@@ -668,7 +681,7 @@ void MyPDF::CalcPDFBandErrors()
   if (debug) cout<<" MyPDF::CalcPDFBandErrors: this_err_up= "  <<this_err_up  <<endl;
   if (debug) cout<<" MyPDF::CalcPDFBandErrors: this_err_down= "<<this_err_down<<endl;
 
-  if (PDFtype.compare("NNPDF23nlo")==0) { // better here Contains NNPDF
+  if (TString(PDFtype).Contains("NNPDF") ) { // better here Contains NNPDF
    double x_val, y_val;
    h_PDFBand_results->GetPoint(bi-1, x_val, y_val);
    h_PDFBand_results->SetPoint(bi-1, x_val,average);
