@@ -1,0 +1,86 @@
+%myPDF steeringfile
+%
+%saying debug turns on the debug facilities of MyPDF
+%debug
+%
+nloops 1
+%
+%%pdfSetPath: 
+%optional option for overwriting the default location (ENV VAR PDFPATH) where this PDF is located
+%pdfSetPath /home/admin/Documents/pdfdata/
+%
+%
+PDFtype ATLAS
+%
+%2010 inclusive jets (7+2.76 TeV) with R=0.4.
+%PDFname PDFsR04
+%
+% fitted to 3jet R=0.4 data.
+PDFname PDF_3jR04
+%
+% it's variation with alphas=0.1156
+PDFnamevar PDF_3jR04_1156
+%
+%%numPDFMembers: 
+numPDFMembers 26
+%%%%TEST
+% set id of default PDF
+defaultpdfid 0
+% set-id of first and last eigenvector variation
+%firsteig 1
+lasteig 0
+%
+%
+% set id of default PDF in variation sample
+defaultpdfidvar 0
+% set-id of first and last uncertainties that need to be added up in quadrature
+firstquadvar 1
+lastquadvar 25
+% set-id of first and last uncertainties maong which one looks for a maximum
+%firstmaxvar 1
+%lastmaxvar 6
+%
+%
+% include eigenvectors in band
+includeEIG
+% include parameterisation uncertainties added in quadrature
+includeQUAD
+% include model uncertainties among which one looks for a maxmium
+%includeMAX
+%%%%TEST
+%
+%%fillStyleCode: 3005, 3004, 3002, 3021 310
+fillStyleCode 3004
+fillStyleCode 3006
+%
+%%fillColorCode: kWhite=0, kBlack=1, kGray=920, kRed=632, kGreen=416, kBlue=600, kYellow=400, kMagenta=616, kCyan=432, kOrange=800 
+fillColorCode 432
+%
+%%PDFBandType: UseAlphaS, UseErrorBand
+%PDFBandType UseAlphaS
+%
+%%PDFErrorType: PDFBand, AlphaS
+PDFErrorType PDFBand
+%PDFErrorType AlphaS
+%
+%%PDFErrorSize: OneSigma, 90Percent
+%PDFErrorSize OneSigma
+%
+%%memberNumDown
+%AlphaSmemberNumDown 3
+%
+%%memberNumUp
+%AlphaSmemberNumUp 7
+%
+%%PDFSetNameUp
+%AlphaSPDFSetNameUp none
+%
+%%PDFSetNameDown
+%AlphaSPDFSetNameDown CT10as
+%        
+%%PDFSetHistNameUp 
+%AlphaSPDFSetHistNameUp CT10as120_prenorm
+%
+%%PDFSetHistNameDown
+%AlphaSPDFSetHistNameDown CT10as116_prenorm
+%

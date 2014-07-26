@@ -1,0 +1,80 @@
+%myPDF steeringfile
+%
+%saying debug turns on the debug facilities of MyPDF
+%debug
+%
+nloops 1
+%
+%%pdfSetPath: 
+%optional option for overwriting the default location (ENV VAR PDFPATH) where this PDF is located
+%pdfSetPath /home/admin/Documents/pdfdata/
+%
+% Hera data and W asymmetry
+PDFtype ATLASepWZ12-NLO
+%
+% name of LHGRID file
+PDFname ATLAS-epWZ12-EIG-NLO
+% name of file containing variations
+PDFnamevar ATLAS-epWZ12-VAR-NLO
+%
+% total number of members
+numPDFMembers 42
+% set id of default PDF
+defaultpdfid 0
+% set-id of first and last eigenvector variation
+firsteig 1
+lasteig 30
+%
+% set id of default PDF in variation sample
+defaultpdfidvar 0
+% set-id of first and last uncertainties that need to be added up in quadrature
+firstquadvar 7
+lastquadvar 11
+% set-id of first and last uncertainties maong which one looks for a maximum
+firstmaxvar 1
+lastmaxvar 6
+%
+%%fillStyleCode: 3005, 3004, 3002, 3021 310
+%fillStyleCode 3021
+fillStyleCode 3005
+%
+%%fillColorCode: kWhite=0, kBlack=1, kGray=920, kRed=632, kGreen=416, kBlue=600, kYellow=400, kMagenta=616, kCyan=432, kOrange=800
+%fillColorCode 1
+fillColorCode 6
+%
+%%PDFBandType: UseAlphaS, UseErrorBand
+%PDFBandType UseAlphaS
+%
+%%PDFErrorType: PDFBand, AlphaS
+PDFErrorType PDFBand
+%PDFErrorType AlphaS
+%
+%
+% include eigenvectors in band
+includeEIG
+% include parameterisation uncertainties added in quadrature
+includeQUAD
+% include model uncertainties among which one looks for a maxmium
+includeMAX
+%
+%%PDFErrorSize: OneSigma, 90Percent
+%PDFErrorSize OneSigma
+%
+%%memberNumDown
+%AlphaSmemberNumDown 3
+%
+%%memberNumUp
+%AlphaSmemberNumUp 7
+%
+%%PDFSetNameUp
+%AlphaSPDFSetNameUp none
+%
+%%PDFSetNameDown
+%AlphaSPDFSetNameDown CT10as
+%        
+%%PDFSetHistNameUp 
+%AlphaSPDFSetHistNameUp CT10as120_prenorm
+%
+%%PDFSetHistNameDown
+%AlphaSPDFSetHistNameDown CT10as116_prenorm
+%

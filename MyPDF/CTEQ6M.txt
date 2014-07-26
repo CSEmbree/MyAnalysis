@@ -1,0 +1,55 @@
+%myPDF steeringfile
+%
+%saying debug turns on the debug facilities of MyPDF
+%debug
+%
+nloops 1
+%
+%%pdfSetPath: 
+% optional option for overwriting the default location (ENV VAR PDFPATH) where this PDF is located
+%pdfSetPath /home/admin/Documents/pdfdata/
+%
+%%PDFtype: CT10, MSTW2008nlo, NNPDF23nlo, HERAPDF15NLO
+PDFtype CTEQ61
+%
+%%PDFname: CT10, MSTW2008nlo68cl, NNPDF23_nlo_as_0118, HERAPDF15NLO_EIG
+PDFname cteq61
+%
+%%numPDFMembers: 53, 41, 101, 33
+numPDFMembers 41
+%
+%%fillStyleCode: 3005, 3004, 3002, 3021
+%fillStyleCode 3104
+fillStyleCode 3005
+%
+%%fillColorCode: kWhite=0, kBlack=1, kGray=920, kRed=632, kGreen=416, kBlue=600, kYellow=400, kMagenta=616, kCyan=432, kOrange=800 
+fillColorCode 632
+%
+%%PDFBandType: UseAlphaS, UseErrorBand
+%PDFBandType UseAlphaS
+%
+%%PDFErrorType: PDFBand, AlphaS
+PDFErrorType PDFBand
+%PDFErrorType AlphaS
+%
+%%PDFErrorSize: OneSigma, 90Percent
+%PDFErrorSize OneSigma
+%
+%%memberNumDown
+AlphaSmemberNumDown 0
+%
+%%memberNumUp
+AlphaSmemberNumUp 0
+%
+%%PDFSetNameUp
+AlphaSPDFSetNameUp none
+%
+%%PDFSetNameDown
+AlphaSPDFSetNameDown none
+%        
+%%PDFSetHistNameUp 
+AlphaSPDFSetHistNameUp none
+%
+%%PDFSetHistNameDown
+AlphaSPDFSetHistNameDown none
+%

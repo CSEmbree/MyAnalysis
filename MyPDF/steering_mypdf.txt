@@ -1,0 +1,50 @@
+% myPDF class steeringfile
+%
+% Activate debug facilities by removing the comment '%' in front of debug
+%
+%debug
+%
+% pdfSetPath: optional option for overwriting the default location to the PDFsets to use. 
+% Note: Path to PDFsets is first the environment variable PDFPATH, then this steering file, 
+%       then a folder called PDFsets in the current directory
+%pdfSetPath /home/admin/Documents/pdfdata/
+%
+%
+% PDFtype: is the name used when printing and drawing information about the PDF.
+%          These can be arbitrary but should be descriptive.
+%          Currently supported: CT10, MSTW2008nlo, NNPDF23nlo, HERAPDF15NLO
+PDFtype CT10
+%
+%
+% PDFname: The actual name of the PDF that will be looked up and used
+%          Currently supported: CT10, MSTW2008nlo68cl, NNPDF23_nlo_as_0118, HERAPDF15NLO_EIG
+PDFname CT10
+%
+%
+% numPDFMembers: 53, 41, 101, 33
+% The number of set encoding the uncertainties
+numPDFMembers 53
+%
+%
+% fillStyleCode: 3005, 3004, 3002, 3021
+% root fill style
+fillStyleCode 3005
+%
+%
+%fillColorCode: 
+% kWhite=0, kBlack=1, kGray=920, kRed=632, kGreen=416, kBlue=600, kYellow=400, 
+% kMagenta=616, kCyan=432, kOrange=800 (see root manual)
+fillColorCode 416
+%
+%
+% PDFBandType: UseAlphaS, UseErrorBand
+PDFBandType UseAlphaS
+%
+%
+% PDFErrorType: PDFBand AlphaS
+PDFErrorType PDFBand
+PDFErrorType AlphaS
+%
+% PDFErrorSize: OneSigma, 90Percent
+PDFErrorSize OneSigma
+%

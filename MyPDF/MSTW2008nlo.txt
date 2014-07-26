@@ -1,0 +1,52 @@
+%myPDF steeringfile
+%
+%saying debug turns on the debug facilities of MyPDF
+%debug
+%
+nloops 1
+%
+%%pdfSetPath: 
+%optional option for overwriting the default location (ENV VAR PDFPATH) where this PDF is located
+%pdfSetPath /home/admin/Documents/pdfdata/
+%
+%%PDFtype: CT10, MSTW2008nlo, NNPDF23nlo, HERAPDF15NLO
+PDFtype MSTW2008nlo
+%
+%%PDFname: CT10, MSTW2008nlo68cl, NNPDF23_nlo_as_0118, HERAPDF15NLO_EIG
+PDFname MSTW2008nlo68cl
+%
+%%numPDFMembers: 53, 41, 101, 33
+numPDFMembers 41
+%
+%%fillStyleCode: 3005, 3004, 3002, 3021
+fillStyleCode 3002
+%
+%%fillColorCode: kWhite=0, kBlack=1, kGray=920, kRed=632, kGreen=416, kBlue=600, kYellow=400, kMagenta=616, kCyan=432, kOrange=800 
+fillColorCode 634
+%
+%%PDFErrorType: PDFBand, AlphaS, RenormalizationScale, FactorizationScale, TotError
+PDFErrorType PDFBand
+PDFErrorType AlphaS
+%
+%
+%%PDFErrorSize: OneSigma, 90Percent
+%PDFErrorSize OneSigma
+%
+%%memberNumDown
+AlphaSmemberNumDown 0
+%
+%%memberNumUp
+AlphaSmemberNumUp 0
+%
+%%PDFSetNameDown
+AlphaSPDFSetNameDown MSTW2008nlo68cl_asmz-68cl
+%
+%%PDFSetNameUp
+AlphaSPDFSetNameUp MSTW2008nlo68cl_asmz+68cl
+%
+%%PDFSetHistNameDown
+AlphaSPDFSetHistNameDown MSTW2008nloAsDown_prenorm
+%        
+%%PDFSetHistNameUp 
+AlphaSPDFSetHistNameUp MSTW2008nloAsUp_prenorm
+%
