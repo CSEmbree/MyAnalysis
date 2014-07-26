@@ -1191,7 +1191,7 @@ void MyCrossSection::Normalise(TGraphAsymmErrors* g1, double yscale, double xsca
     //cout<<" binw= "<<binw<<endl;
     if (divbinwidth) sigtot+=y*binw;
     else             sigtot+=y;
-    //sigtot+=y; //TODO - should this be done twice here?
+    sigtot+=y; //TODO - should this be done twice here?
 
 
     if(debug) cout<<"MyCrossSection::Normalise: Graph sigtot="<<sigtot
