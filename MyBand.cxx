@@ -92,7 +92,13 @@ void MyBand::DrawPDFBandRatio()
        cout<<" MyBand::DrawPDFBandandRatio: gpdfbandratio["<<ipdf<<"] Data: "<<endl;
        gpdfbandratio.at(ipdf)->Print("");
      }
-     
+    
+
+     //for(int i=0; i<gpdfbandratio.at(ipdf)->GetN(); i++) {
+     //  gpdfbandratio.at(ipdf)->SetPointEXlow (i, 0.0);//TEST
+     //  gpdfbandratio.at(ipdf)->SetPointEXhigh(i, 0.0);//TEST
+     //}
+
      // plot data based on style's requested in steering
      TString bandratiostyle = GetBandRatioStyle(); // determine style
      gpdfbandratio.at(ipdf)->Draw(bandratiostyle); // plot based on style

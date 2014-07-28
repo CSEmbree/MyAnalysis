@@ -372,7 +372,7 @@ void MyCrossSection::Initialize() {
     } else if ( IsRatioDenominator("reference") ) {
       if(debug) cout<<cn<<mn<<" Denominator is REFERENCE"<<endl;      
       //TGraphAsymmErrors* g = TH1TOTGraphAsymm(GetNormalisedReference(igrid)); //old
-      TGraphAsymmErrors* g = GetNormalisedReferenceAsGraph(igrid, true); //new
+      TGraphAsymmErrors* g = GetNormalisedReferenceAsGraph(igrid, false); //new
       g->GetName();
       denomName            += g->GetName()+igrid;
       denomName            +="/";

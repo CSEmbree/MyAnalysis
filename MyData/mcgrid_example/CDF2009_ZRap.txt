@@ -22,9 +22,9 @@ framexmin 0.0
 framexmax 2.8
 label e+ e- 2009
 %titlex YRAP
-titlex y_{y}
+titlex e+e- pair rapidity
 %titley D(SIG)/YRAP IN PB 
-titley d#sigma/y_{y} [pb]
+titley d#sigma/dy [pb]
 %scaley 0.01
 %
 %
