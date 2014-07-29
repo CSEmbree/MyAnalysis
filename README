@@ -1,11 +1,12 @@
-INTRO: Read through this document to understand what is
-needed to generate plots
+INTRO: Please read through this document to 
+understand what is needed to generate plots
 
 
 ###################################################
 #                 DEPENDANCIES                    #
 ###################################################
 
+FILES:
 Need access to newest of the following files:
 MyBand.{cxx,h}
 MyCrossSection.{cxx,h}
@@ -13,73 +14,60 @@ MyData.{cxx,h}
 MyEvent.{cxx,h}
 MyFrame.{cxx,h}
 MyFrameData.{cxx,h}
+MyGrid.{cxx,h}
 MyGrids/
 MyPDF/
 MyPDF.{cxx,h}
 
-Need access to te PDF sets, currently located:
+Link (ln -s) your LHAPDF v5.X.X PDFsets directory 
+to the home project directory. 
 
-  /afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/5.8.8/share/lhapdf/PDFsets
+  ln -s `lhapdf-config --pdfsets-path`
 
-Need access to SHERPA output, currently called sherpa21inputs and located:
+The most recently tested version for this code is
+LHAPDF 5.9.1
 
-  /afs/cern.ch/user/c/cembree/public/workspace/MyAnalysis/sherpatop21inputs
 
-Also uses steering file to run, an example here:
+SOFTWARE:
+applgrid - Any version
+root     - A version  <= v5.34.05
 
-  /afs/cern.ch/user/c/cembree/public/workspace/MyAnalysis/atlas2012_top.txt
 
-Most of these dependancies are taken care of in 
-the following setup process but you must change 
-the setup based on your enevrionment.
+STEERING:
+Also uses steering file to run, an example here 
+can be found in the home project directory under
+the 'example' directory
+
+This MyCrossSection steering file also requires 
+a MyGrid steering, MyPDF steering, and MyGrid 
+steering. examples of steering files for these
+can be found in the 'docs' directory
 
 
 ###################################################
 #                    SETUP                        #
 ###################################################
-Perform the following:
+Please edit the setup script called 'setuplxplus.sh'
+to your liking, and then perform:
 
-  source setup.sh
+  source setuplxplus.sh
+  make clean
   make
-
-To prepare the envrionment you source the setupfile
-called '$MYHOME/setuplxplus.sh'. After global envrion
--ment is setup, then we source the local 'setup.sh'
-script and compile with 'make'.
-
-The origonal sourcing of '$MYHOME/setuplxplus.sh' is 
-done in my '.bashrc', so I only ever need to run my
-local source of 'setup.sh'.
-
-You can find an example STEERING file in this 
-directory called 'STEERING_OUTLINE.txt' as well as
-examples in: 
-STEERING_EXAMPLE1.txt
-STEERING_EXAMPLE2.txt 
 
 
 ###################################################
 #                   RUNNING                       #
 ###################################################
 Executable 'plot' takes 1 parameter:
-1 - steering file
+1 - MyCrossSection steering file
 
-A steering file should emulate what can be found 
-in the example steering file called 
-'STEERING_EXAMPLE.txt', found at:
+Make your own steering files in the format that can
+be found in the 'docs' directory. An example is
+also found in the 'example' directory.
 
-  /afs/cern.ch/user/c/cembree/public/workspace/MyAnalysis/STEERING_EXAMPLE.txt
-
-An outline for a generic steering file including
-all optional options is called 'STEERING_OUTLINE.txt'
-and can be found at:
-
-  /afs/cern.ch/user/c/cembree/public/workspace/MyAnalysis/STEERING_OUTLINE.txt
-
-
-Output from running will show  in root, so you will 
-need X11 forwarding if you are sshing in, which looks
-something like:
+Output from running will show in root, so you should
+enable X11 forwarding if you are sshing in, which 
+for cern user's looks something like:
 
   ssh -X username@lxplus.cern.ch
 
@@ -89,11 +77,7 @@ something like:
 ###################################################
 EXAMPLE RUN(S):
 
-EXPLAIN THIS RUN:
+Consider the example in the example directory that
+can be ran wtih:
 
-  ./plot atlas2012_top.txt
-
-EXPLAIN THIS RUN:
-
-  ./plot STEERING_EXAMPLE.txt
-
+  ./plot example/atlastest.txt
