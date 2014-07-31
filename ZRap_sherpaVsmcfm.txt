@@ -1,0 +1,47 @@
+%
+% steering file to test the example from MCGrid
+%
+datanamedir MyData/mcgrid_example
+%Gridnamedir MyGrids/CDFZRap/
+%
+pdfdata MyPDF/CT10.txt
+% need always dataname, gridname, markerstyle, markercolor one after the other
+% need to order frameid from 0 to N
+debug
+plotband
+%plotmarker
+%
+% xlegend, ylabel is lower edge of legen 
+xlegend 0.9
+ylegend 0.9
+ratiotitlelabel NLO QCD/data
+overlaystyle data,theory,reference
+ratiostyle reference/theory
+%
+yunits pb
+xunits GeV
+%
+%
+%
+% R+B, added with 'applgrid-combine' from Sherpa NTuples
+%
+dataname CDF2009_ZRap.txt
+gridname MyGrids/CDFZRap/sherpa/ZRapRun_d02_RpB-s4.txt
+markerstyledata 20
+markercolordata 1
+reflinestyle 1
+reflinecolor 4
+leglabel Sherpa-grid-ref
+frameid 0
+%
+% MCFM grid
+%
+dataname CDF2009_ZRap.txt
+gridname MyGrids/CDFZRap/mcfm/grid-40-6-15-3-Z0_zycdf.txt
+markerstyledata 20
+markercolordata 1
+reflinestyle 1
+reflinecolor 2
+leglabel MCFM-grid-ref
+frameid 0
+%
