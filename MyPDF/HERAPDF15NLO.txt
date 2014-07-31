@@ -41,6 +41,9 @@ fillStyleCode 3004
 %%fillColorCode: kWhite=0, kBlack=1, kGray=920, kRed=632, kGreen=416, kBlue=600, kYellow=400, kMagenta=616, kCyan=432, kOrange=800 
 fillColorCode 810
 %
+%%markerStyle: 
+markerStyle 23
+%
 %%PDFBandType: UseAlphaS, UseErrorBand
 %PDFBandType UseAlphaS
 %

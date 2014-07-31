@@ -24,6 +24,9 @@ fillStyleCode 3002
 %%fillColorCode: kWhite=0, kBlack=1, kGray=920, kRed=632, kGreen=416, kBlue=600, kYellow=400, kMagenta=616, kCyan=432, kOrange=800 
 fillColorCode 634
 %
+%%markerStyle: 
+markerStyle 21
+%
 %%PDFErrorType: PDFBand, AlphaS, RenormalizationScale, FactorizationScale, TotError
 PDFErrorType PDFBand
 PDFErrorType AlphaS
