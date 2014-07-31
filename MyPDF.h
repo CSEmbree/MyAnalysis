@@ -94,6 +94,8 @@ class MyPDF {
         int GetNumPDFMembers() const{return n_PDFMembers;};
         int GetFillStyleCode() const{return fillStyleCode;};
         int GetFillColorCode() const{return fillColorCode;};
+	int GetMarkerStyle() const{return markerStyle;};
+	int GetMarkerColor() const{return fillColorCode;}; //should be marker color, using fill color as default
         string GetPDFBandType() const{return PDFBandType;};
         string GetPDFErrorType() const{return PDFErrorType;};
         string GetPDFErrorSize() const{return PDFErrorSize;};
@@ -165,6 +167,7 @@ class MyPDF {
 
         int fillStyleCode;
         int fillColorCode;
+	int markerStyle;            //optional marker style
         string PDFBandType;
         string PDFErrorType;
         string PDFErrorSize;

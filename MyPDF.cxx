@@ -774,10 +774,10 @@ void MyPDF::GetRatioToTH1(TH1D* href)
 void MyPDF::DrawPDFBand(){
  
  TH1D* hpdf=this->GetPdfdefault();
- hpdf->Draw();
+ hpdf->Draw("same");
 
   //h_PDFBand_results->Print("all");
- h_PDFBand_results->Draw("E2");
+ h_PDFBand_results->Draw("E2,same");
 
  if (!hpdf) cout<<" testmypdf histo not found "<<endl;
  hpdf->Draw("same");
@@ -1078,6 +1078,8 @@ void MyPDF::ReadSteering(const string _fileName)
     sscanf(text.c_str(), "%d", &fillStyleCode);
    } else if (optionName.compare("fillColorCode")==0) {
     sscanf(text.c_str(), "%d", &fillColorCode);
+   } else if (optionName.compare("markerStyle")==0) {
+    sscanf(text.c_str(), "%d", &markerStyle);
    } else if (optionName.compare("PDFBandType")==0) {
     PDFBandType=text;
    } else if (optionName.compare("includeEIG")==0) {
@@ -1202,7 +1204,8 @@ void MyPDF::SetVariablesDefault()
  firstquadvar=1;           
  lastquadvar=1;            
  firstmaxvar=1;            
- lastmaxvar =1;             
+ lastmaxvar =1;   
+ markerStyle=20; //open circle
 
  includeEIG=false;   
  includeQUAD=false; 
