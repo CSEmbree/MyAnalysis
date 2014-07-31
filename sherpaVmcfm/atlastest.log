@@ -1,0 +1,333 @@
+
+Applying ATLAS style settings...
+
+ reading steering file sherpaVmcfm/atlastest.txt
+ MyCrossSection::ReadSteering: debug turned on  
+ MyCrossSection::ReadSteering: line= % xlegend, ylabel is lower edge of legen 
+ MyCrossSection::ReadSteering: line= xlegend 0.9
+ MyCrossSection::ReadSteering: xlegend= 0.900000   
+ MyCrossSection::ReadSteering: line= ylegend 0.9
+ MyCrossSection::ReadSteering: ylegend= 0.900000   
+ MyCrossSection::ReadSteering: line= ratiotitlelabel MCFM,Sherpa/Data
+ MyCrossSection::ReadSteering: ratiotitlelabel MCFM,Sherpa/Data
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= dataname  /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::ReadSteering: dataname /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::ReadSteering: line= gridname  /MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::ReadSteering: gridname /MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::ReadSteering: igrid= 0 /MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::ReadSteering: line= markerstyledata 20
+ MyCrossSection::ReadSteering markerstyledata 20
+ MyCrossSection::ReadSteering: line= markercolordata 1
+ MyCrossSection::ReadSteering: markercolordata 1
+ MyCrossSection::ReadSteering: line= reflinestyle 1
+ MyCrossSection::ReadSteering: reflinestyle 1
+ MyCrossSection::ReadSteering: line= reflinecolor 4
+ MyCrossSection::ReadSteering: reflinecolor 4
+ MyCrossSection::ReadSteering: line= leglabel MCFM
+ MyCrossSection::ReadSteering: leglabel MCFM
+ MyCrossSection::ReadSteering: line= frameid 0
+ MyCrossSection::ReadSteering: frameid 0 igrid= 0 frameid= 0
+ MyCrossSection::ReadSteering: line= divideid 0
+ MyCrossSection::ReadSteering: divideid 0
+ MyCrossSection::ReadSteering: line= %
+ MyCrossSection::ReadSteering: line= dataname  /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::ReadSteering: dataname /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::ReadSteering: line= gridname  /MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root
+ MyCrossSection::ReadSteering: gridname /MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root
+ MyCrossSection::ReadSteering: igrid= 1 /MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root
+ MyCrossSection::ReadSteering: line= markerstyledata 20
+ MyCrossSection::ReadSteering markerstyledata 20
+ MyCrossSection::ReadSteering: line= markercolordata 1
+ MyCrossSection::ReadSteering: markercolordata 1
+ MyCrossSection::ReadSteering: line= reflinestyle 1
+ MyCrossSection::ReadSteering: reflinestyle 1
+ MyCrossSection::ReadSteering: line= reflinecolor 2
+ MyCrossSection::ReadSteering: reflinecolor 2
+ MyCrossSection::ReadSteering: line= leglabel Sherpa
+ MyCrossSection::ReadSteering: leglabel Sherpa
+ MyCrossSection::ReadSteering: line= frameid 0
+ MyCrossSection::ReadSteering: frameid 0 igrid= 1 frameid= 0
+ MyCrossSection::ReadSteering: line= divideid 0
+ MyCrossSection::ReadSteering: divideid 0
+ MyCrossSection::ReadSteering: line= %%
+ MyCrossSection::ReadSteering: line= 
+ MyCrossSection finished reading name= sherpaVmcfm/atlastest.txt
+ MyCrossSection::Initialize()
+ MyCrossSection::Initialize: Number of grids to produce 2
+ MyCrossSection::Initialize: Data /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::Initialize: dataname= /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt datadir= .
+ MyData::ReadData read file fname= .//MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyData::ReadData: Syst uncertainties with +/- values 
+ MyData::ReadData: use unit matrix as correlation matrix 
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normalise to total cross section 
+ MyCrossSection::Initialize: Data is divided by binwidth 
+ MyCrossSection::Initialize: no PDF found ! 
+ MyCrossSection::Initialize: Number of PDF names pdfdata.size()= 0
+ MyCrossSection::Initialize: npdf= 0
+ MyCrossSection::Initialize number of ren scale= 0
+ MyCrossSection::Initialize number of fac scale= 0
+ MyCrossSection::Initialize: get correlation matrix igrid= 0
+ MyCrossSection::Initialize: mcorr done 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+
+ MyCrossSection::Initialize: printed 
+ MyCrossSection::Initialize: npdf= 0
+ MyCrossSection::Initialize: before CalcChi2 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+
+ MyCrossSection::Initialize: finished chi2 calculation 
+ MyCrossSection::GetReference: Grid Name .//MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::GetReference: open .//MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+appl::grid() reading grid from file .//MyGrids/top/mcfm/grid--TTbar_mttatlas.root	version version-3.0(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 350.582 ms	trim in 0.246 ms
+ MyCrossSection::Initialize: ComputePDFBandRatio  dividing gref and ATLAS_2012_diffcross_mtt
+ MyCrossSection::Initialize: rationame= referenceInternal/ATLAS_2012_diffcross_mtt
+ MyCrossSection::Initialize: ratiotot[0]: 
+x[0]=350, y[0]=0.967695, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=0.996247, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=1.03796, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=1.11598, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=1.27955, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyCrossSection::Initialize: Data /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::Initialize: dataname= /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt datadir= .
+ MyData::ReadData read file fname= .//MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyData::ReadData: Syst uncertainties with +/- values 
+ MyData::ReadData: use unit matrix as correlation matrix 
+ MyCrossSection::Initialize: yfac= 0.001 xfac= 0.001
+ MyCrossSection::Initialize: normalise to total cross section 
+ MyCrossSection::Initialize: Data is divided by binwidth 
+ MyCrossSection::Initialize: no PDF found ! 
+ MyCrossSection::Initialize: Number of PDF names pdfdata.size()= 0
+ MyCrossSection::Initialize: npdf= 0
+ MyCrossSection::Initialize number of ren scale= 0
+ MyCrossSection::Initialize number of fac scale= 0
+ MyCrossSection::Initialize: get correlation matrix igrid= 1
+ MyCrossSection::Initialize: mcorr done 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+
+ MyCrossSection::Initialize: printed 
+ MyCrossSection::Initialize: npdf= 0
+ MyCrossSection::Initialize: before CalcChi2 
+
+5x5 matrix is as follows
+
+     |      0    |      1    |      2    |      3    |      4    |
+----------------------------------------------------------------------
+   0 |          1           0           0           0           0 
+   1 |          0           1           0           0           0 
+   2 |          0           0           1           0           0 
+   3 |          0           0           0           1           0 
+   4 |          0           0           0           0           1 
+
+ MyCrossSection::Initialize: finished chi2 calculation 
+ MyCrossSection::GetReference: Grid Name .//MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root
+ MyCrossSection::GetReference: open .//MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root
+appl::grid() reading grid from file .//MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root	version version-3.1(transformed to 1.4.59)
+appl::grid::addpdf() creating new lumi_pdf top.config
+lumi_pdf::lumi_pdf() top.config	combinations 25
+appl::grid() read grid, size 0 MB	in 276.452 ms	trim in 0.144 ms
+ MyCrossSection::Initialize: ComputePDFBandRatio  dividing gref and ATLAS_2012_diffcross_mtt
+ MyCrossSection::Initialize: rationame= referenceInternal/ATLAS_2012_diffcross_mtt
+ MyCrossSection::Initialize: ratiotot[1]: 
+x[0]=350, y[0]=0.98474, exl[0]=100, exh[0]=100, eyl[0]=0, eyh[0]=0
+x[1]=500, y[1]=0.532421, exl[1]=50, exh[1]=50, eyl[1]=0, eyh[1]=0
+x[2]=625, y[2]=0.834897, exl[2]=75, exh[2]=75, eyl[2]=0, eyh[2]=0
+x[3]=825, y[3]=1.46917, exl[3]=125, exh[3]=125, eyl[3]=0, eyh[3]=0
+x[4]=1825, y[4]=11.7327, exl[4]=875, exh[4]=875, eyl[4]=0, eyh[4]=0
+ MyCrossSection::Initialize: end of igrid loop
+ MyCrossSection::GetFrameNumber: frameid.size()= 2
+ MyCrossSection::GetFrameNumber: iframe= 0 found= 0
+ MyCrossSection::GetFrameNumber: iframe= 0 found= 1
+ MyCrossSection::GetFrameNumber: Number of frames= 1
+ MyCrossSection::Initialize: igrid= 0 iframe= 0 jframe= 0
+ MyCrossSection::Initialize: igrid= 0 push back this grid
+ MyCrossSection::Initialize: igrid= 1 iframe= 0 jframe= 0
+ MyCrossSection::Initialize: igrid= 1 push back this grid
+ MyCrossSection::Initialize: iframe= 0 push back this grid vector size= 2
+ MyCrossSection::Initialize: vigrid vector size= 2
+ MyCrossSection::Initialize: vigrid[0]=0
+ MyCrossSection::Initialize: vigrid[1]=1
+ MyCrossSection::Initialize: print gridinframe.size()= 1
+ MyCrossSection::Initialize: gridinframe[0][0]= 0
+ MyCrossSection::Initialize: gridinframe[0][1]= 1
+ MyCrossSection::Initialize: iframe= 0
+ MyCrossSection::Initialize: gridinframe[0].size()= 2
+ MyCrossSection::Initialize: gridinframe[0][0]= 0
+ MyCrossSection::Initialize: igrid= 0 iframe= 0 push ATLAS_2012_diffcross_mtt
+ MyCrossSection::Initialize: datascalex= 1.5 scaley= 2
+ MyCrossSection::Initialize: iframe= 0 xmin= 166.667 xmax= 4050 ymin= 0.00355 ymax= 5.52
+ MyCrossSection::GetFrameNumber: frameid.size()= 2
+ MyCrossSection::GetFrameNumber: iframe= 0 found= 0
+ MyCrossSection::GetFrameNumber: iframe= 0 found= 1
+ MyCrossSection::GetFrameNumber: Number of frames= 1
+ MyCrossSection::Initialize: finished  
+ MyCrossSection::Print: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    steering:      sherpaVmcfm/atlastest.txt
+         subprocesssteername:                               
+                pdf_function:                               
+                Dir of grids:                              .
+                 Dir of data:                              .
+                Num of grids:                              2
+
+            INFO FOR GRID NUM:                             0
+             dataname.size():                              2
+             gridname.size():                              2
+                        grid: /MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+                        data: /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+                       style:                             20
+                        color:                             1
+                      frameid:                             0
+                     divideid:                             0
+
+            INFO FOR GRID NUM:                             1
+             dataname.size():                              2
+             gridname.size():                              2
+                        grid: /MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root
+                        data: /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+                       style:                             20
+                        color:                             1
+                      frameid:                             0
+                     divideid:                             0
+ MyCrossSection::Print: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ MyCrossSection::Print: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    steering:      sherpaVmcfm/atlastest.txt
+         subprocesssteername:                               
+                pdf_function:                               
+                Dir of grids:                              .
+                 Dir of data:                              .
+                Num of grids:                              2
+
+            INFO FOR GRID NUM:                             0
+             dataname.size():                              2
+             gridname.size():                              2
+                        grid: /MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+                        data: /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+                       style:                             20
+                        color:                             1
+                      frameid:                             0
+                     divideid:                             0
+
+            INFO FOR GRID NUM:                             1
+             dataname.size():                              2
+             gridname.size():                              2
+                        grid: /MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root
+                        data: /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+                       style:                             20
+                        color:                             1
+                      frameid:                             0
+                     divideid:                             0
+ MyCrossSection::Print: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+ MyCrossSection::GetFrameNumber: frameid.size()= 2
+ MyCrossSection::GetFrameNumber: iframe= 0 found= 0
+ MyCrossSection::GetFrameNumber: iframe= 0 found= 1
+ MyCrossSection::GetFrameNumber: Number of frames= 1
+plot: Number of frames= 1
+plot: DrawinFrame for 0
+ MyCrossSection::DrawInFrame: gridinframe[0].size()= 2
+ MyCrossSection::DrawInFrame: i= 0 igrid= 0 iframe= 0
+ MyCrossSection::DrawInFrame: i= 1 igrid= 1 iframe= 0
+ MyCrossSection::DrawInFrame: plotting igrid= 0 in iframe= 0
+ MyCrossSection::DrawInFrame: frame= 0 xmin= 166.667 xmax= 4050 ymin= 0.00355 ymax= 5.52
+ MyCrossSection::DrawinFrame: number of grids= 2 for frame= 0
+ MyCrossSection::DrawinFrame: No PDF information found ...plotting reference
+ MyCrossSection::DrawinFrame: xlegend= 0.9 ylegend= 0.9
+ MyCrossSection::DrawinFrame: namesize=11, npdf=0, x1=0.68, x2=0.9, y1=0.7, y2=0.9
+ MyCrossSection::DrawinFrame: for i= 0 igrid= 0
+ MyCrossSection::GetReference: Grid Name .//MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+ MyCrossSection::GetReference: open .//MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+appl::grid() reading grid from file .//MyGrids/top/mcfm/grid--TTbar_mttatlas.root	version version-3.0(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 249.873 ms	trim in 0.231 ms
+ MyCrossSection::DrawinFrame: print reference histogram
+TH1.Print Name  = referenceInternal, Entries= 20027610, Total sum= 6.50233
+ fSumw[0]=0, x=5, error=0
+ fSumw[1]=2.43859, x=350, error=0.124634
+ fSumw[2]=2.74964, x=500, error=0.132345
+ fSumw[3]=1.04834, x=625, error=0.0817181
+ fSumw[4]=0.256675, x=825, error=0.0404353
+ fSumw[5]=0.00908483, x=1825, error=0.00760723
+ fSumw[6]=0.00226956, x=2945, error=0.00380224
+ MyCrossSection::DrawinFrame: mydata[0]  found 
+ MyCrossSection::DoubleDataSetName:  dataname[0]= /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt compared to... 
+ MyCrossSection::DoubleDataSetname: found duplicate=no
+DOUBLE DATA: 0
+ MyCrossSection::DrawinFrame: plot data /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::DrawinFrame: mylabel= ATLAS 2014
+ MyCrossSection::DrawinFrame: npdf= 0
+ MyCrossSection::DrawinFrame: vpdfchi2.size()= 2
+ MyCrossSection::DrawinFrame: vpdfchi2.at(0).size()= 0
+ MyCrossSection::DrawinFrame: No PDF's requested: Adding references to legend.
+ MyCrossSection::DrawinFrame: Added 'MCFM' to legend.
+ MyCrossSection::DrawinFrame: legend prepared 
+ MyCrossSection::DrawinFrame: for i= 1 igrid= 1
+ MyCrossSection::GetReference: Grid Name .//MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root
+ MyCrossSection::GetReference: open .//MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root
+appl::grid() reading grid from file .//MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B.root	version version-3.1(transformed to 1.4.59)
+appl::grid() read grid, size 0 MB	in 283.496 ms	trim in 0.148 ms
+ MyCrossSection::DrawinFrame: print reference histogram
+TH1.Print Name  = referenceInternal, Entries= 124710034, Total sum= 5.21548
+ fSumw[0]=0, x=5, error=0
+ fSumw[1]=2.48155, x=350, error=0.00118095
+ fSumw[2]=1.46948, x=500, error=0.000895851
+ fSumw[3]=0.843246, x=625, error=0.000707867
+ fSumw[4]=0.337909, x=825, error=0.000488287
+ fSumw[5]=0.083302, x=1825, error=0.000277481
+ fSumw[6]=1.85144e-05, x=2945, error=1.07448e-06
+ MyCrossSection::DrawinFrame: mydata[1]  found 
+ MyCrossSection::DoubleDataSetName:  dataname[1]= /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt compared to... 
+ MyCrossSection::DoubleDataSetName:  dataname[0]= /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+ MyCrossSection::DoubleDataSetName: Duplicate data found.
+ MyCrossSection::DoubleDataSetname: found duplicate=yes
+DOUBLE DATA: 1
+ MyCrossSection::DrawinFrame: npdf= 0
+ MyCrossSection::DrawinFrame: vpdfchi2.size()= 2
+ MyCrossSection::DrawinFrame: vpdfchi2.at(1).size()= 0
+ MyCrossSection::DrawinFrame: No PDF's requested: Adding references to legend.
+ MyCrossSection::DrawinFrame: Added 'Sherpa' to legend.
+ MyCrossSection::DrawinFrame: legend prepared 
+ MyCrossSection::DrawinFrame: npdf= 0
+ MyCrossSection::DrawinFrame: gridinframe[0][0] = 0 Draw reference for igrid= 0
+ MyCrossSection::DrawinFrame: NO PDF's listed!
+ MyCrossSection::DrawinFrame: Ymin= 0.967695 Ymax= 1.27955
+ MyCrossSection::DrawinFrame: gridinframe[0][1] = 1 Draw reference for igrid= 1
+ MyCrossSection::DrawinFrame: NO PDF's listed!
+ MyCrossSection::DrawinFrame: Ymin= 0.532421 Ymax= 11.7327
+ MyCrossSection::DrawinFrame: Ymin= 0.532421 Ymax= 11.7327
+ MyCrossSection::DrawinFrame: at i='0' of gridinframe[0].size='2', igrid='0'
+ MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= 0
+ MyBand::DrawPDFBandRatio: gpdfband.size()= 0, plotband=0, plotmarker=0
+ MyBand::DrawPDFBandRatio: NOT Staggering points.
+ MyCrossSection::DrawinFrame: at i='1' of gridinframe[0].size='2', igrid='1'
+ MyCrossSection::DrawinFrame: DrawPDFBandRatio igrid= 1
+ MyBand::DrawPDFBandRatio: gpdfband.size()= 0, plotband=0, plotmarker=0
+ MyBand::DrawPDFBandRatio: NOT Staggering points.
+ MyCrossSection::DrawInFrame: End of DrawInFrame
+plot: After DrawinFrame for iframe= 0

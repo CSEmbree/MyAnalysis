@@ -1,0 +1,16 @@
+%
+% steering file for MyGrid to test the example from MCGrid
+%
+debug
+%
+NAME ATLAS_svm_mcfm
+%
+gridpath MyGrids/top/mcfm/grid--TTbar_mttatlas.root
+gridgeneratorid UNKNOWN
+gridntupleid MCFM
+%
+xunits Tev
+yunits pb
+%
+dividedbybinwidth
+
