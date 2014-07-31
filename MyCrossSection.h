@@ -41,6 +41,7 @@ class MyCrossSection {
   bool ploterrorticks;      // small perpendicular lines at end of error bars
   bool staggerpdfpoints;    // shift pdf points horizontally for readability
   bool ratioTheoryOverData; // ratio plotting: true-(theory/data), false-(data/theory), (default=true)
+  bool xerroroff; // turn off x-error bars for convolute
 
   //string ntupdirinput;
   //string ntupdiroutput;
@@ -64,7 +65,6 @@ class MyCrossSection {
 
   string xunits;
   string yunits;
-  //string order;
 
   double ymaxoverlay;
   double yminoverlay;
@@ -154,6 +154,7 @@ class MyCrossSection {
   bool validateOverlayStyle(std::vector<std::string > names); //For validating overlay names
   bool validateRatioStyle(std::vector<std::string > names);
   void ComputeRatioRange(double *Ymin, double *Ymax, int igrid);
+  //TLegend *BuildLegend(int iframe);
   
 
 
@@ -172,34 +173,6 @@ class MyCrossSection {
   MyCrossSection(char name[100]);
 
   generic_pdf * GetSubProcess() { return mypdf;};
-  /*
-  bool SetOrder( std::string orderID ) {
-    bool valid = false;
-
-    if( orderID == "LO" || orderID == "NLO" || orderID == "NNLO" ) {
-      order = orderID;
-    } else {
-      cerr<<" MyCrossSection::SetOrder: WARN: Invalid ordername found!"
-	  <<"\t Found \""<<orderID<<"\" but expected LO, NLO, or NNLO"<<endl;
-    }
-
-    return valid;
-  };
-
-  int GetOrderNLoops() {
-    int nLoops = -1;
-
-    if      ( order == "LO"  )   nLoops = 0;
-    else if ( order == "NLO"  )  nLoops = 1;
-    else if ( order == "NNLO"  ) nLoops = 2;
-    else
-      cerr<<" MyCrossSection::GetOrderNLoops: WARN: Valid nLoops order not found!"
-	  <<"\t Found \""<<orderID<<"\" but expected LO, NLO, or NNLO"<<endl;
-
-    return nLoops;
-  }
-  */
-  
   double GetUnitScaleX(std::string fromUnits, std::string toUnits);
   double GetUnitScaleY(std::string fromUnits, std::string toUnits);
 

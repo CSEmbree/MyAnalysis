@@ -24,8 +24,7 @@ MyCrossSection::MyCrossSection(char name[100])
 
   xunits="GeV"; //TODO - default, make more generic?
   yunits="fb"; //TODO - default, make more generic?
-  //order="NLO"; //TODO - default, make more generic?
-
+  
   frameid.clear();
   divideid.clear();
   framepointer.clear();
@@ -55,6 +54,7 @@ MyCrossSection::MyCrossSection(char name[100])
   overlayData = true; //always display data by default
   overlayTheory = false;
   overlayReference = false;
+  xerroroff = false;
 
   pdf_function="";
   subprocesssteername="";
@@ -249,6 +249,17 @@ void MyCrossSection::Initialize() {
       
       this->Normalise(gtmp,yfac,xfac,normtot,divbinwidth);
       if (debug) {cout<<" MyCrossSection::Initialize: fill Band gtmp"<<endl; gtmp->Print("all");}
+
+
+      gtmp->SetMarkerStyle(newpdf->GetMarkerStyle()); //marker style for PDF
+      gtmp->SetMarkerColor(newpdf->GetMarkerColor()); //fill color code for PDF
+      if(xerroroff == true) {
+	for(int i=0; i<gtmp->GetN(); i++) {	
+	  //gtmp->SetPointEXlow (i, 0.0);//TEST
+	  //gtmp->SetPointEXhigh(i, 0.0);//TEST
+	}
+      }
+
 
       // set my band info for displyaing later
       myband[igrid]->SetPdfBand(gtmp); 
@@ -805,18 +816,6 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	    cerr<<cn<<mn<<" Invalid overlay stye detected!"<<endl;
 	    exit(1);
 	  } 
-	  /*
-	  else if (optionName == "order" ) {
-	    cout<<cn<<mn<<" Order is: "<<optionValue<<endl;
-	    
-	    if( SetOrder( optionValue ) == false ) {
-	      cerr<<cn<<mn<<" ERROR: Order name \""<<optionValue<<"\" was not valid, please fix steering"<<endl;
-	      exit(1);
-	    }
-
-	    cout<<cn<<mn<<" 2 Order is: "<<optionValue<<endl;
-	  }	
-	  */  
 	}
 	break;
       case 'P': 
@@ -924,6 +923,8 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	  sscanf( optionValue.c_str(), "%f", &xlegend);
 	} else if ( optionName == "xunits" ) {
 	  xunits = optionValue;
+	} else if ( optionName == "xerroroff" ) {
+	  xerroroff = true;
 	}
 	break;
       case 'Y': 
@@ -1537,6 +1538,16 @@ void MyCrossSection::DrawinFrame(int iframe) {
   //if (debug) cout<<" SubPad = "<< myframe->GetSubPad1()<<endl;
   myframe->GetSubPad1()->cd();
 
+
+
+  
+  //TODO - new legend implimentation - START
+  // TLegend *leg = BuildLegend();
+  //TODO - new legend implimentation - STOP
+
+
+
+
   if (debug)
     cout<<" MyCrossSection::DrawinFrame: number of grids= "<<gridinframe[iframe].size()
 	<<" for frame= "<<iframe<<endl;
@@ -1964,6 +1975,8 @@ TGraphAsymmErrors* MyCrossSection::GetNormalisedReferenceAsGraph(int igrid, bool
   double binw, y, ey;
   for (int i=0; i<=href->GetNbinsX(); i++) {
     if(mygrid[igrid]->GetDividedByBinWidth() == false) {
+      cout<<cn<<mn<<" Reference histo not divided by bin width, so we do that now."<<endl;
+
       binw = href->GetBinWidth(i);
       y    = href->GetBinContent(i);
       ey   = href->GetBinError(i);
@@ -1977,8 +1990,22 @@ TGraphAsymmErrors* MyCrossSection::GetNormalisedReferenceAsGraph(int igrid, bool
 	href->SetBinError(i, 0.); //turn error bars off
       }
     }
+    cout<<cn<<mn<<" Reference histo is reported to be divided by bin width, so we do nothing."<<endl;
 
     if(ebars == false)  href->SetBinError(i, 0.); //TODO - make more generic - turn error bars off
+  }
+
+  // normalise by number of entries, if asked to
+  if(mygrid[igrid]->GetNormTot() == true) {
+    cout<<"TEST: grid ntot is ON!"<<endl;
+    cout<<"TEST: num of entries: "<<href->GetEntries()<<endl;
+    cout<<"TEST: BEFORE"<<endl;
+    href->Print("all");
+
+    cout<<"TEST: AFTER"<<endl;
+    //href->Scale( 1.0 /  href->GetEntries() );
+    //href->Scale( 1.0 /  2000 );
+    href->Print("all");
   }
 
   cout<<cn<<mn<<" Reference is divided by binwidth? "
@@ -1999,6 +2026,7 @@ TGraphAsymmErrors* MyCrossSection::GetNormalisedReferenceAsGraph(int igrid, bool
     
 
     //  change normtot and divbinwidth accordingly for reference hist to be same as data
+    //normtot = true; //TEST
     this->Normalise(gref,yscale,xscale,normtot, divbinwidth);    
   }
 
@@ -2752,3 +2780,187 @@ void MyCrossSection::ComputeRatioRange(double *_Ymin, double *_Ymax, int igrid) 
   
   return;
 }
+
+/*
+TLegend *MyCrossSection::BuildLegend(int iframe) {
+  //
+  //
+  //
+  string mn = "BuildLegend:"; //method name for debugging purposes
+
+  if (debug)
+    cout<<cn<<mn<<" number of grids= "<<gridinframe[iframe].size()<<" for frame= "<<iframe<<endl;
+ 
+  // const int npdf=gpdfband[igrid].size();
+  //const int npdf=myband[igrid]->GetNPDF();
+  const int npdf=pdfdata.size();
+  if (npdf<1) cout<<" MyCrossSection::DrawinFrame: No PDF information found"<<endl;
+
+
+  //compute an optimal position for the legend for this plot
+  y=ylegend;
+  int namesize=0;
+  if (npdf<1) {
+    namesize=5; //why choose 5 as default?
+    
+    TString mylabel=mydata[igrid]->GetLabel();
+    int mysize=TString(mylabel).Sizeof(); 
+    if (mysize>namesize) namesize=mysize;
+    //y-=0.1;
+  } else {
+    //y-=0.07*npdf; //origional
+    for (int ipdf=0; ipdf<npdf; ipdf++) {
+      if (debug) cout<<" MyCrossSection::DrawinFrame: label= "
+		     <<this->GetPdfName(ipdf).Data()<<endl;
+     
+      int mysize=this->GetPdfName(ipdf).Sizeof(); 
+      if (mysize>namesize) namesize=mysize;
+    }
+    if (plotchi2) namesize+=10;
+  }
+
+  if (debug) cout<<" MyCrossSection::DrawinFrame: xlegend= "<<xlegend
+		 <<" ylegend= "<<ylegend<<endl;
+
+  //origional
+  //  double x1=xlegend, x2=0.95;
+  //  double y1=y, y2=ylegend;
+  //  x2+=namesize*0.02;
+ 
+
+  // place legend based on the YTop and XRight position and set xLeft and YBottom by:
+  //  XLeft = the length of the largest name in the legend 
+  //  YBottom = the number of entries in the legend
+  double x1 = xlegend-(namesize*0.02), x2=xlegend;
+  double y1 = 0, y2=ylegend;
+  
+  
+  // ydimention is based of what elements are being put in legend.
+  if(npdf<1) {
+    // size based on no PDFs meaning legend is full of just grid data
+    y1 = ylegend-0.2;
+  } else {
+    // size based on number of pdfs
+    y1 = ylegend-(npdf*0.11);
+  }
+  
+  
+  if (debug) cout<<" MyCrossSection::DrawinFrame: namesize="<<namesize<<", npdf="<<npdf
+		 <<", x1="<<x1<<", x2="<<x2<<", y1="<<y1<<", y2="<<x2<<std::endl;
+
+
+  // prepare legend for this Plot
+  TLegend *leg = new TLegend(x1,y1,x2,y2);
+  leg->SetBorderSize(0);
+  leg->SetFillColor(0);
+  leg->SetMargin(0.1);
+  
+
+  const double BIG=1.36;
+  double Ymin=BIG, Ymax=-BIG, Xmin=BIG, Xmax=-BIG;
+  int iframeRepeatCheck = -1; // turn on or off certain features if they are being done in the same frame twice
+
+  for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
+    int igrid=gridinframe[iframe][i];
+    int jframe=this->GetFrameID(igrid);
+    if (iframe!=jframe) {
+      //cout<<"TEST: NOT EQUAL: iframe:"<<iframe<<", jframe:"<<jframe<<endl; //TODO - check does this do anything?
+      continue;
+    } else {
+      //cout<<"TEST: EQUAL, SKIPPING: iframe:"<<iframe<<", jframe:"<<jframe<<endl;
+    }
+
+    if (debug) cout<<" MyCrossSection::DrawinFrame: for i= " << i << " igrid= "<<igrid<<endl;
+    TH1D* href=0;
+    //cout << "Is data ok? " << this->GetDataOk(igrid) << endl;
+
+
+    //plot the overlay portion of graph
+    if(overlaydata) {
+      if (this->GetDataOk(igrid)) {
+	if (!mydata[igrid]) cout<<" MyCrossSection::DrawinFrame: mydata["<<igrid<<"] not found "<<endl;
+	else if (debug)     cout<<" MyCrossSection::DrawinFrame: mydata["<<igrid<<"]  found "<<endl;
+	
+	
+	// Only plot data once (ignore repeats) unless repeated data is on a new frame
+	if ( DoubleDataSetName(igrid) == false || iframeRepeatCheck != iframe ) { 
+	  //repeated data was not found on that frame
+	  iframeRepeatCheck = iframe;
+	  
+	  
+	  TString mylabel=mydata[igrid]->GetLabel();	
+	  if (debug) cout<<" MyCrossSection::DrawinFrame: mylabel= "<<mylabel.Data()<<endl;
+	  
+	  // label sqrts before data on legend if MyData Steering requested it
+	  if(mydata[igrid]->GetPlotSqrts())  {
+	    TString sqrtslabel = "";
+	    double sqrtsval = mydata[igrid]->GetSQRTS() * GetUnitScaleX(mydata[igrid]->GetXUnits(), this->GetXUnits()); //new
+	    TString sqrtsunits = mydata[igrid]->GetXUnits();
+	    
+	    sqrtslabel.Form("#sqrt{s}= %.2f %s", 
+			    double(sqrtsval), 
+			    sqrtsunits.Data() ); //TODO - too hardcoded? make generic
+	    leg->AddEntry((TObject*)0, sqrtslabel, "");
+	  }
+	  
+	  //add the data label to the legend
+	  leg->AddEntry(mydata[igrid]->GetTGraphTotErr(),mylabel,"ep");	  
+	}
+      }  
+    }
+    
+    
+    if(overlayReference) {
+      TString curLegLable = "";
+      if (leglabel.size()>0) curLegLable = leglabel[igrid].c_str();
+      else                   curLegLable = "reference";
+      
+      if (debug) cout<<" MyCrossSection::DrawinFrame: Added '"<<curLegLable<<"' to legend."<<endl;	
+      TGraphAsymmErrors *gref = GetNormalisedReferenceAsGraph(igrid,false);
+      leg->AddEntry(gref, curLegLable, "l");
+    }
+
+
+    if(overlayTheory) {
+      
+      if(this->GetFrameID(igrid) != this->GetFrameID(igrid+1) ) {
+	
+	//Before adding PDF titles to legend, create a title for the PDFs within the legend
+	TString pdfDataTitle="NLO QCD with:"; //"subtitle" for the following PDFs on the legend
+	leg->AddEntry((TObject*)0, pdfDataTitle.Data(), "");
+	
+	for (int ipdf=0; ipdf<npdf && overlayTheory; ipdf++) {
+	  
+	  //retrieve a PDF name
+	  TString pdfname="";
+	  pdfname+= this->GetPdfName(ipdf);
+	  
+	  
+	  if (plotchi2) {
+	    //pdfname+=" #C^2 ";
+	    pdfname+=" Chi2= ";
+	    char tmp[30];
+	    sprintf(tmp,"%5.2f",vpdfchi2.at(igrid).at(ipdf));
+	    pdfname+=TString(tmp);
+	  }
+	  if (debug) cout<<" MyCrossSection::DrawinFrame: pdfname= "<<pdfname.Data()<<endl;
+	  
+	  
+	  //Add PDF titles to legend
+	  if (plotmarker) leg->AddEntry(myband.at(igrid)->GetPdfBand(ipdf),pdfname,"p");
+	  else            leg->AddEntry(myband.at(igrid)->GetPdfBand(ipdf),pdfname,"f");	
+	}      
+      }
+    }
+    
+
+    // Draw the correctly filled legend
+    leg->Draw();
+    
+    if (debug) cout<<" MyCrossSection::DrawinFrame: legend prepared "<<endl;
+  }
+  
+  
+  return contents;
+}
+*/
