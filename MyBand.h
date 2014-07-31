@@ -34,6 +34,7 @@ class MyBand {
   void SetRatioTheoryOverData(bool ratioType) {
     ratioTheoryOverData = ratioType;
   };
+  void SetXErrorsZero();
 
   bool GetRatioTheoryOverData(){return ratioTheoryOverData;};
 

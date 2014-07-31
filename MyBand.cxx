@@ -45,7 +45,8 @@ void MyBand::DrawPDFBandRatio()
  if (staggerpdfpoints)  {
    if (debug) cout<<" MyBand::DrawPDFBandRatio: Staggering points."<<endl;
    MovePDFPoints();
- } 
+ }
+
 
  //if data was artificially scaled, then theory must be equally scaled
  //if(scalex != 1.0 || scaley != 1.0 ) {
@@ -124,6 +125,7 @@ void MyBand::DrawPDFBand()
   if (staggerpdfpoints) {
     if (debug) cout<<" MyBand::DrawPDFBand: Staggering points."<<endl;
     MovePDFPoints();
+    SetXErrorsZero();
   }
 
   //if data was artificially scaled, then theory must be equally scaled
@@ -200,7 +202,7 @@ void MyBand::DrawPDFBand()
   return;
 }
 
-
+/*
 // Shift horizontal position of PDF data points for readability
 void MyBand::MovePDFPoints(){
 
@@ -237,6 +239,88 @@ void MyBand::MovePDFPoints(){
  }
 
  if (debug) cout<<" MyBand::MovePDFPoints: Finished moving points."<<endl;
+ return;
+} 
+*/
+
+
+
+// Shift horizontal position of PDF data points for readability
+void MyBand::MovePDFPoints(){
+
+ if (debug) cout<<" MyBand::MovePDFPoints: npdf= "<<gpdfband.size()<<endl;
+
+ // stagger PDF points, making them more visible
+ for (int ipdf = 0; ipdf <gpdfband.size(); ipdf++) {
+   cout<<" MyBand::MovePDFPoints: ipdf= "<<ipdf<<endl;
+   if (!gpdfband.at(ipdf)) {
+    cout<<" MyBand::MovePDFPoints: gpdfband not found ! "<<endl;
+   }
+
+   // stagger each individual point for each pdf on overlay
+   for (int i=0; i<gpdfband.at(ipdf)->GetN(); i++){
+     double x=0, y=0, range=0, error=0, xh=0, xl=0, dr=0, newx=0;
+     gpdfband.at(ipdf)->GetPoint(i, x, y);
+          
+     error = gpdfband.at(ipdf)->GetErrorX( i ); //total error for this point
+     range = error / 2;                         //the distance points will be staggered across
+          
+     xl = x - (range/4);                        //highest a point will be staggerd
+     dr = range / gpdfband.at(ipdf)->GetN();    //DeltaR is dist to stagger based on num of pdfs
+     
+     newx = xl + ( dr * ipdf );                 //new x position      
+     gpdfband.at(ipdf)->SetPoint(i, newx, y);
+   }
+
+
+   for (int i=0; i<gpdfbandratio.at(ipdf)->GetN(); i++){
+     double x=0, y=0, range=0, error=0, xh=0, xl=0, dr=0, newx=0;
+     gpdfbandratio.at(ipdf)->GetPoint(i, x, y);
+          
+     error = gpdfbandratio.at(ipdf)->GetErrorX( i ); //total error for this point
+     range = error / 2;                              //the distance points will be staggered across
+          
+     xl = x - (range/4);                             //highest a point will be staggerd
+     dr = range / gpdfbandratio.at(ipdf)->GetN();    //DeltaR is dist to stagger based on num of pdfs
+     
+     newx = xl + ( dr * ipdf );                      //new x position
+     gpdfbandratio.at(ipdf)->SetPoint(i, newx, y);
+   }  
+ }
+
+ //this could be done better
+ SetXErrorsZero(); // setting X-errors to zero, not as meaningful when staggered?
+ 
+ if (debug) cout<<" MyBand::MovePDFPoints: Finished moving points."<<endl;
+ return;
+} 
+
+
+
+// Shift horizontal position of PDF data points for readability
+void MyBand::SetXErrorsZero() {
+
+ if (debug) cout<<" MyBand::SetXErrorsZero: Zeroing X errors..."<<endl;
+
+ // stagger PDF points, making them more visible
+ for (int ipdf = 0; ipdf <gpdfband.size(); ipdf++) {
+   cout<<" MyBand::SetXErrorsZero: ipdf= "<<ipdf<<endl;
+   if (!gpdfband.at(ipdf)) {
+    cout<<" MyBand::SetXErrorsZero: gpdfband not found ! "<<endl;
+   }
+
+   for (int i=0; i<gpdfband.at(ipdf)->GetN(); i++){
+     gpdfband.at(ipdf)->SetPointEXlow (i, 0.0);
+     gpdfband.at(ipdf)->SetPointEXhigh(i, 0.0);
+   }
+   
+   for (int i=0; i<gpdfbandratio.at(ipdf)->GetN(); i++){
+     gpdfbandratio.at(ipdf)->SetPointEXlow (i, 0.0);
+     gpdfbandratio.at(ipdf)->SetPointEXhigh(i, 0.0);
+   }
+ }
+
+ if (debug) cout<<" MyBand::MovePDFPoints: Finished zero-ing X-errors."<<endl;
  return;
 } 
 
