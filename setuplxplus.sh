@@ -21,6 +21,7 @@ source ${contrib}/gcc/4.6/${platform}/setup.sh
 #
 ### Add program paths to standard paths $PATH & LDPATH
 export ROOTSYS=/afs/cern.ch/sw/lcg/app/releases/ROOT/5.34.05/${platform}/root
+#export ROOTSYS=/afs/cern.ch/sw/lcg/app/releases/ROOT/5.34.18/${platform}/root
 #export LHAPDFPATH=/afs/cern.ch/sw/lcg/external/MCGenerators/lhapdf/5.8.8/${platform}
 export LHAPDFPATH=${BASEDIR}/lhapdf
 export FASTJET=/afs/cern.ch/sw/lcg/external/fastjet/3.0.3/${platform}
