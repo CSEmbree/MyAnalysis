@@ -42,15 +42,16 @@ int main(int argc, char** argv)
 
  //const int NQ2=4;
  //double Q2value[NQ2]={172.5*172.5,100.,10.,1.};
- const int NQ2=3;
- double Q2value[NQ2]={3967.7,1221.27,667.293};
+ const int NQ2=1;
+ double Q2value[NQ2]={10000.};
 
- int nbin=100000; 
+ int nbin=1000; 
 
+ MyPDF *mypdf1 = 0;
  MyPDF *mypdf2 = 0;
 
  // double xmin=1.0e-3, xmax=0.6;
- double xmin=3.0e-1, xmax=0.95;
+ double xmin=0.001, xmax=0.3;
  double ymin=1.e-3, ymax=500.;
  ymin=0.1; ymax=50.5;
 
@@ -61,21 +62,26 @@ int main(int argc, char** argv)
  leg->SetFillColor(0);
 
 
-/*
+
   TString cname="c"+sname;
   TCanvas *c2= new TCanvas(cname);
 
-  double Q2=100.;
+  double Q2=10000.;
   int ifl=0;
   TH1D *h1=new TH1D(sname.Data(),sname.Data(),nbin,xmin,xmax);
-  mypdf2 = new MyPDF(steeringfilename, ifl, Q2,h1);
+  TH1D *h2=new TH1D(sname.Data(),sname.Data(),nbin,xmin,xmax);
+  
+  mypdf1 = new MyPDF(steeringfilename, ifl, Q2, h1);
+  mypdf2 = new MyPDF("MyPDF/NNPDF30nlo.txt", ifl, Q2, h2);
  
+  mypdf1->DrawPDFBand();
   mypdf2->DrawPDFBand();
 
   theApp->Run(kTRUE);
   return 0;  
-*/
 
+
+  /*
  //for (int iq=0; iq<NQ2; iq++) {
  for (int iq=0; iq<1; iq++) {
   double Q2=pow(Q2value[iq],2);
@@ -130,17 +136,17 @@ int main(int argc, char** argv)
     TH1D* hpdf=mypdf2->GetPDFRatio(iset,iset2);
 
     hpdf->SetLineColor(1+iset);
- /*
-    double hmax=hpdf->GetMaximum();
-    double xhmax=hpdf->GetBinCenter(hpdf->FindBin(hmax));
-    if (ymax<hmax) {
-     double hmin=Yaxis->GetXmin();
-     int nbins=Yaxis->GetNbins();
-     Yaxis->Set(nbins,hmin,hmax*1.1);
-     ymax=hmax;
-     cout<<xhmax<<" set new maximum hmax= "<<hmax<<endl;
-    }
- */
+ 
+ //   double hmax=hpdf->GetMaximum();
+ //   double xhmax=hpdf->GetBinCenter(hpdf->FindBin(hmax));
+ //   if (ymax<hmax) {
+ //    double hmin=Yaxis->GetXmin();
+ //    int nbins=Yaxis->GetNbins();
+ //    Yaxis->Set(nbins,hmin,hmax*1.1);
+ //    ymax=hmax;
+ //    cout<<xhmax<<" set new maximum hmax= "<<hmax<<endl;
+ //   }
+ //
     hpdf->Draw("hist,same");
 
     //mypdf2->DrawPDFRatio(iset,iset2);
@@ -155,7 +161,7 @@ int main(int argc, char** argv)
    c2->Print(psfile.Data());
   }
  }
-
+*/
 
 
 /*
