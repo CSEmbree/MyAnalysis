@@ -5,6 +5,7 @@
 %Gridnamedir mcfm/
 debug
 plotmarker
+staggerpdfpoints
 xlegend 0.9
 ylegend 0.9
 overlaystyle theory,data

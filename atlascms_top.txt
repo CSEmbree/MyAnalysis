@@ -12,7 +12,7 @@ plotband
 %
 %
 %ratio theory/data
-ratiostyle data/theory
+ratiostyle theory/data
 overlaystyle data,theory
 xunits GeV
 yunits fb

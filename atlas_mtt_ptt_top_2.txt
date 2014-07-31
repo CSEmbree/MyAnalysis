@@ -4,10 +4,9 @@
 %
 %Gridnamedir mcfm/
 debug
-plotband
+%plotband
 plotmarker
-%ploterrorticks
-%staggerpdfpoints
+staggerpdfpoints
 %
 xlegend 0.9
 ylegend 0.9

@@ -15,18 +15,20 @@
 # compare Atlas new data to CMS data (PDFs: CT10 and HERA)
 #  NOTE: articially scaled CMS data in CMS data steering file
 ./plot atlascms_top.txt
-
-
-# compare Atlas new data to CMS data (NO PDFs: Grid references)
-#  NOTE: articially scaled CMS data in CMS data steering file
 ./plot atlascms_top_nopdf.txt
+./plot atlascms_top_ct10.txt
+
+
+# compare sherpa and mcfm top
+./plot sherpavmcfm_nopdf.txt
+./plot sherpavmcfm_pdf.txt
 
 
 # compare Atlas new data to theory
 ./plot atlas2012_top.txt
 
 
-# Atlas data cross various PDFs
+# Atlas top data cross various PDFs - origionally made for claire
 ./plot atlas_mtt_ptt_top_1.txt
 ./plot atlas_mtt_ptt_top_2.txt
 
