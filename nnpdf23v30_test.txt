@@ -4,8 +4,8 @@
 %
 %Gridnamedir mcfm/
 debug
-plotmarker
-%plotband
+%plotmarker
+plotband
 xlegend 0.9
 ylegend 0.9
 overlaystyle theory,data
