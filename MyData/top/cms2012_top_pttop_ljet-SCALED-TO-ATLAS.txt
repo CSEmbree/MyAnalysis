@@ -1,0 +1,36 @@
+REACTION  P P --> top top
+SQRTS  7000.0
+YEAR 2012
+JETALGO ANTIKT
+JETALGR 5
+EXP CMS
+NAME CMS_2012_pttop_ljet
+%
+framelogy
+%framelogx
+label CMS 2012
+titlex p_{T,top} [GeV]
+titley 1/#sigma d#sigma/dp_{T, top} [pb/GeV]
+%unitypb
+%
+xunits GeV
+yunits pb
+scaley 1000.0
+%
+normtot
+dividedbybinwidth
+ERRORINPERCENT
+%
+%http://arxiv.org/pdf/1211.2220v2.pdf
+%
+%Table 4: Normalised differential tt cross section as a function of top quark observables in the pt T bin [GeV] 1/σ ds/dpt
+% 
+%xm xlow xhigh  ds/dpbT stat. [%] sys. [%] 
+ 30.  0.  60.  4.54e-3 2.5 2.5 3.6 3.6 
+ 80.  60. 100. 6.66e-3 2.4 2.4 4.9 4.9 
+125. 100. 150. 4.74e-3 2.4 2.4 3.2 3.2 
+175. 150. 200. 2.50e-3 2.6 2.6 5.1 5.1 
+230. 200. 260. 1.04e-3 2.9 2.9 5.5 5.5 
+290. 260. 320. 0.38e-3 3.7 3.7 8.2 8.2 
+360. 320. 400. 0.12e-3 5.8 5.8 9.5 9.5 
+%
