@@ -1,0 +1,20 @@
+In this directory is everything needed for a basic plot.
+
+MyCrossSection steering file (plotting information):
+  atlastest.txt
+
+MyData steering file (data information and values):
+  atlas2012_5fb_top_mtt_ljet.txt
+
+MyGrid steering file (Grid info & path to Grid file):
+  atlastest_grid_sherpa.txt
+
+A Grid file (note the .root extension):
+  atlastest_grid_sherpa.root
+
+
+Try running the MyCrossSection steering file in this 
+directory, called 'atlastest.txt', by running the 
+following in the project home directory:
+
+  ./plot example/atlastest.txt
