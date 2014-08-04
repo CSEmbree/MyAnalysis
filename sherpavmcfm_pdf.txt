@@ -24,7 +24,8 @@ plotband
 % R plus B
 %
 dataname  /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
-gridname  sherpaVmcfm/MyGridSteerings/atlastest_grid_mcfm.txt
+%gridname  sherpaVmcfm/MyGridSteerings/atlastest_grid_mcfm.txt
+gridname  MyGrids/top/mcfm/atlastest_grid_mcfm.txt
 markerstyledata 20
 markercolordata 1
 reflinestyle 1
@@ -34,7 +35,8 @@ frameid 0
 divideid 0
 %
 dataname  /MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
-gridname  sherpaVmcfm/MyGridSteerings/atlastest_grid_sherpa-RpB.txt
+%gridname  sherpaVmcfm/MyGridSteerings/atlastest_grid_sherpa-RpB.txt
+gridname  MyGrids/top/sherpa/atlastest_grid_sherpa-RpB.txt
 markerstyledata 20
 markercolordata 1
 reflinestyle 1

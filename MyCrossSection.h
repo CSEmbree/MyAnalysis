@@ -262,14 +262,24 @@ class MyCrossSection {
     
     std::string style = "";
     for(int i=0; i<rationames.size()-1; ++i) { 
-      style+=rationames[i];
+      style+=convertDisplayName(rationames[i]);
       style+=((i<rationames.size()-2)? ",":"");
     }
 
-    style+="/"+rationames[rationames.size()-1];
+    style+="/"+convertDisplayName(rationames[rationames.size()-1]);
     
     return style;
   };
+
+  std::string convertDisplayName( std::string name ) {
+    std::string convertedName = "";
+
+    if( name == "data")      convertedName = "Data";
+    if( name == "reference") convertedName = "Ref";
+    if( name == "theory")    convertedName = "NLO QCD";
+ 
+    return convertedName;
+  }
   
   //double CalcChi2(TGraphAsymmErrors *g_theory, TGraphAsymmErrors *g_data, TMatrixT<double> data_cov_matrix);
   double CalcChi2(TGraphAsymmErrors *g_theory, TGraphAsymmErrors *g_data, TMatrixT<double> *data_cov_matrix);

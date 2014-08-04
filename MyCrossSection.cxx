@@ -1707,7 +1707,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	  double sqrtsval = mydata[igrid]->GetSQRTS() * GetUnitScaleX(mydata[igrid]->GetXUnits(), this->GetXUnits()); //new
 	  TString sqrtsunits = mydata[igrid]->GetXUnits();
 
-	  sqrtslabel.Form("#sqrt{s}= %.2f %s", 
+	  sqrtslabel.Form("#sqrt{s}= %.f %s", 
 			  double(sqrtsval), 
 			  sqrtsunits.Data() ); //TODO - too hardcoded? make generic
 	  leg->AddEntry((TObject*)0, sqrtslabel, "");

@@ -2,7 +2,7 @@
 % steering file to test the example from MCGrid
 %
 datanamedir MyData/mcgrid_example/
-Gridnamedir MyGrids/top/sherpa/
+Gridnamedir MyGrids/CDFZRap/sherpa
 %
 pdfdata MyPDF/CT10.txt
 % need always dataname, gridname, markerstyle, markercolor one after the other
