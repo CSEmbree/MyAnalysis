@@ -52,7 +52,7 @@ MyCrossSection::MyCrossSection(char name[100])
   ploterrorticks=false;
   staggerpdfpoints=false;
   overlayData = true; //always display data by default
-  overlayTheory = false;
+  overlayConvolute = false;
   overlayReference = false;
   xerroroff = false;
 
@@ -265,12 +265,12 @@ void MyCrossSection::Initialize() {
       myband[igrid]->SetPdfBand(gtmp); 
       
 
-      // if data is being forcfully scaled, also scale the theory as well
+      // if data is being forcfully scaled, also scale the convolute as well
       if(mydata[igrid]->GetScalex() != 1.0 || mydata[igrid]->GetScaley() != 1.0 ) {
 	
-	if(debug) cerr<<" MyCrosSection:Initialize: WARN: Forcefully scaling theory to data. "<<endl;
+	if(debug) cerr<<" MyCrosSection:Initialize: WARN: Forcefully scaling convolute to data. "<<endl;
 	
-	//set theory's scaling to the same as data's
+	//set convolutes's scaling to the same as data's
 	myband[igrid]->SetScalex( mydata[igrid]->GetScalex() );
 	myband[igrid]->SetScaley( mydata[igrid]->GetScaley() );
       }
@@ -396,16 +396,17 @@ void MyCrossSection::Initialize() {
       denomFillStyle       = refhistlinecolor[igrid];
       denomTop             = g;
       denomBot             = g; //same as Top
-    } else if ( IsRatioDenominator("theory") ) {
+    } else if ( IsRatioDenominator("convolute") ) {
       //TODO - handle multiple pdfs case
-      if(debug) cout<<cn<<mn<<" Denominator is THEORY"<<endl;      
+      if(debug) cout<<cn<<mn<<" Denominator is CONVOLUTE"<<endl;      
       TGraphAsymmErrors* g = NULL;
       myband[igrid]->ComputePDFBandRatio(g);
       denomBot = myband[igrid]->GetPdfBand(0); //TODO - make for all PDFs
+      //currently only used the single denominator for the first pdf (0).
     }
      
-    //normal process if denom was data or reference; myband handles the theory case
-    if ( IsRatioDenominator("theory") == false ) { 
+    //normal process if denom was data or reference; myband handles the convolute case
+    if ( IsRatioDenominator("convolute") == false ) { 
       cout<<cn<<mn<<" Computing denominator... "<<endl;
       ratiodenom.push_back(myTGraphErrorsDivide(denomTop, 
 						denomBot, 2)); //TODO - change error bar saving?
@@ -421,7 +422,7 @@ void MyCrossSection::Initialize() {
 	cout<<cn<<mn<<" Reporting ratio denominator Print:"<<endl;
 	ratiodenom[igrid]->Print("all"); //TEST
       }
-    }
+     }
 
 
     // COMPUTE NUMERATOR(S)
@@ -479,8 +480,8 @@ void MyCrossSection::Initialize() {
       }
     }
     
-    if( IsRatioNumerator("theory") ){
-      if(debug) cout<<cn<<mn<<" THEORY is a ratio numerator, computing..."<<endl;
+    if( IsRatioNumerator("convolute") ){
+      if(debug) cout<<cn<<mn<<" CONVOLUTE is a ratio numerator, computing..."<<endl;
 
       myband[igrid]->ComputePDFBandRatio(denomBot); //TEST - origonal
     }
@@ -1353,18 +1354,6 @@ TGraphAsymmErrors *MyCrossSection::GetPDFRatio(int iset1, int iset2, int itype, 
   if (debug) cout<<" MyCrossSection::GetPDFRatio: "<< ratio_to_ref_name.Data()<<endl;
 
 
-  // Flip ratio calculations if steering asks for it
-  //int top = -1, bot = -1;
-  //if(ratioTheoryOverData) {
-  // top = iset1; //origional
-  // bot = iset2; //origional
-  //} else {
-  // top = iset2;
-  // bot = iset1;
-  //}
-  // TGraphAsymmErrors* gpdfratio=myTGraphErrorsDivide(myband.at(igrid)->GetPdfBand(top),
-  //						    myband.at(igrid)->GetPdfBand(bot),2);
-
   TGraphAsymmErrors* gpdfratio=myTGraphErrorsDivide(myband.at(igrid)->GetPdfBand(iset1),
 						    myband.at(igrid)->GetPdfBand(iset2),2);
   gpdfratio->SetLineColor(markercolor[igrid]);
@@ -1397,14 +1386,6 @@ TGraphAsymmErrors *MyCrossSection::GetPDFTypeRatio(int iset1, int iset2, int igr
   }
   if (debug) cout<<" MyCrossSection::GetPDFTypeRatio: "<< ratio_to_ref_name.Data()<<endl;
 
-
-  // Flip ratio calculations if steering asks for it
-  //int top = -1, bot = -1;
-  //if(ratioTheoryOverData) {
-  //  top = iset1; bot = iset2; //origional
-  //} else {
-  //  top = iset2; bot = iset1;
-  //}
 
   TGraphAsymmErrors* gpdfratio=myTGraphErrorsDivide(myband.at(igrid)->GetPdfBand(iset1),
 						    myband.at(igrid)->GetPdfBand(iset2),2);
@@ -1672,7 +1653,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
       
 
     }
-    if(overlayTheory) {
+    if(overlayConvolute) {
       if (debug) cout<<" MyCrossSection::DrawinFrame: draw band igrid= "<<igrid<<endl;
       
       //draw each PDF band on top pad of plot for overlay
@@ -1752,7 +1733,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 
     //All data names should be added to the legend before PDF names
     if(this->GetFrameID(igrid) != this->GetFrameID(igrid+1) ) {
-      for (int ipdf=0; ipdf<npdf && overlayTheory; ipdf++) {
+      for (int ipdf=0; ipdf<npdf && overlayConvolute; ipdf++) {
 	
 	//retrieve a PDF name
 	TString pdfname="";
@@ -1856,7 +1837,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
       if (ymax>Ymax) Ymax=ymax; 
     }
     
-    if( IsRatioNumerator("thoery") == true ) {
+    if( IsRatioNumerator("convolute") == true ) {
       ymin=myband[igrid]->GetYmin();
       ymax=myband[igrid]->GetYmax();
       if (ymin<Ymin) Ymin=ymin;
@@ -1897,8 +1878,8 @@ void MyCrossSection::DrawinFrame(int iframe) {
   for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
     int igrid=gridinframe[iframe][i];
     if (debug) std::cout<<" MyCrossSection::DrawinFrame: Drawing ratiodata for '"<<igrid<<"'"<<std::endl;          
-    if(IsRatioDenominator("theory") == true)   {
-      cout<<" THEORY DENOM PLOT"<<endl;
+    if(IsRatioDenominator("convolute") == true)   {
+      cout<<" CONVOLUTE DENOM PLOT"<<endl;
       myband[igrid]->DrawPDFBandRatio();      
     } else {
       cout<<" REGULAR DENOM PLOT"<<endl;
@@ -1919,12 +1900,12 @@ void MyCrossSection::DrawinFrame(int iframe) {
       cout<<" RATIO REFERENCE PLOT"<<endl;
       ratioreference[igrid]->Draw("P,same");
     }
-    if( IsRatioNumerator("theory")    == true ) {
-      cout<<" RATIO THEORY PLOT"<<endl;
+    if( IsRatioNumerator("convolute")    == true ) {
+      cout<<" RATIO CONVOLUTE PLOT"<<endl;
       myband[igrid]->DrawPDFBandRatio();
     }
   }
-  // finished drawing ratio (theory/data)
+  // finished drawing ratio (conv/data)
   
   
 
@@ -2096,14 +2077,10 @@ TH1D* MyCrossSection::GetNormalisedReference(int igrid) {
 		    <<"\n\txscale: "<<mydata[igrid]->GetScalex()
 		    <<"\n\tyscale: "<<mydata[igrid]->GetScaley()<<endl;
       
-      cout<<"TEST1"<<endl;
       href->Print("all");
-      
-      //set theory's artificial scaling to the same as data's
-      href->Scale( mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?
-      
+      //set convolutes's artificial scaling to the same as data's
+      href->Scale( mydata[igrid]->GetScaley() ); //TODO - include checking for scalex?      
       href->Print("all");
-      cout<<"TEST1"<<endl;    
     }
   }
 
@@ -2642,21 +2619,21 @@ bool MyCrossSection::validateOverlayStyle(std::vector<std::string > names) {
   bool valid = true;
 
   //Only these are valid overlay style options
-  string DATA = "data", THEORY = "theory", REFERENCE = "reference";
-  bool dataFlag = false, theoryFlag = false, referenceFlag = false;
+  string DATA = "data", CONVOLUTE = "convolute", REFERENCE = "reference";
+  bool dataFlag = false, convoluteFlag = false, referenceFlag = false;
 
   if( names.size() >= 4 || names.size() <= 0 ) valid = false; //incorrect num of names
   else {
     for(int i = 0; i<names.size() && valid; ++i) {
       string curName = names.at(i);
 
-      if(curName != DATA && curName != THEORY && curName != REFERENCE) {
+      if(curName != DATA && curName != CONVOLUTE && curName != REFERENCE) {
 	valid = false;
 	cerr<<cn<<mn<<" Overlay name '"<<curName<<"' at position "<<i<<" is not valid"<<endl;
       } else {
 
 	if      (curName == DATA)      dataFlag      = true;
-	else if (curName == THEORY)    theoryFlag    = true;
+	else if (curName == CONVOLUTE) convoluteFlag    = true;
 	else if (curName == REFERENCE) referenceFlag = true;	
       }
     } //end for
@@ -2665,12 +2642,12 @@ bool MyCrossSection::validateOverlayStyle(std::vector<std::string > names) {
 
   if(valid == false) { 
     cerr<<cn<<mn<<" ERROR: Invalid overlaystyle found!"
-	<<"\n\t Should in form 'overlaystyle data,reference,theory'"<<endl;
+	<<"\n\t Should in form 'overlaystyle data,reference,convolute'"<<endl;
   }
 
   //set global flags based on user overlay requests
   overlayData      = dataFlag;
-  overlayTheory    = theoryFlag;
+  overlayConvolute = convoluteFlag;
   overlayReference = referenceFlag;
   
   return valid;
@@ -2682,7 +2659,7 @@ bool MyCrossSection::validateRatioStyle(std::vector<std::string > names) {
   bool valid = true;
 
   //Only these are valid overlay style options
-  string DATA = "data", THEORY = "theory", REFERENCE = "reference";
+  string DATA = "data", CONVOLUTE = "convolute", REFERENCE = "reference";
 
 
   if( names.size() > 4 || names.size() <= 0 ) valid = false; //incorrect num of names
@@ -2690,7 +2667,7 @@ bool MyCrossSection::validateRatioStyle(std::vector<std::string > names) {
     for(int i = 0; i<names.size() && valid; ++i) {
       string curName = names.at(i);
 
-      if(curName != DATA && curName != THEORY && curName != REFERENCE) { //valid names
+      if(curName != DATA && curName != CONVOLUTE && curName != REFERENCE) { //valid names
 	valid = false;
 	cerr<<cn<<mn<<" Ratio name '"<<curName<<"' at position "<<i<<" is not valid"<<endl;
       } 
@@ -2700,7 +2677,7 @@ bool MyCrossSection::validateRatioStyle(std::vector<std::string > names) {
 
   if(valid == false) { 
     cerr<<cn<<mn<<" ERROR: Invalid ratiostyle names found!"
-	<<"\n\tShould only include 1 or more of the following: \"data, theory, reference\""
+	<<"\n\tShould only include 1 or more of the following: \"data, convolute, reference\""
 	<<"\n\tBut instead found: \"";
     for(int i=0;i<names.size();++i) cerr<<names[i]<<((i<names.size()-1)? ", ":"");
     cerr<<endl; //foramtting
@@ -2744,7 +2721,7 @@ void MyCrossSection::ComputeRatioRange(double *_Ymin, double *_Ymax, int igrid) 
     ratiodenom[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
   } else if (IsRatioDenominator("reference") == true) {
     ratiodenom[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
-  } else if (IsRatioDenominator("theory") == true) {
+  } else if (IsRatioDenominator("convolute") == true) {
     ymin=myband[igrid]->GetYmin();
     ymax=myband[igrid]->GetYmax();
   }
@@ -2921,7 +2898,7 @@ TLegend *MyCrossSection::BuildLegend(int iframe) {
     }
 
 
-    if(overlayTheory) {
+    if(overlayConvolute) {
       
       if(this->GetFrameID(igrid) != this->GetFrameID(igrid+1) ) {
 	
@@ -2929,7 +2906,7 @@ TLegend *MyCrossSection::BuildLegend(int iframe) {
 	TString pdfDataTitle="NLO QCD with:"; //"subtitle" for the following PDFs on the legend
 	leg->AddEntry((TObject*)0, pdfDataTitle.Data(), "");
 	
-	for (int ipdf=0; ipdf<npdf && overlayTheory; ipdf++) {
+	for (int ipdf=0; ipdf<npdf && overlayConvolute; ipdf++) {
 	  
 	  //retrieve a PDF name
 	  TString pdfname="";

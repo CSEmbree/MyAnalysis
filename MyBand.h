@@ -31,13 +31,8 @@ class MyBand {
   void SetPlotMarker()       {plotmarker=true;};
   void SetErrorTicks()       {ploterrorticks=true;};
   void SetStaggerPDFPoints() {staggerpdfpoints=true;};
-  void SetRatioTheoryOverData(bool ratioType) {
-    ratioTheoryOverData = ratioType;
-  };
   void SetXErrorsZero();
-
-  bool GetRatioTheoryOverData(){return ratioTheoryOverData;};
-
+  
   void SetPdfBand       (TGraphAsymmErrors *mypdfband){
    TGraphAsymmErrors* gtmp=
      (TGraphAsymmErrors*) mypdfband->Clone((TString) (mypdfband->GetName()+TString("_pdfband")));
@@ -148,23 +143,22 @@ class MyBand {
   bool plotmarker;
   bool ploterrorticks;
   bool staggerpdfpoints;
-  bool ratioTheoryOverData;
   bool ratioitself;
 
-  std::vector<TGraphAsymmErrors *> gpdfband ; // per pdftype
-  std::vector<TGraphAsymmErrors *> gpdfbandratio; // per pdftype
-  std::vector<TGraphAsymmErrors *> gpdfdefault; // per pdftype
+  std::vector<TGraphAsymmErrors *> gpdfband ;        // per pdftype
+  std::vector<TGraphAsymmErrors *> gpdfbandratio;    // per pdftype
+  std::vector<TGraphAsymmErrors *> gpdfdefault;      // per pdftype
   std::vector<TGraphAsymmErrors *> gpdfdefaultratio; // per pdftype
   //TGraphAsymmErrors *grenscaleband;
   //TGraphAsymmErrors *gfactscaleband;
-  std::vector<TGraphAsymmErrors *> gscaleband; // per scale
+  std::vector<TGraphAsymmErrors *> gscaleband;       // per scale
   TGraphAsymmErrors *galphasband;
   TGraphAsymmErrors *gtotband;
 
   double yminratio;
   double ymaxratio;
 
-  double scalex; //for forcefully scaling theory to data, if data is being scaled
+  double scalex; //for forcefully scaling convolute to data, if data is being scaled
   double scaley;
 
   void Scale(TGraphAsymmErrors *g1, double scalex, double scaley);

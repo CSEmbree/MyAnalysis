@@ -105,7 +105,7 @@ class MyCrossSection {
   std::vector<std::string> rationames; // names of ratios (i-1) are numerators, last element is the denominator
 
   std::vector<string> pdfdata; //names of each pdf to be used
-  std::vector<string> overlaynames; //names of each type to overlay (should only be "data","theory","reference")
+  std::vector<string> overlaynames; //names of each type to overlay (should only be "data","convolute","reference")
 
   //std::vector<std::vector<string> > pdfdata;
   //std::vector<std::vector<MyPDF*> > t_mypdf; //first part of vec is grid id, second is pdf id
@@ -131,10 +131,10 @@ class MyCrossSection {
   std::vector<TGraphAsymmErrors*> ratiotot;
   std::vector<TGraphAsymmErrors*> ratiostat;
 
-  std::vector<TGraphAsymmErrors*> ratiodata;        // ratio of data/denominator
-  std::vector<TGraphAsymmErrors*> ratiotheory;      // ratio of theory/denominator
-  std::vector<TGraphAsymmErrors*> ratioreference;   // ratio of reference/denominator
-  std::vector<TGraphAsymmErrors*> ratiodenom; // ratio of denominator, which is (itself/itself)
+  std::vector<TGraphAsymmErrors*> ratiodata;      // ratio of data/denominator
+  std::vector<TGraphAsymmErrors*> ratioConvolute; // ratio of convolute/denominator
+  std::vector<TGraphAsymmErrors*> ratioreference; // ratio of reference/denominator
+  std::vector<TGraphAsymmErrors*> ratiodenom;     // ratio of denominator, which is (itself/itself)
 
   std::vector<std::vector<TGraphAsymmErrors*>> gpdfbandratiotot;
   std::vector<std::vector<TGraphAsymmErrors*>> gpdfdefaultratiotot;
@@ -167,7 +167,7 @@ class MyCrossSection {
   bool do_TotError;
 
   bool overlayData;
-  bool overlayTheory;
+  bool overlayConvolute;
   bool overlayReference;
 
   MyCrossSection(char name[100]);
@@ -276,7 +276,7 @@ class MyCrossSection {
 
     if( name == "data")      convertedName = "Data";
     if( name == "reference") convertedName = "Ref";
-    if( name == "theory")    convertedName = "NLO QCD";
+    if( name == "convolute") convertedName = "NLO QCD";
  
     return convertedName;
   }

@@ -17,8 +17,7 @@ MyBand::MyBand()
  plotmarker=false;
  ploterrorticks=false;
  staggerpdfpoints=false;
- //ratioTheoryOverData=true;
-
+ 
  gpdfbandratio.clear();
  gpdfband.clear(); 
  gpdfdefault.clear();;
@@ -48,7 +47,7 @@ void MyBand::DrawPDFBandRatio()
  }
 
 
- //if data was artificially scaled, then theory must be equally scaled
+ //if data was artificially scaled, then convolute  must be equally scaled
  //if(scalex != 1.0 || scaley != 1.0 ) {
  //  this->ScaleOverlayGraphs(scalex, scaley);
  //}
@@ -80,7 +79,7 @@ void MyBand::DrawPDFBandRatio()
    else                gpdfdefaultratio.at(ipdf)->Draw("PZ,same");   
    
    
-   if(ratioitself == false) { //(THEORY/DATA)  
+   if(ratioitself == false) { //(CONVOLUTE/DATA)  
 
      //Part 2 of 2) draw additional data lines based on steering parameters
      // ensure sure band ratio data was provided
@@ -103,7 +102,7 @@ void MyBand::DrawPDFBandRatio()
      // plot data based on style's requested in steering
      TString bandratiostyle = GetBandRatioStyle(); // determine style
      gpdfbandratio.at(ipdf)->Draw(bandratiostyle); // plot based on style
-   } else { //(DATA/THEORY)
+   } else { //(DATA/CONVOLUTE)
      
      gpdfbandratio.at(ipdf)->Draw("E2"); //P2
    }
@@ -128,7 +127,7 @@ void MyBand::DrawPDFBand()
     SetXErrorsZero();
   }
 
-  //if data was artificially scaled, then theory must be equally scaled
+  //if data was artificially scaled, then convolute must be equally scaled
   //if(scalex != 1.0 || scaley != 1.0 ) {
   //  this->ScaleRatioGraphs(scalex, scaley);
   //}
@@ -373,7 +372,7 @@ void MyBand::ComputePDFBandRatio(TGraphAsymmErrors *gref)
     }
   }
   
-  //if data was artificially scaled, then scale theory equally before visual ranges can be determined
+  //if data was artificially scaled, then scale convolute equally before visual ranges can be determined
   if(scalex != 1.0 || scaley != 1.0 ) {
     this->ScaleOverlayGraphs(scalex, scaley);
   }
