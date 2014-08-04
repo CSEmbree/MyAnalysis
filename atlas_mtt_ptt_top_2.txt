@@ -6,7 +6,7 @@
 debug
 %plotband
 plotmarker
-staggerpdfpoints
+plotstaggered
 %
 xlegend 0.9
 ylegend 0.9

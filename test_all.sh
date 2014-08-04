@@ -33,5 +33,9 @@
 ./plot atlas_mtt_ptt_top_2.txt
 
 
+# same as plots above but for every supported PDF. Just for testing.
+./plot atlas_top_allpdf.txt
+
+
 # compare Atlas new data to theory
 #./plot_old atlas2012_alphaS_top.txt

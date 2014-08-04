@@ -5,7 +5,7 @@
 %Gridnamedir mcfm/
 debug
 plotmarker
-staggerpdfpoints
+plotstaggered
 xlegend 0.9
 ylegend 0.9
 overlaystyle convolute,data
