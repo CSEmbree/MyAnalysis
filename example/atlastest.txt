@@ -20,8 +20,8 @@ ylegend 0.9
 %
 yunits fb
 xunits GeV
-overlaystyle data,reference,theory
-ratiostyle theory,reference/data
+overlaystyle data,reference,convolute
+ratiostyle convolute,reference/data
 %ratiotitlelabel Sherpa/Data
 %
 %
