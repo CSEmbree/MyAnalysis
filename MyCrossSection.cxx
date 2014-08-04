@@ -50,7 +50,8 @@ MyCrossSection::MyCrossSection(char name[100])
   plotmarker=false;
   plotband=false;
   ploterrorticks=false;
-  staggerpdfpoints=false;
+  //staggerpdfpoints=false;
+  plotstaggered=false;
   overlayData = true; //always display data by default
   overlayConvolute = false;
   overlayReference = false;
@@ -124,7 +125,10 @@ void MyCrossSection::Initialize() {
       if (debug) cout<<" MyCrossSection::Initialize: Plotmarker ON move points "<<endl;
       mybandtmp->MovePDFPoints(); //plot markers are more visible if data points are shifted slightly
     }
-    if (staggerpdfpoints) mybandtmp->SetStaggerPDFPoints();
+    //if (staggerpdfpoints) mybandtmp->SetStaggerPDFPoints();
+    cout<<"TEST: is plot staggered? "<<(plotstaggered? "YESY":"NO")<<endl;
+    if (plotstaggered) mybandtmp->SetStaggerPDFPoints();
+    else exit(0); //TEST
     
 
     myband.push_back(mybandtmp);
@@ -842,6 +846,8 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	  //  pdfdata.push_back(parsedNames->at(iname));
 
 	  pdfdata = *parsedNames;
+	} else if ( optionName == "plotstaggered" ) {
+	  plotstaggered=true;
 	}
 	break;
       case 'Q': break;
@@ -907,9 +913,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
       case 'S': 
 	if ( optionName == "subprocesssteername" ) {
 	  subprocesssteername = optionValue;
-	} else if ( optionName == "staggerpdfpoints" ) {
-	  staggerpdfpoints=true;
-	}
+	} 
 	break;
       case 'T': break;
       case 'U': break;

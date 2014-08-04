@@ -39,7 +39,7 @@ class MyCrossSection {
   bool plotmarker;          // flag for plotting marker points on PDF data
   bool plotband;            // flag for plotting error bars on PDF data
   bool ploterrorticks;      // small perpendicular lines at end of error bars
-  bool staggerpdfpoints;    // shift pdf points horizontally for readability
+  bool plotstaggered;       // shift pdf points horizontally for readability
   bool ratioTheoryOverData; // ratio plotting: true-(theory/data), false-(data/theory), (default=true)
   bool xerroroff; // turn off x-error bars for convolute
 

@@ -30,7 +30,7 @@ class MyBand {
   void SetPlotBand()         {plotband=true;};
   void SetPlotMarker()       {plotmarker=true;};
   void SetErrorTicks()       {ploterrorticks=true;};
-  void SetStaggerPDFPoints() {staggerpdfpoints=true;};
+  void SetStaggerPDFPoints() {plotstaggered=true;};
   void SetXErrorsZero();
   
   void SetPdfBand       (TGraphAsymmErrors *mypdfband){
@@ -142,7 +142,8 @@ class MyBand {
   bool plotband;
   bool plotmarker;
   bool ploterrorticks;
-  bool staggerpdfpoints;
+  //bool staggerpdfpoints;
+  bool plotstaggered;
   bool ratioitself;
 
   std::vector<TGraphAsymmErrors *> gpdfband ;        // per pdftype

@@ -16,8 +16,8 @@ MyBand::MyBand()
  plotband=false;
  plotmarker=false;
  ploterrorticks=false;
- staggerpdfpoints=false;
- 
+ plotstaggered=false;
+
  gpdfbandratio.clear();
  gpdfband.clear(); 
  gpdfdefault.clear();;
@@ -41,7 +41,7 @@ void MyBand::DrawPDFBandRatio()
 
  // Visually prepare plots
  // stagger horizontal position of pdf points for readability
- if (staggerpdfpoints)  {
+ if (plotstaggered)  {
    if (debug) cout<<" MyBand::DrawPDFBandRatio: Staggering points."<<endl;
    MovePDFPoints();
  }
@@ -121,10 +121,10 @@ void MyBand::DrawPDFBand()
 
   // Visually prepare plots
   // optionally stagger horizontal position of pdf points for readability
-  if (staggerpdfpoints) {
+  if (plotstaggered) {
     if (debug) cout<<" MyBand::DrawPDFBand: Staggering points."<<endl;
     MovePDFPoints();
-    SetXErrorsZero();
+    //SetXErrorsZero();
   }
 
   //if data was artificially scaled, then convolute must be equally scaled
@@ -248,6 +248,7 @@ void MyBand::MovePDFPoints(){
 void MyBand::MovePDFPoints(){
 
  if (debug) cout<<" MyBand::MovePDFPoints: npdf= "<<gpdfband.size()<<endl;
+ int fracRange = 4; //change here to alter the fraction of the error range in which stagger a point
 
  // stagger PDF points, making them more visible
  for (int ipdf = 0; ipdf <gpdfband.size(); ipdf++) {
@@ -262,13 +263,14 @@ void MyBand::MovePDFPoints(){
      gpdfband.at(ipdf)->GetPoint(i, x, y);
           
      error = gpdfband.at(ipdf)->GetErrorX( i ); //total error for this point
-     range = error / 2;                         //the distance points will be staggered across
+     range = error / fracRange;                 //the distance points will be staggered across
           
-     xl = x - (range/4);                        //highest a point will be staggerd
      dr = range / gpdfband.at(ipdf)->GetN();    //DeltaR is dist to stagger based on num of pdfs
-     
-     newx = xl + ( dr * ipdf );                 //new x position      
+     newx = x + pow(-1,(ipdf+1))*(dr*(ipdf+1));
+
      gpdfband.at(ipdf)->SetPoint(i, newx, y);
+
+     cout<<"TEST-overl: i="<<i<<", error="<<error<<", range="<<range<<", dr="<<dr<<", newx="<<newx<<endl;
    }
 
 
@@ -277,13 +279,13 @@ void MyBand::MovePDFPoints(){
      gpdfbandratio.at(ipdf)->GetPoint(i, x, y);
           
      error = gpdfbandratio.at(ipdf)->GetErrorX( i ); //total error for this point
-     range = error / 2;                              //the distance points will be staggered across
+     range = error / fracRange;                      //the distance points will be staggered across
           
-     xl = x - (range/4);                             //highest a point will be staggerd
      dr = range / gpdfbandratio.at(ipdf)->GetN();    //DeltaR is dist to stagger based on num of pdfs
-     
-     newx = xl + ( dr * ipdf );                      //new x position
+     newx = x + pow(-1,ipdf)*(dr*(ipdf+1));
+
      gpdfbandratio.at(ipdf)->SetPoint(i, newx, y);
+     cout<<"TEST-ratio: i="<<i<<", error="<<error<<", range="<<range<<", dr="<<dr<<", newx="<<newx<<endl;
    }  
  }
 
