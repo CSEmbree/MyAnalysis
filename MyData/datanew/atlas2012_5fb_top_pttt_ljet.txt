@@ -6,7 +6,7 @@ JETALGR 4
 EXP ATLAS
 NAME ATLAS_2012_diffcross_pttt
 framelogy
-framelogx
+%framelogx
 % default units are GeV and fb
 %unitxTeV
 %unitypb
