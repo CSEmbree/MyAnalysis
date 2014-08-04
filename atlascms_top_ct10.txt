@@ -13,8 +13,8 @@ plotband
 %
 %ratio theory/data
 ratiotitlelabel data/NLO QCD
-ratiostyle data/theory
-overlaystyle data,theory
+ratiostyle data/convolute
+overlaystyle data,convolute
 xunits GeV
 yunits fb
 %

@@ -8,9 +8,9 @@ plotmarker
 staggerpdfpoints
 xlegend 0.9
 ylegend 0.9
-overlaystyle theory,data
-ratiostyle theory/data
-%ratiotitlelabel test
+overlaystyle convolute,data
+ratiostyle convolute/data
+%
 %
 % example PDF together
 %

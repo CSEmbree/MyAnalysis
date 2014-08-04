@@ -10,10 +10,9 @@ staggerpdfpoints
 %
 xlegend 0.9
 ylegend 0.9
-overlaystyle theory,data
-ratiostyle theory/data
-%ratiotitlelabel test
-ratiotitlelabel NLO QCD/Data
+overlaystyle convolute,data
+ratiostyle convolute/data
+%ratiotitlelabel NLO QCD/Data
 %
 % example PDF together
 %pdfdata MyPDF/CT10.txt,MyPDF/HERAPDF15NLO.txt,MyPDF/MSTW2008nlo.txt

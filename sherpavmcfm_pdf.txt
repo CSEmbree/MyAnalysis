@@ -13,11 +13,10 @@ ylegend 0.9
 %
 yunits fb
 xunits GeV
-overlaystyle theory,reference,data
-ratiostyle reference/theory
-ratiotitlelabel reference/NLO QCD
+overlaystyle convolute,reference,data
+ratiostyle reference/convolute
+%ratiotitlelabel reference/NLO QCD
 pdfdata MyPDF/CT10.txt
-%pdfdata MyPDF/MSTW2008nlo.txt
 plotband
 %
 %

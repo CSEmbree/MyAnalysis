@@ -14,9 +14,8 @@ ylegend 0.9
 %yminratio -50.0
 %ymaxratio 50.0
 %
-ratio theory/data
-%ratio data/theory
-overlaystyle data,reference
+ratiostyle reference/data
+overlaystyle reference,data
 %
 xunits GeV
 yunits fb

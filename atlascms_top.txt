@@ -11,9 +11,8 @@ plotband
 %ylegend 0.9
 %
 %
-%ratio theory/data
-ratiostyle theory/data
-overlaystyle data,theory
+ratiostyle convolute/data
+overlaystyle data,convolute
 xunits GeV
 yunits fb
 %

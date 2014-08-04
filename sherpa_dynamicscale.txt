@@ -1,0 +1,64 @@
+%
+% steering file to compare CMS data to new ATLAS data
+%
+%datanamedir MyData/datanew/
+%
+% need always dataname, gridname, markerstyle, markercolor one after the other
+% need to order frameid from 0 to N
+%Gridnamedir
+debug
+% xlegend, ylabel is lower edge of legen 
+xlegend 0.9
+ylegend 0.9
+%
+yunits fb
+xunits GeV
+overlaystyle convolute,reference,data
+ratiostyle convolute/data
+pdfdata MyPDF/CT10.txt
+plotband
+%
+order NLO
+%%
+%
+%
+% B-like only
+%
+dataname MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+gridname MyGrids/top/sherpa/atlas2012_top_mtt_ljet-B-s3.txt
+markerstyledata 20
+markercolordata 1
+reflinestyle 1
+reflinecolor 2
+leglabel Sherpa
+frameid 0
+divideid 0
+%%
+%
+%
+% R-like only
+%
+dataname  MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+gridname  MyGrids/top/sherpa/atlas2012_top_mtt_ljet-R-s3.txt
+markerstyledata 20
+markercolordata 1
+reflinestyle 1
+reflinecolor 2
+leglabel Sherpa
+frameid 1
+divideid 0
+%%
+%
+%
+% R plus B
+%
+dataname  MyData/datanew/atlas2012_5fb_top_mtt_ljet.txt
+gridname  MyGrids/top/sherpa/atlas2012_top_mtt_ljet-RpB-s3.txt
+markerstyledata 20
+markercolordata 1
+reflinestyle 1
+reflinecolor 2
+leglabel Sherpa
+frameid 2
+divideid 0
+%
