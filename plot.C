@@ -58,7 +58,7 @@ int main(int argc, char** argv)
    //std::cout << "Printed" << std::endl;
 
   }
-  //std::cout << "Done with frame loop " << std::endl;
+  std::cout << "plot: Done with frame loop " << std::endl;
 
   theApp->Run(kTRUE);
 
