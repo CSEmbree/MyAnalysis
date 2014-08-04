@@ -125,11 +125,8 @@ void MyCrossSection::Initialize() {
       if (debug) cout<<" MyCrossSection::Initialize: Plotmarker ON move points "<<endl;
       mybandtmp->MovePDFPoints(); //plot markers are more visible if data points are shifted slightly
     }
-    //if (staggerpdfpoints) mybandtmp->SetStaggerPDFPoints();
-    cout<<"TEST: is plot staggered? "<<(plotstaggered? "YESY":"NO")<<endl;
     if (plotstaggered) mybandtmp->SetStaggerPDFPoints();
-    else exit(0); //TEST
-    
+        
 
     myband.push_back(mybandtmp);
 
@@ -723,242 +720,163 @@ void MyCrossSection::ReadSteering(char fname[100]) {
     
 
     if(curLine[0] != '%' && !curLine.empty() ) { //ignore lines beginning with comments - could be done better
-
-      switch( toupper(curLine[0]) ) { //use first letter of option to find where to start
-      case 'A':	break;
-      case 'B': break; 
-      case 'C': break;
-      case 'D':
-	if ( optionName == "debug" ) {
-	  debug=true;
-	  if (debug) cout<<cn<<mn<<" Debug turned on"<<endl;
-	} else if ( optionName == "datanamedir" ) {
-	  datanamedir = optionValue;
-	} else if ( optionName == "divideid" ) {
-	  sscanf( optionValue.c_str(), "%d", &intVal );
-	  divideid[igrid]=intVal;
-	} else if ( optionName == "dataname" ) {
-	  dataname.push_back(optionValue);
+      
+      if ( optionName == "debug" ) {
+	debug=true;
+	if (debug) cout<<cn<<mn<<" Debug turned on"<<endl;
+      } else if ( optionName == "datanamedir" ) {
+	datanamedir = optionValue;
+      } else if ( optionName == "divideid" ) {
+	sscanf( optionValue.c_str(), "%d", &intVal );
+	divideid[igrid]=intVal;
+      } else if ( optionName == "dataname" ) {
+	dataname.push_back(optionValue);
+      } else if ( optionName == "frameid" ) {
+	sscanf( optionValue.c_str(), "%d", &intVal);
+	frameid[igrid]=intVal;
+      } else if ( optionName == "facscale" ) {
+	if (debug) cout<<cn<<mn<<" OPTION: "<<optionName<<", VALUE: "<<optionValue<<endl;
+	std::vector<string> *parsedNames;
+	char delimeter = ' ';
+	parsedNames = ParseString( optionValue, delimeter);
+	
+	if (debug) cout<<cn<<mn<<" found '"<<parsedNames->size()<<"' fac scales "<<endl;
+	if (debug) cout<<cn<<mn<<" fac for grid: '"<<optionValue<<"'"<<endl;
+	
+	for (int i=0; i<parsedNames->size(); i++){
+	  facscale.push_back(atof( (parsedNames->at(i)).c_str()) );
 	}
-	break;
-      case 'E': break;
-      case 'F': 
-	if ( optionName == "frameid" ) {
-	  sscanf( optionValue.c_str(), "%d", &intVal);
-	  frameid[igrid]=intVal;
-	} else if ( optionName == "facscale" ) {
-	  if (debug) cout<<cn<<mn<<" OPTION: "<<optionName<<", VALUE: "<<optionValue<<endl;
-	  std::vector<string> *parsedNames;
-	  char delimeter = ' ';
-	  parsedNames = ParseString( optionValue, delimeter);
-
-	  if (debug) cout<<cn<<mn<<" found '"<<parsedNames->size()<<"' fac scales "<<endl;
-	  if (debug) cout<<cn<<mn<<" fac for grid: '"<<optionValue<<"'"<<endl;
-	  
-	  for (int i=0; i<parsedNames->size(); i++){
-	    facscale.push_back(atof( (parsedNames->at(i)).c_str()) );
-	  }
-	  
-	  do_FactorizationScale=true;
-	}
-	break;
-      case 'G': 
-	if ( optionName == "Gridnamedir" ) {
-	  gridnamebasedir = optionValue;
-	} else if ( optionName == "gridnamebasedir" ) {
-	  gridnamebasedir = optionValue;
-	} else if ( optionName == "gridnamesystbasedir" ) {
-	  gridnamesystbasedir = optionValue;
-	} else if ( optionName == "gridnamedefaultdir" ) {
-	  gridnamedefaultdir = optionValue;
-	} else if ( optionName == "gridname" ) {
-	  igrid++;
-	}
-	break;
-      case 'H': break;
-      case 'I': break;
-      case 'J': break;
-      case 'K': break;
-      case 'L':
-	if ( optionName == "leglabel" ) {
-	  leglabel.push_back(optionValue);
-	} 
-	break;
-      case 'M':
-	if ( optionName == "markerstyledata" ) {
-	  sscanf( optionValue.c_str(), "%d ", &intVal);
-	  if (igrid<0) cerr<<cn<<mn<<" Something wrong ! '"<<intVal<<"'"<<endl;
-	  markerstyle[igrid]=intVal;
-	} else if ( optionName == "markercolordata" ) {
-	  sscanf( optionValue.c_str(), "%d", &intVal);
-	  markercolor[igrid]=intVal; 
-	}
-	break;
-      case 'N':
-	if ( optionName == "ntupname" ) {
-	  ntupname = optionValue; 
-	}
-	break;
-      case 'O': 
-	if ( optionName == "overlaystyle" ) {
-	  overlaynames.clear(); //remove any defaults
-	  
-	  //sscanf(line," %s %[^\n] ",text, name);
-	  if (debug) cout<<cn<<mn<<" Overlaystyle: "<<optionValue<<endl;
-	  std::vector<string> *parsedNames;
-	  //std::string allNames = name;
-	  char delimeter = ',';
-	  parsedNames = ParseString(optionValue, delimeter);
-	  
-	  cout<<cn<<mn<<" overlay found '"<<parsedNames->size()<<"' to overlay"<<endl;
-	  for (int iname=0; iname<parsedNames->size(); iname++) {
-	    cout<<" \tname: \""<<parsedNames->at(iname)<<"\""<<endl;
+	
+	do_FactorizationScale=true;
+      } else if ( optionName == "Gridnamedir" ) {
+	gridnamebasedir = optionValue;
+      } else if ( optionName == "gridnamebasedir" ) {
+	gridnamebasedir = optionValue;
+      } else if ( optionName == "gridnamesystbasedir" ) {
+	gridnamesystbasedir = optionValue;
+      } else if ( optionName == "gridnamedefaultdir" ) {
+	gridnamedefaultdir = optionValue;
+      } else if ( optionName == "gridname" ) {
+	igrid++;
+      } else if ( optionName == "leglabel" ) {
+	leglabel.push_back(optionValue);
+      } else if ( optionName == "markerstyledata" ) {
+	sscanf( optionValue.c_str(), "%d ", &intVal);
+	if (igrid<0) cerr<<cn<<mn<<" Something wrong ! '"<<intVal<<"'"<<endl;
+	markerstyle[igrid]=intVal;
+      } else if ( optionName == "markercolordata" ) {
+	sscanf( optionValue.c_str(), "%d", &intVal);
+	markercolor[igrid]=intVal; 
+      } else if ( optionName == "ntupname" ) {
+	ntupname = optionValue; 
+      } else if ( optionName == "overlaystyle" ) {
+	overlaynames.clear(); //remove any defaults
+	
+	//sscanf(line," %s %[^\n] ",text, name);
+	if (debug) cout<<cn<<mn<<" Overlaystyle: "<<optionValue<<endl;
+	std::vector<string> *parsedNames;
+	//std::string allNames = name;
+	char delimeter = ',';
+	parsedNames = ParseString(optionValue, delimeter);
+	
+	cout<<cn<<mn<<" overlay found '"<<parsedNames->size()<<"' to overlay"<<endl;
+	for (int iname=0; iname<parsedNames->size(); iname++) {
+	  cout<<" \tname: \""<<parsedNames->at(iname)<<"\""<<endl;
 	  //  overlaynames.push_back(parsedNames->at(iname));
-	  }
-	  overlaynames = *parsedNames;
-	  
-	  if( this->validateOverlayStyle(overlaynames) == false ) {
-	    cerr<<cn<<mn<<" Invalid overlay stye detected!"<<endl;
-	    exit(1);
-	  } 
 	}
-	break;
-      case 'P': 
-	if ( optionName == "pdffunction" ) {
-	  pdf_function = optionValue;
-	} else if ( optionName == "plotmarker" ) {
-	  plotmarker=true;
-	} else if ( optionName == "plotband" ) {
-	  plotband=true;
-	} else if ( optionName == "ploterrorticks" ) {
-	  ploterrorticks=true;
-	} else if ( optionName == "plotchi2" ) {
-	  plotchi2=true;
-	} else if ( optionName == "pdfdata" ) {
-	  //sscanf(line," %s %[^\n] ",text, name);
-	  if (debug) cout<<cn<<mn<<" pdfdata: "<<optionName<<", pdf(s): "<<optionValue<<endl;
-	  std::vector<string> *parsedNames;
-	  //std::string pdfSteeringFileNames = name;
-	  char delimeter = ',';
-	  parsedNames = ParseString(optionValue, delimeter);
-	  	 	  
-	  //for (int iname=0; iname<parsedNames->size(); iname++)
-	  //  pdfdata.push_back(parsedNames->at(iname));
-
-	  pdfdata = *parsedNames;
-	} else if ( optionName == "plotstaggered" ) {
-	  plotstaggered=true;
-	}
-	break;
-      case 'Q': break;
-      case 'R':
-	if ( optionName == "ratiotitlelabel" ) {
-	  ratiotitlelabel = optionValue;
-	} else if ( optionName == "reflinestyle" ) {
-	  sscanf( optionValue.c_str(), "%d", &intVal);
-	  refhistlinestyle[igrid]=intVal;
-	} else if ( optionName == "reflinecolor" ) {
-	  sscanf( optionValue.c_str(), "%d", &intVal);
-	  if (debug) cout<<cn<<mn<<" reflinecolor:  "<<intVal<<endl;
-	  refhistlinecolor[igrid]=intVal;
-	} else if ( optionName == "ratiostyle" ) {
-	  rationames.clear(); //remove any defaults for overlay
-	  if (debug) cout<<cn<<mn<<" RatioStyle: "<<optionValue<<endl;
-	  
-	  std::vector<string> *parsedNames = this->ParseRatioStyle( optionValue );
-	  rationames = *parsedNames;
-
-	  if(debug) cout<<cn<<mn<<" Computed ratiostyle to be: "<<GetRatioStyleString()<<endl;
-
-	  /*	  
-	  cout<<"TEST0 - START"<<endl;
-
-	  cout<<"TEST1 - GetRatioNumerators"<<endl;
-	  std::vector<std::string > nums = GetRatioNumerators();
-	  for(int i=0; i<nums.size(); i++) cout<<"\t"<<nums[i]<<endl;
-
-	  cout<<"TEST2 - GetRatioDenominator"<<endl;
-	  cout<<"\t"<<GetRatioDenominator()<<endl;
-
-	  cout<<"TEST3 - IsRatioNumerator"<<endl;
-	  cout<<"\t Is 'data' a numerator? "<<(IsRatioNumerator("data")? "YES":"NO")<<endl;
-	  cout<<"\t Is 'reference' a numerator? "<<(IsRatioNumerator("reference")? "YES":"NO")<<endl;
-	  cout<<"\t Is 'theory' a numerator? "<<(IsRatioNumerator("theory")? "YES":"NO")<<endl;
-
-	  cout<<"TEST4 - IsRatioDenominator"<<endl;
-	  cout<<"\t Is 'data' a denom? "<<(IsRatioDenominator("data")? "YES":"NO")<<endl;
-	  cout<<"\t Is 'reference' a denom? "<<(IsRatioDenominator("reference")? "YES":"NO")<<endl;
-	  cout<<"\t Is 'theory' a denom? "<<(IsRatioDenominator("theory")? "YES":"NO")<<endl;
-
-	  cout<<"TEST5 - DONE"<<endl;
-	  //exit(0); //TEST
-	  */
-
-
-
-	} else if ( optionName == "renscale" ) {
-	  if (debug) cout<<cn<<mn<<" RENSCALE: "<<optionName<<", value(s): "<<optionValue<<endl;
-
-	  std::vector<string> *parsedNames; //TODO - clean this up after use?
-	  char delimeter = ' ';
-	  parsedNames = ParseString(optionValue, delimeter);
-	  if (debug) cout<<cn<<mn<<" found '"<<parsedNames->size()<<"' ren scales"<<endl;
-	  if (debug) cout<<cn<<mn<<" pdfsteering for grid: "<<optionValue<<"'"<<endl;
-	  for (int i=0; i<parsedNames->size(); i++){
-	    renscale.push_back(atof( (parsedNames->at(i)).c_str()) );
-	  }
-	  do_RenormalizationScale=true;
-	}
-	break;
-      case 'S': 
-	if ( optionName == "subprocesssteername" ) {
-	  subprocesssteername = optionValue;
+	overlaynames = *parsedNames;
+	
+	if( this->validateOverlayStyle(overlaynames) == false ) {
+	  cerr<<cn<<mn<<" Invalid overlay stye detected!"<<endl;
+	  exit(1);
 	} 
-	break;
-      case 'T': break;
-      case 'U': break;
-      case 'V':
-	if ( optionName == "vardesc" ) {
-	  vardesc.push_back(optionValue);
-	} 
-	break;
-      case 'W': break;
-      case 'X': 
-	if ( optionName == "xlegend" ) {
-	  sscanf( optionValue.c_str(), "%f", &xlegend);
-	} else if ( optionName == "xunits" ) {
-	  xunits = optionValue;
-	} else if ( optionName == "xerroroff" ) {
-	  xerroroff = true;
+      } else if ( optionName == "pdffunction" ) {
+	pdf_function = optionValue;
+      } else if ( optionName == "plotmarker" ) {
+	plotmarker=true;
+      } else if ( optionName == "plotband" ) {
+	plotband=true;
+      } else if ( optionName == "ploterrorticks" ) {
+	ploterrorticks=true;
+      } else if ( optionName == "plotchi2" ) {
+	plotchi2=true;
+      } else if ( optionName == "pdfdata" ) {
+	//sscanf(line," %s %[^\n] ",text, name);
+	if (debug) cout<<cn<<mn<<" pdfdata: "<<optionName<<", pdf(s): "<<optionValue<<endl;
+	std::vector<string> *parsedNames;
+	//std::string pdfSteeringFileNames = name;
+	char delimeter = ',';
+	parsedNames = ParseString(optionValue, delimeter);
+	
+	//for (int iname=0; iname<parsedNames->size(); iname++)
+	//  pdfdata.push_back(parsedNames->at(iname));
+	
+	pdfdata = *parsedNames;
+      } else if ( optionName == "plotstaggered" ) {
+	plotstaggered=true;
+      } else if ( optionName == "ratiotitlelabel" ) {
+	ratiotitlelabel = optionValue;
+      } else if ( optionName == "reflinestyle" ) {
+	sscanf( optionValue.c_str(), "%d", &intVal);
+	refhistlinestyle[igrid]=intVal;
+      } else if ( optionName == "reflinecolor" ) {
+	sscanf( optionValue.c_str(), "%d", &intVal);
+	if (debug) cout<<cn<<mn<<" reflinecolor:  "<<intVal<<endl;
+	refhistlinecolor[igrid]=intVal;
+      } else if ( optionName == "ratiostyle" ) {
+	rationames.clear(); //remove any defaults for overlay
+	if (debug) cout<<cn<<mn<<" RatioStyle: "<<optionValue<<endl;
+	
+	std::vector<string> *parsedNames = this->ParseRatioStyle( optionValue );
+	rationames = *parsedNames;
+	
+	if(debug) cout<<cn<<mn<<" Computed ratiostyle to be: "<<GetRatioStyleString()<<endl;
+	
+      } else if ( optionName == "renscale" ) {
+	if (debug) cout<<cn<<mn<<" RENSCALE: "<<optionName<<", value(s): "<<optionValue<<endl;
+	
+	std::vector<string> *parsedNames; //TODO - clean this up after use?
+	char delimeter = ' ';
+	parsedNames = ParseString(optionValue, delimeter);
+	if (debug) cout<<cn<<mn<<" found '"<<parsedNames->size()<<"' ren scales"<<endl;
+	if (debug) cout<<cn<<mn<<" pdfsteering for grid: "<<optionValue<<"'"<<endl;
+	for (int i=0; i<parsedNames->size(); i++){
+	  renscale.push_back(atof( (parsedNames->at(i)).c_str()) );
 	}
-	break;
-      case 'Y': 
-	if ( optionName == "ylegend" ) {
-	  sscanf( optionValue.c_str(), "%f", &ylegend);
-	} else if ( optionName == "ymaxoverlay" ) {
-	  sscanf( optionValue.c_str(), "%lf", &ymaxoverlay);
-	} else if ( optionName == "yminoverlay" ) {
-	  sscanf( optionValue.c_str(), "%lf", &yminoverlay);
-	} else if ( optionName == "ymaxratio" ) {
-	  sscanf( optionValue.c_str(), "%lf", &ymaxratio);
-	} else if ( optionName == "yminratio" ) {
-	  sscanf( optionValue.c_str(), "%lf", &yminratio);
-	} else if ( optionName == "yunits" ) {
-	  yunits = optionValue;
-	} 
-	break;
-      case 'Z': break;
-      default: 
+	do_RenormalizationScale=true;
+      } else if ( optionName == "subprocesssteername" ) {
+	subprocesssteername = optionValue;
+      } else if ( optionName == "vardesc" ) {
+	vardesc.push_back(optionValue);
+      } else if ( optionName == "xlegend" ) {
+	sscanf( optionValue.c_str(), "%f", &xlegend);
+      } else if ( optionName == "xunits" ) {
+	xunits = optionValue;
+      } else if ( optionName == "xerroroff" ) {
+	xerroroff = true;
+      } else if ( optionName == "ylegend" ) {
+	sscanf( optionValue.c_str(), "%f", &ylegend);
+      } else if ( optionName == "ymaxoverlay" ) {
+	sscanf( optionValue.c_str(), "%lf", &ymaxoverlay);
+      } else if ( optionName == "yminoverlay" ) {
+	sscanf( optionValue.c_str(), "%lf", &yminoverlay);
+      } else if ( optionName == "ymaxratio" ) {
+	sscanf( optionValue.c_str(), "%lf", &ymaxratio);
+      } else if ( optionName == "yminratio" ) {
+	sscanf( optionValue.c_str(), "%lf", &yminratio);
+      } else if ( optionName == "yunits" ) {
+	yunits = optionValue;
+      } else {	
 	cerr<<cn<<mn<<" WARN: Invalid steering option found '"<<line<<"'"<<endl;
-	exit(0); //stop if an invalid option found, it's probably an error!
-      } //end switch
-    }; //end comment check
-  }; //end file reading
+	//exit(0); //stop if an invalid option found, it's probably an error!
+      } //end if chain
+    } //end comment check
+  } //end file reading
 
+  
   if(debug) { 
     cout<<cn<<mn<<" Finished reading steering. REPORT:"<<endl;
     Print();
-    //exit(0); //TEST
   }
 
   infile.close(); //cleanup
