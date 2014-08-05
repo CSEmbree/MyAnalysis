@@ -11,6 +11,7 @@ plotstaggered
 %
 xlegend 0.9
 ylegend 0.9
+displaystyle ratio
 overlaystyle convolute,data
 ratiostyle convolute/data
 %ratiotitlelabel NLO QCD/Data

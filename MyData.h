@@ -119,6 +119,7 @@ class MyData {
 
   std::vector<TGraphAsymmErrors*> datavectorsystcomp;
 
+  std::string trim(std::string s);
   //=======
 
  public:
