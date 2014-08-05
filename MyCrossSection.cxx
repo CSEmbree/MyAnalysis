@@ -36,6 +36,9 @@ MyCrossSection::MyCrossSection(char name[100])
   overlaynames.clear();
   overlaynames.push_back( "reference" ); // DEFAULT - Display reference in overlay
   overlaynames.push_back( "data" );      // DEFAULT - Display data in overlay
+  displaynames.clear();
+  displaynames.push_back( "overlay" );
+  displaynames.push_back( "ratio" );
 
   xlegend=0.90; //default legend position is the top right of the frame
   ylegend=0.95;
@@ -55,6 +58,9 @@ MyCrossSection::MyCrossSection(char name[100])
   overlayData = true; //always display data by default
   overlayConvolute = false;
   overlayReference = false;
+  displayOverlay = true;
+  displayRatio = true;
+
   xerroroff = false;
 
   pdf_function="";
@@ -866,6 +872,27 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	sscanf( optionValue.c_str(), "%lf", &yminratio);
       } else if ( optionName == "yunits" ) {
 	yunits = optionValue;
+      } else if ( optionName == "displaystyle" ) {
+	displaynames.clear(); //remove any defaults
+	cout<<"TEST: displaystyle = "<<optionValue<<endl;
+	
+	std::vector<string> *parsedStyles;
+	char delimeter = ',';
+	parsedStyles = ParseString(optionValue, delimeter);
+	
+	cout<<cn<<mn<<" displaystyles found '"<<parsedStyles->size()<<"' styles"<<endl;
+	for (int iname=0; iname<parsedStyles->size(); iname++) {
+	  cout<<" \tstyle: \""<<parsedStyles->at(iname)<<"\""<<endl;
+	  //  overlaynames.push_back(parsedNames->at(iname));
+	}
+	displaynames = *parsedStyles;
+	
+	if( this->validateDisplayStyle(displaynames) == false ) {
+	  cerr<<cn<<mn<<" Invalid display stye detected!"<<endl;
+	  exit(1);
+	} 
+	
+	
       } else {	
 	cerr<<cn<<mn<<" WARN: Invalid steering option found '"<<line<<"'"<<endl;
 	//exit(0); //stop if an invalid option found, it's probably an error!
@@ -900,6 +927,7 @@ void MyCrossSection::Print() {
       <<"\n"<<setw(w)<<"Dir of grids:"        <<setw(w)<<gridnamebasedir
       <<"\n"<<setw(w)<<"Dir of data:"         <<setw(w)<<datanamedir
       <<"\n"<<setw(w)<<"Num of grids:"        <<setw(w)<<gridname.size()
+      <<"\n"<<setw(w)<<"Display Style:"       <<setw(w)<<GetDisplayStyleString()
       <<"\n"<<setw(w)<<"Overlay Style:"       <<setw(w)<<GetOverlayStyleString()
       <<"\n"<<setw(w)<<"Ratio Style:"         <<setw(w)<<GetRatioStyleString()<<endl;
 
@@ -1324,7 +1352,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
   // Draw data overlay and ratio for either data and grid reference or PDFs
   //
 
-  MyFrame *myframe= new MyFrame(600,600);
+  MyFrame *myframe= new MyFrame(600,600,displayOverlay,displayRatio);
   framepointer.push_back(myframe);
 
   double x,y;
@@ -1426,7 +1454,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
   }
 
 
-
+  cout<<"TEST"<<endl;
   //set appropreate xmin/max and ymin/max based on data
   myframe->SetXmin( xmin);
   myframe->SetXmax( xmax);
@@ -1434,12 +1462,14 @@ void MyCrossSection::DrawinFrame(int iframe) {
   myframe->SetYmax1(ymax);
   myframe->SetYmin2(1.1);
   myframe->SetYmax2(0.9);
-  myframe->DrawFrame();
+  cout<<"TEST"<<endl;  
+  //myframe->DrawFrame();
+  myframe->DrawFrame2(); //TEST
+  cout<<"TEST"<<endl;
 
+  
 
-
-  //if (debug) cout<<" SubPad = "<< myframe->GetSubPad1()<<endl;
-  myframe->GetSubPad1()->cd();
+  
 
 
 
@@ -1462,6 +1492,13 @@ void MyCrossSection::DrawinFrame(int iframe) {
     cout<<" MyCrossSection::DrawinFrame: No PDF information found ...plotting reference"<<endl;
   }
 
+  const double BIG=1.36;
+  double Ymin=BIG, Ymax=-BIG, Xmin=BIG, Xmax=-BIG;
+
+  cout<<"TEST: displayOverlay:"<<(displayOverlay?"y":"n")<<endl;
+  //if(displayOverlay == true) { //TEST
+
+  myframe->GetSubPad1()->cd();
 
   //compute an optimal position for the legend for this plot
   y=ylegend;
@@ -1522,8 +1559,8 @@ void MyCrossSection::DrawinFrame(int iframe) {
   leg->SetMargin(0.1);
   
 
-  const double BIG=1.36;
-  double Ymin=BIG, Ymax=-BIG, Xmin=BIG, Xmax=-BIG;
+  //const double BIG=1.36;
+  //double Ymin=BIG, Ymax=-BIG, Xmin=BIG, Xmax=-BIG;
   int iframeRepeatCheck = -1; // turn on or off certain features if they are being done in the same frame twice
 
   for (int i=0; i<(int)gridinframe[iframe].size(); i++) {
@@ -1617,8 +1654,13 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	}
 	
 	//add the data label to the legend
-	leg->AddEntry(mydata[igrid]->GetTGraphTotErr(),mylabel,"ep");
-	
+	if(displayRatio && !displayOverlay) {
+	  mydata[igrid]->GetTGraphTotErr()->SetFillColor(kGray);
+	  leg->AddEntry(mydata[igrid]->GetTGraphTotErr(),mylabel,"f");
+	} else {
+	  leg->AddEntry(mydata[igrid]->GetTGraphTotErr(),mylabel,"ep");
+	}
+
       }
     } else { //Data not OK
       href=this->GetReference(igrid);
@@ -1685,14 +1727,14 @@ void MyCrossSection::DrawinFrame(int iframe) {
     }
     
 
-    // Draw the correctly filled legend
-    leg->Draw();
+    // Draw the filled legend always in Overlay section if overlay is being displayed
+    if(displayOverlay) leg->Draw();
     
     if (debug) cout<<" MyCrossSection::DrawinFrame: legend prepared "<<endl;
   }
+  //} //TEST
 
-
-
+  cout<<"TEST: displayRatio:"<<(displayRatio?"y":"n")<<endl;
   // RATIO DRAWING
   myframe->GetSubPad2()->cd();
   myframe->SetSubPad2TitleOffsetX(0.8);
@@ -1829,7 +1871,8 @@ void MyCrossSection::DrawinFrame(int iframe) {
   }
   // finished drawing ratio (conv/data)
   
-  
+  // only display legend in ratio section if The overlay is not being shown
+  if(displayRatio && !displayOverlay) leg->Draw();
 
   //Always plot a line at 1, where the ratios are relative to
   TLine *myline= new TLine(myframe->GetXmin(),1.,myframe->GetXmax(),1.);
@@ -2535,6 +2578,47 @@ string MyCrossSection::stringToUpper(std::string s) {
 
   return upperString;
 }
+
+
+bool MyCrossSection::validateDisplayStyle(std::vector<std::string > styles) {
+  string mn = "validateDisplayStyle:";
+  bool valid = true;
+
+  //Only these are valid frame style options
+  string OVERLAY = "overlay", RATIO = "ratio";
+  bool overlayFlag = false, ratioFlag = false;
+  
+  
+  if( styles.size() > 2 || styles.size() <= 0 ) valid = false; //incorrect num of styles
+  else {
+    for(int i = 0; i<styles.size() && valid == true; ++i) {
+      string curStyle = styles.at(i);
+
+      if      (curStyle == OVERLAY) overlayFlag = true;
+      else if (curStyle == RATIO)   ratioFlag   = true;
+      else {
+	valid = false;
+	cerr<<cn<<mn<<" ERROR: framestyle of '"<<curStyle<<"' at pos "<<i<<" is not valid"<<endl;
+      }
+    } //end for
+  } //end else
+
+
+  if(valid == false) { 
+    cerr<<cn<<mn<<" ERROR: Invalid framestyle found!"
+	<<"\n\t Should in form 'framestyle overlay,ratio'"<<endl;
+  } else {
+    //set global flags based on user overlay requests
+    displayOverlay = overlayFlag;
+    displayRatio   = ratioFlag;
+
+    cout<<"TEST: displayOverlay:"<<(displayOverlay?"y":"n")
+	<<", displayRatio:"<<(displayRatio? "y":"n")<<endl;
+  }  
+
+  return valid;
+}
+
 
 bool MyCrossSection::validateOverlayStyle(std::vector<std::string > names) {
   string mn = "validateOverlayStyle: "; //method name, for printing

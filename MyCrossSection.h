@@ -103,6 +103,7 @@ class MyCrossSection {
   std::vector<int> refhistlinecolor; // line color of reference histogram
   std::vector<MyFrame*> framepointer; // pointer to MyFrame per frameid
   std::vector<std::string> rationames; // names of ratios (i-1) are numerators, last element is the denominator
+  std::vector<std::string > displaynames;
 
   std::vector<string> pdfdata; //names of each pdf to be used
   std::vector<string> overlaynames; //names of each type to overlay (should only be "data","convolute","reference")
@@ -153,6 +154,8 @@ class MyCrossSection {
   std::string trim(std::string s); //remove leading and trailing white space
   bool validateOverlayStyle(std::vector<std::string > names); //For validating overlay names
   bool validateRatioStyle(std::vector<std::string > names);
+  bool validateDisplayStyle(std::vector<std::string > styles);  // Validating 'framstyle' options
+
   void ComputeRatioRange(double *Ymin, double *Ymax, int igrid);
   //TLegend *BuildLegend(int iframe);
   
@@ -169,6 +172,9 @@ class MyCrossSection {
   bool overlayData;
   bool overlayConvolute;
   bool overlayReference;
+
+  bool displayOverlay;
+  bool displayRatio;
 
   MyCrossSection(char name[100]);
 
@@ -241,8 +247,23 @@ class MyCrossSection {
   };
 
 
-  std::vector<std::string >GetOverlayStyle() { return overlaynames; };
+  // Accessors for getting 'displaystyle' information
+  std::vector<std::string > GetDisplayStyle() { return displaynames; };
+  
+  std::string GetDisplayStyleString() {
+    
+    std::string style = "";
+    for(int i=0; i<displaynames.size(); ++i) { 
+      style+=displaynames[i];
+      style+=((i<displaynames.size()-1)? ",":"");
+    }
+    
+    return style;
+  };
+  
+  
 
+  std::vector<std::string >GetOverlayStyle() { return overlaynames; };
   
   std::string GetOverlayStyleString() {
 
