@@ -50,9 +50,12 @@ class MyFrame {
   TAxis *xaxis2;
   TAxis *yaxis2;
 
+  bool m_draw1;
+  bool m_draw2;
+
  public:
 
-  MyFrame(Int_t p3, Int_t p4);
+  MyFrame(Int_t p3, Int_t p4, bool drawpad1=true, bool drawpad2=true);
   TCanvas *draw_canv;
 
   void SetFrameP1(Int_t p1){m_p1=p1;};
@@ -128,6 +131,7 @@ class MyFrame {
   TString GetFrameName()          {return m_framename;};
 
   void DrawFrame(TPad* p=NULL);
+  void DrawFrame2(TPad* p=NULL);
   void Print();
 
 };
