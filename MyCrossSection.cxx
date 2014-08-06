@@ -41,7 +41,7 @@ MyCrossSection::MyCrossSection(char name[100])
   displaynames.push_back( "ratio" );
 
   xlegend=0.90; //default legend position is the top right of the frame
-  ylegend=0.95;
+  ylegend=0.90;
 
   //default values for overloading ratio & overlay y-axes 
   ymaxoverlay=DEFAULT_DOUBLE;
@@ -237,7 +237,7 @@ void MyCrossSection::Initialize() {
 
 	cout<<" MyCrossSection::Initialize: ipdf= "<<ipdf<<" "<<newpdf->GetPDFtype().c_str()<<endl;
 	newpdf->h_PDFBand_results->Print("all");
-
+	
 	cout<<" MyCrossSection::Initialize: npoint= "<<newpdf->h_PDFBand_results->GetN()<<endl;
       }
 
@@ -874,8 +874,7 @@ void MyCrossSection::ReadSteering(char fname[100]) {
 	yunits = optionValue;
       } else if ( optionName == "displaystyle" ) {
 	displaynames.clear(); //remove any defaults
-	cout<<"TEST: displaystyle = "<<optionValue<<endl;
-	
+		
 	std::vector<string> *parsedStyles;
 	char delimeter = ',';
 	parsedStyles = ParseString(optionValue, delimeter);
@@ -1454,7 +1453,6 @@ void MyCrossSection::DrawinFrame(int iframe) {
   }
 
 
-  cout<<"TEST"<<endl;
   //set appropreate xmin/max and ymin/max based on data
   myframe->SetXmin( xmin);
   myframe->SetXmax( xmax);
@@ -1462,12 +1460,9 @@ void MyCrossSection::DrawinFrame(int iframe) {
   myframe->SetYmax1(ymax);
   myframe->SetYmin2(1.1);
   myframe->SetYmax2(0.9);
-  cout<<"TEST"<<endl;  
-  //myframe->DrawFrame();
-  myframe->DrawFrame2(); //TEST
-  cout<<"TEST"<<endl;
-
-  
+  //myframe->DrawFrame(); //OLD
+  myframe->DrawFrame2();  //NEW
+    
 
   
 
@@ -1495,11 +1490,12 @@ void MyCrossSection::DrawinFrame(int iframe) {
   const double BIG=1.36;
   double Ymin=BIG, Ymax=-BIG, Xmin=BIG, Xmax=-BIG;
 
-  cout<<"TEST: displayOverlay:"<<(displayOverlay?"y":"n")<<endl;
+  
   //if(displayOverlay == true) { //TEST
 
   myframe->GetSubPad1()->cd();
 
+  /*
   //compute an optimal position for the legend for this plot
   y=ylegend;
   int namesize=0;
@@ -1551,12 +1547,18 @@ void MyCrossSection::DrawinFrame(int iframe) {
   if (debug) cout<<" MyCrossSection::DrawinFrame: namesize="<<namesize<<", npdf="<<npdf
 		 <<", x1="<<x1<<", x2="<<x2<<", y1="<<y1<<", y2="<<x2<<std::endl;
 
+  */
+
+  double x1=0., y1=0., x2=0., y2=0.;
+  ComputeLegendBounds(iframe, &x1, &y1, &x2, &y2);
+
 
   // prepare legend for this Plot
   TLegend *leg = new TLegend(x1,y1,x2,y2);
   leg->SetBorderSize(0);
   leg->SetFillColor(0);
   leg->SetMargin(0.1);
+  //leg->SetTextSize(size);
   
 
   //const double BIG=1.36;
@@ -1737,7 +1739,6 @@ void MyCrossSection::DrawinFrame(int iframe) {
   }
   //} //TEST
 
-  cout<<"TEST: displayRatio:"<<(displayRatio?"y":"n")<<endl;
   // RATIO DRAWING
   myframe->GetSubPad2()->cd();
   myframe->SetSubPad2TitleOffsetX(0.8);
@@ -1944,6 +1945,7 @@ TGraphAsymmErrors* MyCrossSection::GetNormalisedReferenceAsGraph(int igrid, bool
     if(ebars == false)  href->SetBinError(i, 0.); //TODO - make more generic? - turn error bars off
   }
 
+  /*
   // normalise by number of entries, if asked to
   if(mygrid[igrid]->GetNormTot() == true) {
     cout<<"TEST: grid ntot is ON!"<<endl;
@@ -1956,6 +1958,7 @@ TGraphAsymmErrors* MyCrossSection::GetNormalisedReferenceAsGraph(int igrid, bool
     //href->Scale( 1.0 /  2000 );
     href->Print("all");
   }
+  */
 
   cout<<cn<<mn<<" Reference is divided by binwidth? "
       <<(mygrid[igrid]->GetDividedByBinWidth()? "Y":"N");
@@ -1985,15 +1988,11 @@ TGraphAsymmErrors* MyCrossSection::GetNormalisedReferenceAsGraph(int igrid, bool
 		    <<"\n\txscale: "<<mydata[igrid]->GetScalex()
 		    <<"\n\tyscale: "<<mydata[igrid]->GetScaley()<<endl;
       
-      cout<<"TEST1"<<endl;
       gref->Print("all");
-      
       //set reference's artificial scaling to the same as data's
-      ScaleGraph( gref, 1.0, mydata[igrid]->GetScaley() ); 
-      
+      ScaleGraph( gref, 1.0, mydata[igrid]->GetScaley() );     
       gref->Print("all");
-      cout<<"TEST1"<<endl;    
-    }
+  }
 
   gref->SetLineStyle(refhistlinestyle[igrid]);
   gref->SetLineColor(refhistlinecolor[igrid]);
@@ -2615,7 +2614,7 @@ bool MyCrossSection::validateDisplayStyle(std::vector<std::string > styles) {
     displayOverlay = overlayFlag;
     displayRatio   = ratioFlag;
 
-    cout<<"TEST: displayOverlay:"<<(displayOverlay?"y":"n")
+    cout<<cn<<mn<<"  displayOverlay:"<<(displayOverlay?"y":"n")
 	<<", displayRatio:"<<(displayRatio? "y":"n")<<endl;
   }  
 
@@ -2950,3 +2949,44 @@ TLegend *MyCrossSection::BuildLegend(int iframe) {
   return contents;
 }
 */
+
+void MyCrossSection::ComputeLegendBounds(int iframe, double *xl, double *yl, double *xh, double *yh) {
+  string mn = "ComputeLegendBounds:";
+
+  double x1=0, y1=0, x2=xlegend, y2=ylegend, textSize=0.15;
+  int numEntries = 0;
+
+
+  cout<<cn<<mn<<" Computing bounds...";
+  
+  //find number of entries
+  if(overlayReference || IsRatioNumerator("reference"))
+    numEntries += gridinframe[iframe].size();
+  
+  if(overlayData || IsRatioNumerator("data"))
+    numEntries += gridinframe[iframe].size();
+      
+  if(pdfdata.size()>=1)
+    numEntries += (pdfdata.size()+1); //+1 for the "with NLO QCD" label
+  //TODO - handle when plotsqrts is on
+
+  
+  //number of entries dictates size of legend
+  x1 = xlegend-0.2; //fixed x size, always .2 to the left of x2
+  y1 = y2-(0.06*numEntries); //y-low chosen by number of entries
+  if (displayOverlay && !displayRatio)      y1 += ((y2-y1)/2); //Overlay is larger, scale more
+  else if (!displayOverlay && displayRatio) y1 += ((y2-y1)/3); //Ratio is smaller, scale less
+
+
+  cout<<cn<<mn<<" Legend Bounds are: x1:"<<x1
+      <<", y1:"<<y1
+      <<", x2:"<<x2
+      <<", y2:"<<y2
+      <<", entries:"<<numEntries<<endl;
+  
+  *xl = x1; *yl = y1; *xh = x2; *yh = y2;
+  
+  return;
+}
+
+

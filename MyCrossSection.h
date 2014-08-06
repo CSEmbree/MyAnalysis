@@ -158,7 +158,8 @@ class MyCrossSection {
 
   void ComputeRatioRange(double *Ymin, double *Ymax, int igrid);
   //TLegend *BuildLegend(int iframe);
-  
+  void ComputeLegendBounds(int iframe, double *xl, double *yl, double *xh, double *yh);
+
 
 
  public:
