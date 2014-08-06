@@ -10,6 +10,7 @@ NAME ATLAS_2012_diffcross_ytt
 %unitypb
 %%unitxTeV
 %
+plotsqrts
 yunits pb
 xunits GeV
 %
