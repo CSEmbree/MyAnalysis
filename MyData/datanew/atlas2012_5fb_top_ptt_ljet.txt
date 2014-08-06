@@ -15,6 +15,7 @@ NAME ATLAS_2012_diffcross_ptt
 xunits TeV
 yunits pb
 %
+plotsqrts
 normtot
 dividedbybinwidth
 label ATLAS 2013 

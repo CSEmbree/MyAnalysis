@@ -13,8 +13,9 @@ ylegend 0.9
 %
 yunits fb
 xunits GeV
-overlaystyle theory,reference,data
-ratiostyle theory/reference
+displaystyle overlay,ratio
+overlaystyle convolute,reference,data
+ratiostyle convolute/reference
 ratiotitlelabel MCFM,Sherpa/Data
 pdfdata MyPDF/CT10.txt
 plotband
