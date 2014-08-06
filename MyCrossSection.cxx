@@ -1627,6 +1627,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
       if (!mydata[igrid]) cout<<" MyCrossSection::DrawinFrame: mydata["<<igrid<<"] not found "<<endl;
       else if (debug)     cout<<" MyCrossSection::DrawinFrame: mydata["<<igrid<<"]  found "<<endl;
 
+            
    
       // Only plot data once (ignore repeats) unless repeated data is on a new frame
       if ( DoubleDataSetName(igrid) == false || iframeRepeatCheck != iframe ) { 
@@ -1641,6 +1642,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	TString mylabel=mydata[igrid]->GetLabel();	
 	if (debug) cout<<" MyCrossSection::DrawinFrame: mylabel= "<<mylabel.Data()<<endl;
 	
+	
 	// label sqrts before data on legend if MyData Steering requested it
 	if(mydata[igrid]->GetPlotSqrts())  {
 	  TString sqrtslabel = "";
@@ -1653,10 +1655,11 @@ void MyCrossSection::DrawinFrame(int iframe) {
 	  leg->AddEntry((TObject*)0, sqrtslabel, "");
 	}
 	
-	//add the data label to the legend
+	
+	//add the data label to the legend, different if only ratio is showing
 	if(displayRatio && !displayOverlay) {
 	  mydata[igrid]->GetTGraphTotErr()->SetFillColor(kGray);
-	  leg->AddEntry(mydata[igrid]->GetTGraphTotErr(),mylabel,"f");
+	  leg->AddEntry(mydata[igrid]->GetTGraphTotErr(),mylabel,"f"); //TODO - make more generic?
 	} else {
 	  leg->AddEntry(mydata[igrid]->GetTGraphTotErr(),mylabel,"ep");
 	}
@@ -1938,7 +1941,7 @@ TGraphAsymmErrors* MyCrossSection::GetNormalisedReferenceAsGraph(int igrid, bool
     }
     cout<<cn<<mn<<" Reference histo is reported to be divided by bin width, so we do nothing."<<endl;
 
-    if(ebars == false)  href->SetBinError(i, 0.); //TODO - make more generic - turn error bars off
+    if(ebars == false)  href->SetBinError(i, 0.); //TODO - make more generic? - turn error bars off
   }
 
   // normalise by number of entries, if asked to
