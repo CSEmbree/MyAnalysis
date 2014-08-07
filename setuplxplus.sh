@@ -36,6 +36,8 @@ export LD_LIBRARY_PATH=${FASTJET}/lib:${HOPPET}/lib:${APPLGRID}/lib:${SHERPA}/li
 ### Link to APPLgrids and PDFSets to local directory
 rm PDFSets
 #ln -s ${MYHOME}/workspace/MyAnalysis/PDFsets PDFsets
+ln -s ${MYHOME}/PDFsets PDFsets
+#
 ln -s `lhapdf-config --pdfsets-path` PDFsets
 rm MyGrids
 ln -s ${MYHOME}/workspace/MyAnalysis/MyGrids MyGrids
