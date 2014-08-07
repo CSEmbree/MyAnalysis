@@ -467,6 +467,8 @@ void MyBand::ComputePDFBandRatioRange(){
   gpdfbandratio.at(ipdf)->ComputeRange(xmin,ymin,xmax,ymax);
   if (ymin<Ymin) Ymin=ymin;
   if (ymax>Ymax) Ymax=ymax;
+ 
+  cout<<"TEST: Ratio after pdf("<<ipdf<<"): Ymax="<<Ymax<<", Ymin="<<Ymin<<endl;
  }
 
  yminratio=Ymin;

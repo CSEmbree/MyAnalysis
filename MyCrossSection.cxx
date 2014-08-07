@@ -449,7 +449,6 @@ void MyCrossSection::Initialize() {
       ratiodata[igrid]->SetMarkerColor(this->GetMarkerColor(igrid));//g->GetMarkerColor());
       ratiodata[igrid]->SetMarkerSize(g->GetMarkerColor());
       ratiodata[igrid]->SetLineColor(kBlack); //TODO - set color depending on occurances per frame?
-      cout<<"TEST: grid num: "<<igrid<<", frameID: "<<GetFrameID(igrid)<<endl;
       ratiodata[igrid]->SetLineStyle(g->GetLineStyle());
       ratiodata[igrid]->SetFillColor(g->GetFillColor());
       ratiodata[igrid]->SetFillStyle(g->GetFillStyle());    
@@ -1549,6 +1548,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
 
   */
 
+  // new way of choosing Legend size
   double x1=0., y1=0., x2=0., y2=0.;
   ComputeLegendBounds(iframe, &x1, &y1, &x2, &y2);
 
@@ -1597,7 +1597,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
       */
       
       //new
-      TGraphAsymmErrors* gref=this->GetNormalisedReferenceAsGraph(igrid, false); //TEST
+      TGraphAsymmErrors* gref=this->GetNormalisedReferenceAsGraph(igrid, false);
       if (!gref) cout<<" MyCrossSection::DrawinFrame: reference not found ! "<<endl;
       
       gref->SetLineColor(refhistlinecolor[igrid]);
@@ -1607,7 +1607,7 @@ void MyCrossSection::DrawinFrame(int iframe) {
       //no PDF, plot reference histogram for overlay
       gref->Draw("P,same"); //no PDF overlay draw
       if (debug) {
-	cout<<" MyCrossSection::DrawinFrame: Print reference histogram TEST"<<endl;
+	cout<<" MyCrossSection::DrawinFrame: Print reference histogram: "<<endl;
 	gref->Print("all");
       }
       //new
@@ -1834,8 +1834,11 @@ void MyCrossSection::DrawinFrame(int iframe) {
 
   //Set computed min and max on Yaxis with small buffer on top and bottom for visibility
   if (debug) cout<<" MyCrossSection::DrawinFrame: Ymin= "<<Ymin<<" Ymax= "<<Ymax<<endl;
-  myframe->GetYAxis2()->SetRangeUser(Ymin*0.9,Ymax*1.1); //<--Do this per each because each run is chaning the min and max??
+  
+  double scaleMin = 0.9, scaleMax = 1.1;
+  if( !displayOverlay && displayRatio ) scaleMax = 1.3; //higher buffer in max if only a ratio
 
+  myframe->GetYAxis2()->SetRangeUser(Ymin*scaleMin,Ymax*scaleMax); 
 
 
 
@@ -2723,6 +2726,7 @@ void MyCrossSection::ComputeRatioRange(double *_Ymin, double *_Ymax, int igrid) 
   double Ymin=BIG, Ymax=-BIG;
   
   
+
   //COMPUTE RATIO WINDOW
   // check denominator window size needed
   if( IsRatioDenominator("data") == true ) {
@@ -2730,38 +2734,42 @@ void MyCrossSection::ComputeRatioRange(double *_Ymin, double *_Ymax, int igrid) 
   } else if (IsRatioDenominator("reference") == true) {
     ratiodenom[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
   } else if (IsRatioDenominator("convolute") == true) {
+    myband[igrid]->ComputePDFBandRatioRange();
     ymin=myband[igrid]->GetYmin();
     ymax=myband[igrid]->GetYmax();
   }
-  
+
   if (ymin<Ymin) Ymin=ymin;
   if (ymax>Ymax) Ymax=ymax;
-  
-  
+
+
   // check numerator(s) window size needed
   if( IsRatioNumerator("data") == true ) {
     ratiodata[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
     if (ymin<Ymin) Ymin=ymin;
     if (ymax>Ymax) Ymax=ymax;
+    cout<<"YOLO"<<endl;
   }
-  
+
   if( IsRatioNumerator("reference") == true ) {
     ratioreference[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
     if (ymin<Ymin) Ymin=ymin;
-    if (ymax>Ymax) Ymax=ymax; 
+    if (ymax>Ymax) Ymax=ymax;
   }
-  
-  if( IsRatioNumerator("thoery") == true ) {
+
+  if( IsRatioNumerator("convolute") == true ) {
+    myband[igrid]->ComputePDFBandRatioRange();
     ymin=myband[igrid]->GetYmin();
     ymax=myband[igrid]->GetYmax();
     if (ymin<Ymin) Ymin=ymin;
     if (ymax>Ymax) Ymax=ymax;
   }
+
   
   *_Ymin = Ymin;
   *_Ymax = Ymax;
 
-  if (debug) cout<<cn<<mn<<" Ymin= "<<Ymin<<" Ymax= "<<Ymax<<endl;
+  if (debug) cout<<cn<<mn<<" Ratio Ymin= "<<Ymin<<" Ymax= "<<Ymax<<endl;
   
   return;
 }
