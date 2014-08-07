@@ -1,4 +1,4 @@
-# EXAMPLE SETUP SCRIPT FOR LXPLUS THAT Cameron Embree USED.
+# EXAMPLE STRIPPED SETUP SCRIPT FOR LXPLUS THAT Cameron Embree USED.
 #
 ### generic setup to be run at the start of EVERY LXPLUS session
 export BASEDIR=/afs/cern.ch/user/c/cembree/public/progs
