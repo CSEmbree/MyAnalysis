@@ -2748,7 +2748,6 @@ void MyCrossSection::ComputeRatioRange(double *_Ymin, double *_Ymax, int igrid) 
     ratiodata[igrid]->ComputeRange(xmin,ymin,xmax,ymax);
     if (ymin<Ymin) Ymin=ymin;
     if (ymax>Ymax) Ymax=ymax;
-    cout<<"YOLO"<<endl;
   }
 
   if( IsRatioNumerator("reference") == true ) {
