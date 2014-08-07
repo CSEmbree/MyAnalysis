@@ -55,6 +55,11 @@ ratiostyle numerator/denominator
 overlaystyle option,option,option
 %
 %
+%
+% [OPT] SPECIFY DISPLAY STYLE TO BE EITHER JUST overlay, ratio OR BOTH
+displaystyle overlay,ratio
+%
+%
 % [OPT] FORCE Y-AXIS ON OVERLAY AND/OR THE RATIO TO BE IN A PARTICULAR RANGE
 % [WARN] DATA PLOTTED OUT OF WINDOW RANGE WILL NOT BE VISIBLE
 % [WARN] A FORCED MIN OR MAX OF ZERO MAY CAUSE ISSUES WITH LOG-SCALES
