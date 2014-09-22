@@ -1,83 +1,140 @@
-INTRO: Please read through this document to 
-understand what is needed to generate plots
+
+Read through this document to understand what is 
+needed to create plots with the MyAnalysis framwork.
+
+README Structure:
+1. DEPENDANCIES
+   1.a FILES
+   1.b SOFTWARE
+   1.c STEERING
+2. SETUP
+   2.a INSTALL DEPENDANCIES
+   2.b UPDATE SETUP SCRIPT
+3. RUNNING
+4. EXAMPLE(s)
 
 
-###################################################
-#                 DEPENDANCIES                    #
-###################################################
 
-FILES:
-Need access to newest of the following files:
-MyBand.{cxx,h}
-MyCrossSection.{cxx,h}
-MyData.{cxx,h}
-MyEvent.{cxx,h}
-MyFrame.{cxx,h}
-MyFrameData.{cxx,h}
-MyGrid.{cxx,h}
-MyGrids/
-MyPDF/
-MyPDF.{cxx,h}
+#######################################################
+#                 1. DEPENDANCIES                     #
+#######################################################
 
-Link (ln -s) your LHAPDF v5.X.X PDFsets directory 
-to the home project directory. 
+##############################
+#          1.a FILES         #
+##############################
+Need access to newest of the following files (which
+should already be in the MyAnalysis svn):
+  MyBand.{cxx,h}         - Does PDF(s) overlay & ratio drawing
+  MyCrossSection.{cxx,h} - Deals with other classes & draws frame
+  MyData.{cxx,h}         - Reads & holds MyData steering info
+  MyEvent.{cxx,h}        - Holds event details
+  MyFrame.{cxx,h}        - The framewith anoverlay & ratio section
+  MyFrameData.{cxx,h}
+  MyGrid.{cxx,h}         - home for Applgrid inforamtion
+  MyPDF.{cxx,h}          - Holds PDF inforamtion
+  MyGrids/               - Directory for holding APPLGrids 
+  MyPDF/                 - Directory holding MyPDF steerings
+
+These code and directories are needed for the 
+MyAnalysis framework. The MyGrids directory is not
+'needed' because you can place your applegrids 
+wherever you want in the project directory, so long
+as the MyGrid steering path is correct.
+
+
+##############################
+#        1.b SOFTWARE        #
+##############################
+Also needed is the following software:
+  hoppet   - 1.1.6
+  applgrid - Any version (recommend 1.4.56 )
+  root     - A version  <= v5.34.18
+  LHAPDF   - 5.9.1 (avoid > 6 for now b/c of PDF directory changes)
+
+The above code is needed because Hoppet is used by Applgrid, 
+LHAPDF houses the PDF code and files, and everyone needed ROOT.
+
+This software can be downloaded by doing each of the following as commands in Terminal:
+  svn checkout http://hoppet.hepforge.org/svn/trunk hoppet
+  wget http://www.hepforge.org/archive/applgrid/applgrid-1.4.56.tgz
+  wget ftp://root.cern.ch/root/root_v5.34.20.source.tar.gz
+  wget http://www.hepforge.org/archive/lhapdf/lhapdf-5.9.1.tar.gz
+
+Also needed is to link a PDFsets directory to the home project 
+directory. Either link to the one provided in the lhapdf-config 
+path, like so:
 
   ln -s `lhapdf-config --pdfsets-path`
 
-The most recently tested version for this code is
-LHAPDF 5.9.1
+You can also link your own PDFsets directory:
+
+  ln -s <some/path/PDFsets> .
 
 
-SOFTWARE:
-applgrid - Any version
-root     - A version  <= v5.34.05
+##############################
+#        1.c STEERING        #
+##############################
+The MyAnalysis code also uses steering file to run 
+examples can be found in the the 'example' directory.
+
+A MyCrossSection steering file requires a MyGrid 
+steering, MyPDF steering, and MyGrid steering. 
+examples of steering files for these can be found in 
+the 'docs' directory
 
 
-STEERING:
-Also uses steering file to run, an example here 
-can be found in the home project directory under
-the 'example' directory
 
-This MyCrossSection steering file also requires 
-a MyGrid steering, MyPDF steering, and MyGrid 
-steering. examples of steering files for these
-can be found in the 'docs' directory
+#######################################################
+#                      2. SETUP                       #
+#######################################################
+
+##############################
+#  2.a INSTALL DEPENDANCIES  #
+##############################
+First install all dependant software, which can all
+be found in the above DEPENDANCES section 2.b.
 
 
-###################################################
-#                    SETUP                        #
-###################################################
-Please edit the setup script called 'setuplxplus.sh'
-to your liking, and then perform:
+##############################
+#  2.b UPDATE SETUP SCRIPT   # 
+##############################
+Edit the setup script called 'setuplxplus.sh' to your 
+liking, and then perform:
 
   source setuplxplus.sh
   make clean
   make
 
 
-###################################################
-#                   RUNNING                       #
-###################################################
-Executable 'plot' takes 1 parameter:
-1 - MyCrossSection steering file
+
+#######################################################
+#                     3. RUNNING                      #
+#######################################################
+Executable 'plot' which us generated after a 'make' 
+takes only one parameter, a MyCrossSection steering 
+file.
 
 Make your own steering files in the format that can
-be found in the 'docs' directory. An example is
-also found in the 'example' directory.
+be found in the 'docs' directory. Examples is also 
+found in the 'example' directory.
 
 Output from running will show in root, so you should
-enable X11 forwarding if you are sshing in, which 
-for cern user's looks something like:
+enable X11 forwarding if you are ssh'ing in, which 
+for cern lxplus user's looks something like:
 
   ssh -X username@lxplus.cern.ch
 
 
-###################################################
-#                EXAMPLE RUNS                     #
-###################################################
+
+####################################################
+#               4. EXAMPLE RUNS                    #
+####################################################
 EXAMPLE RUN(S):
 
 Consider the example in the example directory that
-can be ran wtih:
+can be ran with:
 
   ./plot example/atlastest.txt
+
+
+
